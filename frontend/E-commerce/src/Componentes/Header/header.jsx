@@ -8,9 +8,13 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Button from '@mui/material/Button';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
-import './header.css'
-import { Search, SearchIconWrapper, StyledTextField } from './BuscadorEstilos';
+import './header.css';
 import Autocomplete from '@mui/material/Autocomplete';
+import { Link } from 'react-router-dom';
+import TextField from '@mui/material/TextField';
+import InputAdornment from '@mui/material/InputAdornment';
+import { IconButton } from '@mui/material';
+import Divider from '@mui/material/Divider';
 
 export default function Header() {
   const [valorBuscador, setValorBuscador] = useState('');
@@ -21,13 +25,15 @@ export default function Header() {
       fetch(`http://127.0.0.1:8000/productos/?nombre=${valorBuscador}`)
         .then((response) => response.json())
         .then((data) => {
-          setProductos(Array.isArray(data) ? data : []);
-        })
+          setProductos(Array.isArray(data.results) ? data.results.map(producto => producto.nombre) : []);
+          console.log(productos);
+        });
     }
   }, [valorBuscador]);
+
   return (
     <>
-      <AppBar position="fixed" sx={{backgroundColor: '#343a40'}}>
+      <AppBar position="fixed" sx={{ backgroundColor: '#388E3C' }}>
         <Toolbar>
           <Typography variant="h6" component="a" sx={{ ml: 1 }} id='nombre'>
             <FitnessCenterIcon />
@@ -35,20 +41,40 @@ export default function Header() {
           </Typography>
           
           <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
-            <Search>
-              <SearchIconWrapper>
-                <SearchIcon />
-              </SearchIconWrapper>
-             
-              <Autocomplete
-                freeSolo
-                options={productos.map((option) => option.nombre)}
-                value={valorBuscador}
-                onInputChange={(event, newValue) => setValorBuscador(newValue)}
-                renderInput={(params) => (
-                <StyledTextField {...params}/> )}
-              />
-            </Search>
+            <Autocomplete
+              value={valorBuscador}
+              onInputChange={(event, newValue) => setValorBuscador(newValue)}
+              options={productos}
+              renderInput={(params) => (
+                <TextField
+                  sx={{ '& .MuiInputBase-root': { padding: '6px 12px'}}}
+                  {...params}
+                  placeholder="Buscar..."
+                  slotProps={{
+                    input: {
+                      ...params.InputProps,
+                      type: 'search',
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <Divider orientation="vertical" flexItem sx={{ height: 24}} />
+                          <Link to="/Productos" style={{ textDecoration: 'none'}}>
+                            <IconButton edge="end">
+                              <SearchIcon/>
+                            </IconButton>
+                          </Link>
+                        </InputAdornment>
+                      ),
+                    },
+                  }}
+                />
+              )}
+              disableClearable
+              sx={{ 
+                width: '60%',
+                backgroundColor: 'white',
+                borderRadius: '5px',
+              }}
+            />
           </Box>
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <Button sx={{ backgroundColor: 'white', color: 'black' }}>
@@ -62,6 +88,6 @@ export default function Header() {
           </Box>
         </Toolbar>
       </AppBar>
-    </>  
+    </>
   );
 }
