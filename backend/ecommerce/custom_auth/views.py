@@ -1,0 +1,32 @@
+from rest_framework import generics
+from .models import User
+from .serializers import UserSerializer, UserDetailSerializer, ChangePasswordSerializer
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+
+class UserList(generics.ListCreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+class UserDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserDetailSerializer
+
+class ChangePassword(generics.UpdateAPIView):
+    queryset = User.objects.all()
+    serializer_class = ChangePasswordSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def update(self, request, *args, **kwargs):
+        user = self.get_object()
+        serializer = self.get_serializer(data=request.data)
+
+        if serializer.is_valid():
+            if not user.check_password(serializer.data.get('old_password')):
+                return Response({'old_password': 'Wrong password.'}, status=400)
+            if serializer.data.get('new_password') != serializer.data.get('confirm_password'):
+                return Response({'new_password': 'Passwords do not match.'}, status=400)
+            user.set_password(serializer.data.get('new_password'))
+            user.save()
+            return Response({'status': 'Password updated.'})
+        return Response(serializer.errors, status=400)
