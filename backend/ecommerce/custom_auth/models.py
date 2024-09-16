@@ -34,3 +34,8 @@ class User(AbstractBaseUser):
 
     def __str__(self):
         return self.email
+    
+    def save(self, *args, **kwargs):
+        if self.pk is None:
+            self.set_password(self.password) #Encripta la contraseña
+        super().save(*args, **kwargs)
