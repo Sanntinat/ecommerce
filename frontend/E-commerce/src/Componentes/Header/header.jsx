@@ -4,7 +4,6 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import SearchIcon from '@mui/icons-material/Search';
-import AccountCircle from '@mui/icons-material/AccountCircle';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Button from '@mui/material/Button';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
@@ -15,6 +14,8 @@ import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 import { IconButton } from '@mui/material';
 import Divider from '@mui/material/Divider';
+import Cuenta from './cuenta';
+import Carrito from './carrito';
 
 export default function Header() {
   const [valorBuscador, setValorBuscador] = useState('');
@@ -35,9 +36,9 @@ export default function Header() {
     <>
       <AppBar position="fixed" sx={{ backgroundColor: '#1C1C1C' }}>
         <Toolbar>
-          <Typography variant="h6" component="a" sx={{ ml: 1 }} id='nombre'>
+          <Typography variant="h6" component="a" sx={{ ml: 1 }}>
             <FitnessCenterIcon />
-            PowerFit
+            <span  id='nombre'>Power</span><span id='nombre2'>Fit</span>
           </Typography>
           
           <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
@@ -77,14 +78,8 @@ export default function Header() {
             />
           </Box>
           <Box sx={{ display: { xs: 'none', md: 'flex' }}}>
-            <Button sx={{ color: '#00a1ed' }}>
-              <AccountCircle />
-              Mi cuenta
-            </Button>
-            <Button sx={{ backgroundColor: '#00a1ed', color: 'white' , m:1 }}>
-              <ShoppingCartIcon />
-              Carrito (0)
-            </Button>
+            <Cuenta />
+            <Carrito/>
           </Box>
         </Toolbar>
       </AppBar>

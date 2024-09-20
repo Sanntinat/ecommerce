@@ -1,4 +1,3 @@
-
 import banner from '../../assets/banner.jpg';
 import entrenamiento from '../../assets/entrenamiento.webp';
 import * as React from 'react';
@@ -12,75 +11,107 @@ import Divider from '@mui/material/Divider';
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
+import CheckIcon from '@mui/icons-material/Check';
+import Button from '@mui/material/Button';
 
 export default function principal() {
   return (
     <>
       <img src={banner} alt="Banner" />
-      <Divider sx={{ width:'70%', m:3 }} />
-      <Typography variant="h1" sx={{ 
-        fontSize: '3rem', 
-        fontWeight: '600', 
-        color: '#333', 
-        textAlign: 'center',
-      }}>
+      <Divider sx={{ width: '70%', m: 3 }} />
+      <Typography
+        variant="h1"
+        sx={{
+          fontSize: '3rem',
+          fontWeight: '600',
+          color: '#333',
+          textAlign: 'center',
+        }}
+      >
         Categorias
       </Typography>
 
-        <Grid container spacing={12}> 
-          <Grid item xs={4}> 
-            <Carta suplementos={suplementos} titulo="Suplementos"/>
-          </Grid>
-          <Grid item xs={4}>
-            <Carta suplementos={kinesiologia} titulo="Kinesiologia"/>
-          </Grid>
-          <Grid item xs={4}>
-          <Carta suplementos={gimnasio} titulo="Gimnasio"/>
-          </Grid>
+      <Grid container spacing={12}>
+        <Grid item xs={4}>
+          <Carta suplementos={suplementos} titulo="Suplementos" />
         </Grid>
-        <Divider sx={{ width:'70%', m:3 }} />
+        <Grid item xs={4}>
+          <Carta suplementos={kinesiologia} titulo="Kinesiologia" />
+        </Grid>
+        <Grid item xs={4}>
+          <Carta suplementos={gimnasio} titulo="Gimnasio" />
+        </Grid>
+      </Grid>
+      <Divider sx={{ width: '70%', m: 3 }} />
 
-        <Box sx={{width:'1980px'}} >
-          <Grid container spacing={4}>
-            <Grid item> 
-            <img src={entrenamiento} alt="entrenamiento"  />
-            </Grid>
-            <Grid>
-
-              <Box
+      <Box sx={{ width: '1980px' }}>
+        <Grid container spacing={4}>
+          <Grid item>
+            <img src={entrenamiento} alt="entrenamiento" />
+          </Grid>
+          <Grid>
+            <Box
               flex={1}
               padding={4}
-              sx={{  bgcolor: '#f5f5f5', borderRadius: '8px', height:'515px' }}
+              sx={{ bgcolor: '#f5f5f5', borderRadius: '8px', height: '515px' }}
+            >
+              <Typography
+                variant="h3"
+                gutterBottom
+                sx={{ fontWeight: 'bold', color: '#333', textAlign: 'left' }}
               >
-              <Typography variant="h3" gutterBottom sx={{ fontWeight: 'bold', color: '#333' }}>
                 Descubre nuestros productos
               </Typography>
               <List>
-                <ListItem sx={{ fontSize: '1.2rem', lineHeight: '1.5' }}>
-                  Suplementos de alta calidad para potenciar tu rendimiento.
+                <ListItem sx={{ fontSize: '1.5rem', lineHeight: '1.5' }}>
+                  <CheckIcon sx={{color:'#00a1ed'}}/> Suplementos de alta calidad para potenciar tu rendimiento.
                 </ListItem>
-                <ListItem sx={{ fontSize: '1.2rem', lineHeight: '1.5' }}>
-                  Productos específicos para cada objetivo: musculación, pérdida de peso y más.
+                <ListItem sx={{ fontSize: '1.5rem', lineHeight: '1.5' }}>
+                  <CheckIcon sx={{color:'#00a1ed'}}/> Productos específicos para cada objetivo: musculación, pérdida
+                  de peso y más.
                 </ListItem>
-                <ListItem sx={{ fontSize: '1.2rem', lineHeight: '1.5' }}>
-                  Accesorios de gimnasio para un entrenamiento efectivo en casa o en el gym.
+                <ListItem sx={{ fontSize: '1.5rem', lineHeight: '1.5' }}>
+                  <CheckIcon sx={{color:'#00a1ed'}}/> Accesorios de gimnasio para un entrenamiento efectivo en casa o
+                  en el gym.
                 </ListItem>
-                <ListItem sx={{ fontSize: '1.2rem', lineHeight: '1.5' }}>
-                  Sabores deliciosos en cada suplemento, ¡disfruta mientras te cuidas!
+                <ListItem sx={{ fontSize: '1.5rem', lineHeight: '1.5' }}>
+                  <CheckIcon sx={{color:'#00a1ed'}}/> Sabores deliciosos en cada suplemento, ¡disfruta mientras te
+                  cuidas!
                 </ListItem>
-                <ListItem sx={{ fontSize: '1.2rem', lineHeight: '1.5' }}>
-                  Productos diseñados para ayudarte a construir hábitos saludables.
+                <ListItem sx={{ fontSize: '1.5rem', lineHeight: '1.5' }}>
+                  <CheckIcon sx={{color:'#00a1ed'}}/> Productos diseñados para ayudarte a construir hábitos
+                  saludables.
                 </ListItem>
-                <ListItem sx={{ fontSize: '1.2rem', lineHeight: '1.5' }}>
-                  Asesoría personalizada para encontrar lo que mejor se adapta a ti.
-                </ListItem>
+                <Button 
+                  variant="outlined" 
+                  sx={{ 
+                    width: '200px',       
+                    padding: '12px 24px',
+                    backgroundColor: '#00a1ed',
+                    color: '#fff',
+                    borderRadius: '8px',
+                    m:5
+                  }}
+                >
+                  Comprar ahora
+                </Button>
               </List>
-              </Box>
-
-            </Grid>
+            </Box>
           </Grid>
-        </Box>
-
+        </Grid>
+      </Box>
+      <Divider sx={{ width: '70%', m: 3 }} />
+      <Typography
+        variant="h1"
+        sx={{
+          fontSize: '3rem',
+          fontWeight: '600',
+          color: '#333',
+          textAlign: 'center',
+        }}
+      >
+        Productos destacados
+      </Typography>
     </>
-  )
+  );
 }
