@@ -33,7 +33,7 @@ export default function Header() {
 
   return (
     <>
-      <AppBar position="fixed" sx={{ backgroundColor: '#388E3C' }}>
+      <AppBar position="fixed" sx={{ backgroundColor: '#1C1C1C' }}>
         <Toolbar>
           <Typography variant="h6" component="a" sx={{ ml: 1 }} id='nombre'>
             <FitnessCenterIcon />
@@ -76,14 +76,14 @@ export default function Header() {
               }}
             />
           </Box>
-          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <Button sx={{ backgroundColor: 'white', color: 'black' }}>
-              <ShoppingCartIcon />
-              Carrito (0)
-            </Button>
-            <Button sx={{ color: 'white' }}>
+          <Box sx={{ display: { xs: 'none', md: 'flex' }}}>
+            <Button sx={{ color: '#00a1ed' }}>
               <AccountCircle />
               Mi cuenta
+            </Button>
+            <Button sx={{ backgroundColor: '#00a1ed', color: 'white' , m:1 }}>
+              <ShoppingCartIcon />
+              Carrito (0)
             </Button>
           </Box>
         </Toolbar>
