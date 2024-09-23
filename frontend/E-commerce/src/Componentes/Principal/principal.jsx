@@ -1,22 +1,26 @@
 import banner from '../../assets/banner.jpg';
 import entrenamiento from '../../assets/entrenamiento.webp';
-import * as React from 'react';
 import Grid from '@mui/material/Grid2';
 import Carta from './card';
 import suplementos from '../../assets/suplementos-gym.jpg';
 import gimnasio from '../../assets/gimnasio.jpeg';
 import kinesiologia from '../../assets/kinesiologia.jpg';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import Box from '@mui/material/Box';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
 import CheckIcon from '@mui/icons-material/Check';
-import Button from '@mui/material/Button';
+import { Typography, Divider, Box, List, ListItem, Button } from '@mui/material';
+import { useRef } from 'react';
+import Header from '../Header/header';
 
 export default function principal() {
+  const inputRef = useRef(null);
+
+  function handleClick() {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }
   return (
     <>
+      <Header inputRef={inputRef} />
       <img src={banner} alt="Banner" />
       <Divider sx={{ width: '70%', m: 3 }} />
       <Typography
@@ -32,27 +36,27 @@ export default function principal() {
       </Typography>
 
       <Grid container spacing={12}>
-        <Grid item xs={4}>
+        <Grid xs={4}>
           <Carta suplementos={suplementos} titulo="Suplementos" />
         </Grid>
-        <Grid item xs={4}>
+        <Grid xs={4}>
           <Carta suplementos={kinesiologia} titulo="Kinesiologia" />
         </Grid>
-        <Grid item xs={4}>
+        <Grid xs={4}>
           <Carta suplementos={gimnasio} titulo="Gimnasio" />
         </Grid>
       </Grid>
       <Divider sx={{ width: '70%', m: 3 }} />
 
-      <Box sx={{ width: '1980px' }}>
-        <Grid container spacing={4}>
-          <Grid item>
+      <Box sx={{ width: '100%' }}>
+        <Grid container spacing={2}>
+          <Grid >
             <img src={entrenamiento} alt="entrenamiento" />
           </Grid>
           <Grid>
             <Box
               flex={1}
-              padding={4}
+              padding={1}
               sx={{ bgcolor: '#f5f5f5', borderRadius: '8px', height: '515px' }}
             >
               <Typography
@@ -92,6 +96,7 @@ export default function principal() {
                     borderRadius: '8px',
                     m:5
                   }}
+                  onClick={handleClick}
                 >
                   Comprar ahora
                 </Button>

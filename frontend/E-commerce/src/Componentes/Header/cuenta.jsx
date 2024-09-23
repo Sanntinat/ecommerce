@@ -1,11 +1,9 @@
-import React, {useState} from 'react'
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
+import {useState} from 'react'
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import Button from '@mui/material/Button';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import LogoutIcon from '@mui/icons-material/Logout';
+import { Menu, MenuItem, Button } from '@mui/material';
 
 export default function Cuenta() {
   const [anchorEl, setAnchorEl] = useState(null);

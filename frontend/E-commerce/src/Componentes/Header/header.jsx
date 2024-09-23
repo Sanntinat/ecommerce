@@ -1,25 +1,20 @@
-import AppBar from '@mui/material/AppBar';
 import { useEffect, useState } from 'react';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import SearchIcon from '@mui/icons-material/Search';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import Button from '@mui/material/Button';
-import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
+import { useNavigate } from 'react-router-dom';
 import './header.css';
-import Autocomplete from '@mui/material/Autocomplete';
 import { Link } from 'react-router-dom';
-import TextField from '@mui/material/TextField';
-import InputAdornment from '@mui/material/InputAdornment';
-import { IconButton } from '@mui/material';
-import Divider from '@mui/material/Divider';
 import Cuenta from './cuenta';
-import Carrito from './carrito';
+import Carrito from './Carrito/carrito';
+import { AppBar, Box, Toolbar, Typography, Autocomplete, TextField, InputAdornment, Divider, IconButton } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
 
-export default function Header() {
+export default function Header({inputRef}) {
   const [valorBuscador, setValorBuscador] = useState('');
   const [productos, setProductos] = useState([]);
+  const navigate = useNavigate();
+
+  const handleSearchClick = () => {
+    navigate(`/productos?categoria=${valorBuscador}`);
+  };
 
   useEffect(() => {
     if (valorBuscador) {
@@ -27,7 +22,6 @@ export default function Header() {
         .then((response) => response.json())
         .then((data) => {
           setProductos(Array.isArray(data.results) ? data.results.map(producto => producto.nombre) : []);
-          console.log(productos);
         });
     }
   }, [valorBuscador]);
@@ -36,46 +30,53 @@ export default function Header() {
     <>
       <AppBar position="fixed" sx={{ backgroundColor: '#1C1C1C' }}>
         <Toolbar>
-          <Typography variant="h6" component="a" sx={{ ml: 1 }}>
-            <FitnessCenterIcon />
-            <span  id='nombre'>Power</span><span id='nombre2'>Fit</span>
-          </Typography>
-          
+          <Link to="/" style={{ textDecoration: 'none'}}>
+            <Typography variant="h6" sx={{ ml: 1 }}>
+              <span  id='nombre'>Power</span><span id='nombre2'>Fit</span>
+            </Typography>
+          </Link>
           <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
-            <Autocomplete
-              value={valorBuscador}
-              onInputChange={(event, newValue) => setValorBuscador(newValue)}
-              options={productos}
-              renderInput={(params) => (
-                <TextField
-                  sx={{ '& .MuiInputBase-root': { padding: '6px 12px'}}}
-                  {...params}
-                  placeholder="Buscar..."
-                  slotProps={{
-                    input: {
-                      ...params.InputProps,
-                      type: 'search',
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <Divider orientation="vertical" flexItem sx={{ height: 24}} />
-                          <Link to="/Productos" style={{ textDecoration: 'none'}}>
-                            <IconButton edge="end">
-                              <SearchIcon/>
-                            </IconButton>
-                          </Link>
-                        </InputAdornment>
-                      ),
-                    },
-                  }}
-                />
-              )}
-              disableClearable
-              sx={{ 
-                width: '60%',
-                backgroundColor: 'white',
-                borderRadius: '5px',
-              }}
-            />
+          <Autocomplete
+            value={valorBuscador}
+            ref={inputRef}
+            onInputChange={(event, newValue) => setValorBuscador(newValue)}
+            options={productos}
+            noOptionsText=''
+            renderInput={(params) => (
+              <TextField
+                sx={{ 
+                  '& .MuiInputBase-root': { 
+                    paddingTop: '3px', 
+                    paddingBottom: '3px', 
+                    paddingLeft: '1',
+                    paddingRight: '0px !important',
+                  },
+                }}
+                {...params}
+                placeholder="Buscar..."
+                slotProps={{
+                  input: {
+                    ...params.InputProps,
+                    type: 'search',
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <Divider orientation="vertical" flexItem sx={{ height: 30 }} />
+                        <IconButton onClick={handleSearchClick}>
+                          <SearchIcon />
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  },
+                }}
+              />
+            )}
+            disableClearable
+            sx={{ 
+              width: '60%',
+              backgroundColor: 'white',
+              borderRadius: '5px',
+            }}
+          />
           </Box>
           <Box sx={{ display: { xs: 'none', md: 'flex' }}}>
             <Cuenta />
