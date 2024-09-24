@@ -7,4 +7,6 @@ urlpatterns = [
     path('productos/coincide/<str:nombre>/', views.ProductosCoincide.as_view()),
     path('categorias/', views.CategoriasList.as_view()),
     path('categorias/<int:pk>/', views.CategoriasDetail.as_view()),
+    path('tags/', TagList.as_view()),
+    path('tags/<int:pk>', TagDetail.as_view()),
 ]
