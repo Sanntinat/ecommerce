@@ -11,6 +11,12 @@ class Productos(models.Model):
     def __str__(self):
         return self.nombre
     
+class Categorias(models.Model):
+    nombre = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.nombre
+    
 class ProductosFilter(django_filters.FilterSet):
     nombre = django_filters.CharFilter(field_name='nombre', lookup_expr='icontains')
     precioMinimo = django_filters.NumberFilter(field_name='precio', lookup_expr='gte')
@@ -18,3 +24,4 @@ class ProductosFilter(django_filters.FilterSet):
     class Meta:
         model = Productos
         fields = ['nombre', 'precioMinimo', 'precioMaximo']
+
