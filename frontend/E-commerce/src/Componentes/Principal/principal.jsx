@@ -7,31 +7,16 @@ import gimnasio from '../../assets/gimnasio.jpeg';
 import kinesiologia from '../../assets/kinesiologia.jpg';
 import CheckIcon from '@mui/icons-material/Check';
 import { Typography, Divider, Box, List, ListItem, Button } from '@mui/material';
-import { useRef } from 'react';
-import Header from '../Header/header';
 
 export default function principal() {
-  const inputRef = useRef(null);
 
-  function handleClick() {
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
-  }
   return (
     <>
-      <Header inputRef={inputRef} />
       <img src={banner} alt="Banner" />
       <Divider sx={{ width: '70%', m: 3 }} />
       <Typography
         variant="h1"
-        sx={{
-          fontSize: '3rem',
-          fontWeight: '600',
-          color: '#333',
-          textAlign: 'center',
-        }}
-      >
+        sx={{ fontSize: '3rem', fontWeight: '600', color: '#333', textAlign: 'center' }}>
         Categorias
       </Typography>
 
@@ -62,8 +47,7 @@ export default function principal() {
               <Typography
                 variant="h3"
                 gutterBottom
-                sx={{ fontWeight: 'bold', color: '#333', textAlign: 'left' }}
-              >
+                sx={{ fontWeight: 'bold', color: '#333', textAlign: 'left' }}>
                 Descubre nuestros productos
               </Typography>
               <List>
@@ -88,16 +72,8 @@ export default function principal() {
                 </ListItem>
                 <Button 
                   variant="outlined" 
-                  sx={{ 
-                    width: '200px',       
-                    padding: '12px 24px',
-                    backgroundColor: '#00a1ed',
-                    color: '#fff',
-                    borderRadius: '8px',
-                    m:5
-                  }}
-                  onClick={handleClick}
-                >
+                  sx={{ width: '200px', padding: '12px 24px', backgroundColor: '#00a1ed', color: '#fff', borderRadius: '8px', m:5}}
+                  >
                   Comprar ahora
                 </Button>
               </List>
@@ -108,13 +84,7 @@ export default function principal() {
       <Divider sx={{ width: '70%', m: 3 }} />
       <Typography
         variant="h1"
-        sx={{
-          fontSize: '3rem',
-          fontWeight: '600',
-          color: '#333',
-          textAlign: 'center',
-        }}
-      >
+        sx={{ fontSize: '3rem', fontWeight: '600', color: '#333', textAlign: 'center', }}>
         Productos destacados
       </Typography>
     </>

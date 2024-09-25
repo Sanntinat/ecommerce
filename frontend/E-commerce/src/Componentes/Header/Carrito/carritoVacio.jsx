@@ -1,11 +1,8 @@
 import { Box, Typography, Button } from '@mui/material';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default function CarritoVacio({drawerOpen, setDrawerOpen}) {
-  const location = useLocation();
-  const query = new URLSearchParams(location.search);
-  const categoriaSeleccionada = query.get('categoria');
   const navigate = useNavigate();
 
   const handleClick = (titulo) => {
@@ -18,14 +15,7 @@ export default function CarritoVacio({drawerOpen, setDrawerOpen}) {
         <ShoppingBasketIcon sx={{ fontSize: '4rem' }} /> {/* Tamaño del ícono */}
       </Box>
       <Typography
-          sx={{
-            fontSize: '1rem',
-            fontWeight: '1000',
-            color: '#333',
-            textAlign: 'center',
-            mt: 2
-          }}
-        >
+          sx={{ fontSize: '1rem', fontWeight: '1000', color: '#333', textAlign: 'center', mt: 2 }}>
           TU CARRITO ESTA VACIO
         </Typography>
         <Typography
@@ -44,3 +34,4 @@ export default function CarritoVacio({drawerOpen, setDrawerOpen}) {
     </>
   )
 }
+

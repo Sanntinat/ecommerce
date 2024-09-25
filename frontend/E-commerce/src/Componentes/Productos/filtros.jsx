@@ -5,37 +5,24 @@ import { useState, useEffect } from 'react';
 import HorizontalRuleIcon from '@mui/icons-material/HorizontalRule';
 import PropTypes from 'prop-types';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import { handleGeneral, handleTag } from './handle';
 
-export default function Filtros({categoriaSeleccionada, selectedOption, setSelectedOption, selectedTags, setSelectedTags}) {
+export default function Filtros({categoriaSeleccionada, selectedOption, setSelectedOption, setSelectedTags}) {
   const [expanded, setExpanded] = useState(true);
   const [maximo, setMaximo] = useState('');
   const [minimo, setMinimo] = useState('');
 
-  const handleMinimo = (event) => {
-    setMinimo(event.target.value);
-  };
-  const handleMaximo = (event) => {
-    setMaximo(event.target.value);
-  };
-
-  const handleCategory = (event) => {
-    setSelectedOption(event.target.value);
-  };
   const handleChange = () => {
     setExpanded(!expanded);
   };
 
-  const handleTag = () => {
-    setSelectedTags({
-      minimo: minimo,
-      maximo: maximo,
-    });}
-
   useEffect(() => {
     if (categoriaSeleccionada !== '' && categoriaSeleccionada !== null) {
       setSelectedOption(categoriaSeleccionada);
+      console.log(categoriaSeleccionada);
     }
-  }, [categoriaSeleccionada]);
+  }, [categoriaSeleccionada, setSelectedOption]);
+  
   return (
     <>
       <Accordion expanded={expanded} onChange={handleChange} sx={{mb:2}}>
@@ -51,7 +38,7 @@ export default function Filtros({categoriaSeleccionada, selectedOption, setSelec
           aria-labelledby="demo-radio-buttons-group-label"
           name="radio-buttons-group"
           value={selectedOption} 
-          onChange={handleCategory}
+          onChange={(event) => handleGeneral(event, setSelectedOption)}
         >
           <FormControlLabel value="Gimnasio" control={<Radio />} label="Gimnasio" />
           <FormControlLabel value="Suplementos" control={<Radio />} label="Suplementos" />
@@ -86,7 +73,7 @@ export default function Filtros({categoriaSeleccionada, selectedOption, setSelec
                     id="outlined-multiline-flexible"
                     label="minimo"
                     value={minimo}
-                    onChange={handleMinimo}
+                    onChange={(event) => handleGeneral(event, setMinimo)}
                     multiline
                     maxRows={4}
                     size="small"
@@ -101,14 +88,14 @@ export default function Filtros({categoriaSeleccionada, selectedOption, setSelec
                     id="outlined-multiline-flexible"
                     label="maximo"
                     value={maximo}
-                    onChange={handleMaximo}
+                    onChange={(event) => handleGeneral(event, setMaximo)}
                     multiline
                     maxRows={4}
                     size="small"
                     sx={{ width: '100%' }}
                     />
                 </Grid>
-                <IconButton onClick={handleTag}>
+                <IconButton onClick={() => handleTag(setSelectedTags, minimo, maximo)}>
                   <ArrowForwardIosIcon fontSize='small'/>
                 </IconButton>
               </Grid>
@@ -129,4 +116,5 @@ export default function Filtros({categoriaSeleccionada, selectedOption, setSelec
 
 Filtros.propTypes = {
   categoriaSeleccionada: PropTypes.string, 
+
 };

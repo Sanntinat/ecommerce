@@ -17,19 +17,9 @@ export default function Carta({ suplementos, titulo }) {
             component="img"
             image={suplementos}
             alt={titulo}
-            sx={{
-              maxHeight: '200px',
-              width: '100%',
-            }}
-          />
+            sx={{ maxHeight: '200px', width: '100%'}}/>
           <Typography variant="h5" component="div"
-            sx={{
-              fontSize: '1.5rem',
-              fontWeight: 'bold',
-              color: '#333',
-              marginBottom: '0',
-            }}
-          >
+            sx={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#333', marginBottom: '0',}}>
             {titulo}
           </Typography>
         </CardContent>

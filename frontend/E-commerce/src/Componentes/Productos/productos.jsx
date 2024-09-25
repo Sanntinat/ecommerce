@@ -3,6 +3,7 @@ import Filtros from './filtros';
 import { styled, Box, Drawer, Typography, Divider, IconButton, Stack, Chip } from '@mui/material';
 import { Tune } from '@mui/icons-material';
 import { useLocation } from 'react-router-dom';
+import { handleDeleteTag, handleDeleteOption} from './handle';
 
 const drawerWidth = 340;
 
@@ -42,17 +43,6 @@ export default function Productos() {
     {open ? setOpen(false) : setOpen(true)}
   };
 
-  const handleDeleteOption = () => {
-    setSelectedOption('');
-  };
-
-  const handleDeleteTag = () => {
-    setSelectedTags({
-      minimo: '',
-      maximo: '',
-    });
-  };
-
   useEffect(() => {
     if (selectedOption !== '') {
       setSelectedTags({
@@ -81,9 +71,9 @@ export default function Productos() {
         <Stack direction="row" spacing={1}>
           {selectedOption !== '' && 
           <>
-            <Chip label={selectedOption} variant="outlined" sx={{backgroundColor:'#00a1ed', color: 'white'}} onDelete={handleDeleteOption} />
+            <Chip label={selectedOption} variant="outlined" sx={{backgroundColor:'#00a1ed', color: 'white'}} onDelete={() => handleDeleteOption(setSelectedOption)} />
             {selectedTags.minimo !== '' && selectedTags.maximo !== '' &&
-            <Chip label={'$'+selectedTags.minimo +' - $'+ selectedTags.maximo} variant="outlined" sx={{backgroundColor:'#00a1ed', color: 'white'}} onDelete={handleDeleteTag} />}
+            <Chip label={'$'+selectedTags.minimo +' - $'+ selectedTags.maximo} variant="outlined" sx={{backgroundColor:'#00a1ed', color: 'white'}} onDelete={() => handleDeleteTag(setSelectedTags)} />}
           </>
           }
         </Stack>
@@ -114,7 +104,6 @@ export default function Productos() {
             categoriaSeleccionada={categoriaSeleccionada} 
             selectedOption={selectedOption} 
             setSelectedOption={setSelectedOption}
-            selectedTags={selectedTags}
             setSelectedTags={setSelectedTags}
           />
         </Drawer>

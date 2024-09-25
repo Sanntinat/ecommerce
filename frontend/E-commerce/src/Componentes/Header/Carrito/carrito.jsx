@@ -3,6 +3,7 @@ import { useState } from 'react';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import CloseIcon from '@mui/icons-material/Close';
 import CarritoVacio from './carritoVacio';
+// import CarritoProductos from './carritoProductos';
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   '& .MuiBadge-badge': {
@@ -40,13 +41,7 @@ export default function Carrito() {
         }} role="presentation">
           <Typography
             variant="h1"
-            sx={{
-              fontSize: '1.5rem',
-              fontWeight: '600',
-              color: '#333',
-              m: 2
-            }}
-          >
+            sx={{ fontSize: '1.5rem', fontWeight: '600', color: '#333', m: 2 }}>
             Tu carrito
           </Typography>
           <Button onClick={handleDrawerToggle} sx={{ m: 1, ml: 'auto' }}>
@@ -55,6 +50,7 @@ export default function Carrito() {
         </Box>
         <Divider />
         <CarritoVacio drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen}/>
+        {/* <CarritoProductos/> */}
       </Drawer>
     </>
   )

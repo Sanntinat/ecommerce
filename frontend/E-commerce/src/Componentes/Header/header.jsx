@@ -7,7 +7,7 @@ import Carrito from './Carrito/carrito';
 import { AppBar, Box, Toolbar, Typography, Autocomplete, TextField, InputAdornment, Divider, IconButton } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 
-export default function Header({inputRef}) {
+export default function Header() {
   const [valorBuscador, setValorBuscador] = useState('');
   const [productos, setProductos] = useState([]);
   const navigate = useNavigate();
@@ -38,7 +38,6 @@ export default function Header({inputRef}) {
           <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
           <Autocomplete
             value={valorBuscador}
-            ref={inputRef}
             onInputChange={(event, newValue) => setValorBuscador(newValue)}
             options={productos}
             noOptionsText=''
