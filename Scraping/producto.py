@@ -40,6 +40,14 @@ def leer_productos(archivo:str) -> list[Producto]:
     productos = []
     with open(archivo, encoding='utf-8') as f:
         for linea in f:
-            partes = linea.strip().split(',')
-            productos.append(Producto(partes[0], float(partes[1]), partes[2], partes[3:]))
+            try:
+                partes = linea.strip().split(',')
+                productos.append(Producto(
+                    partes[0], 
+                    float(partes[1]), 
+                    partes[2], 
+                    [x.replace('"','') for x in partes[3:]]
+                    ))
+            except:
+                print(f'Error en la linea: {linea}')
     return productos
