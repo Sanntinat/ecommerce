@@ -5,18 +5,15 @@ import Principal from './Componentes/Principal/principal'
 import Productos from './Componentes/Productos/productos'
 
 function App() {
-
   return (
-    <>
-      <Router>
-        <Header/>
+    <Router>
+      <Header />
         <Routes>
-          <Route path="/" Component={Principal} />
-          <Route path="/productos" Component={Productos} />
+          <Route path="/" element={<Principal />} />
+          <Route path="/productos" element={<Productos />} />
         </Routes>
-      </Router>
-    </>
-  )
+    </Router>
+  );
 }
 
 export default App
