@@ -29,6 +29,7 @@ class ProductosDetail(generics.RetrieveUpdateDestroyAPIView):
 class ProductosOrdered(generics.ListAPIView):
     queryset = Productos.objects.all()
     serializer_class = ProductosSerializer
+    pagination_class = ProductosPagination
 
     def get_queryset(self):
         # Obtener los parámetros de la URL o de los query params (si existen)
