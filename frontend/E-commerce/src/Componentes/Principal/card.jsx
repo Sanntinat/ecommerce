@@ -1,8 +1,7 @@
-import PropTypes from 'prop-types';
-import { Card, CardContent, Typography, CardMedia, CardActionArea } from '@mui/material';
+import { Card, CardContent, Typography, CardMedia, CardActionArea, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-export default function Carta({ suplementos, titulo }) {
+export function CartaCategoria({ suplementos, titulo }) {
   const navigate = useNavigate();
 
   const handleCardClick = () => {
@@ -28,7 +27,48 @@ export default function Carta({ suplementos, titulo }) {
   );
 }
 
-Carta.propTypes = {
-  suplementos: PropTypes.string.isRequired, // suplementos debe ser una cadena (url de imagen)
-  titulo: PropTypes.string.isRequired,     // titulo debe ser una cadena
-};
+export function CartaProducto({ producto}) {
+
+  return (
+    <Card 
+      sx={{ 
+        width: '400px',
+        height: '450px',
+        borderRadius: '8px', 
+        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+        transition: 'transform 0.2s', 
+        '&:hover': { transform: 'scale(1.03)' },
+        display: 'flex', 
+        flexDirection: 'column',
+      }}
+    >
+      <CardActionArea sx={{ flex: '1', display: 'flex', flexDirection: 'column' }}>
+        <CardMedia
+          component="img"
+          image={producto.imagen}
+          alt={producto.nombre}
+          sx={{ maxHeight: '200px', width: '100%', objectFit: 'cover' }}
+        />
+        <CardContent sx={{ flex: '1' }}>
+          <Typography variant="h5" component="div" 
+            sx={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#333', marginBottom: '0.5rem' }}>
+            {producto.nombre}
+          </Typography>
+          <Typography variant="body2" color="text.secondary" 
+            sx={{ marginBottom: '0.5rem', height: '40px', overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
+            {producto.descripcion}
+          </Typography>
+          <Typography variant="h6" component="div" 
+            sx={{ fontWeight: 'bold', color: '#2e7d32', marginBottom: '0.5rem' }}>
+            ${producto.precio.toFixed(2)}
+          </Typography>
+        </CardContent>
+      </CardActionArea>
+      <Button 
+        variant="contained" 
+        sx={{ backgroundColor: '#00a1ed', width: '100%', borderRadius: '0 0 8px 8px'}}>
+        Agregar al carrito
+      </Button>
+    </Card>
+  );
+}

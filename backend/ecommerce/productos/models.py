@@ -31,6 +31,7 @@ class CharInFilter(django_filters.BaseInFilter, django_filters.CharFilter):
     pass
 
 class ProductosFilter(django_filters.FilterSet):
+    nombre = django_filters.CharFilter(lookup_expr='icontains')
     precioMinimo = django_filters.NumberFilter(field_name='precio', lookup_expr='gte')
     precioMaximo = django_filters.NumberFilter(field_name='precio', lookup_expr='lte')
     tags = CharInFilter(field_name='tags__nombre')

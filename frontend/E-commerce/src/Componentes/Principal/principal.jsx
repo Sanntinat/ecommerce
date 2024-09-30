@@ -1,15 +1,20 @@
 import banner from '../../assets/banner.jpg';
 import entrenamiento from '../../assets/entrenamiento.webp';
 import Grid from '@mui/material/Grid2';
-import Carta from './card';
+import { CartaCategoria } from './card';
 import suplementos from '../../assets/suplementos-gym.jpg';
 import gimnasio from '../../assets/gimnasio.jpeg';
 import kinesiologia from '../../assets/kinesiologia.jpg';
 import CheckIcon from '@mui/icons-material/Check';
 import { Typography, Divider, Box, List, ListItem, Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 export default function principal() {
+  const navigate = useNavigate();
 
+  const handleSearchClick = () => {
+    navigate('/productos?categoria=');
+  };
   return (
     <>
       <img src={banner} alt="Banner" />
@@ -22,13 +27,13 @@ export default function principal() {
 
       <Grid container spacing={12}>
         <Grid xs={4}>
-          <Carta suplementos={suplementos} titulo="Suplementos" />
+          <CartaCategoria suplementos={suplementos} titulo="Suplementos" />
         </Grid>
         <Grid xs={4}>
-          <Carta suplementos={kinesiologia} titulo="Kinesiologia" />
+          <CartaCategoria suplementos={kinesiologia} titulo="Kinesiologia" />
         </Grid>
         <Grid xs={4}>
-          <Carta suplementos={gimnasio} titulo="Gimnasio" />
+          <CartaCategoria suplementos={gimnasio} titulo="Gimnasio" />
         </Grid>
       </Grid>
       <Divider sx={{ width: '70%', m: 3 }} />
@@ -73,6 +78,7 @@ export default function principal() {
                 <Button 
                   variant="outlined" 
                   sx={{ width: '200px', padding: '12px 24px', backgroundColor: '#00a1ed', color: '#fff', borderRadius: '8px', m:5}}
+                  onClick={handleSearchClick}
                   >
                   Comprar ahora
                 </Button>

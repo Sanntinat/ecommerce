@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import Filtros from './filtros';
-import { styled, Box, Drawer, Typography, Divider, IconButton, Stack, Chip } from '@mui/material';
+import { styled, Box, Drawer, Typography, IconButton, Stack, Chip, Divider } from '@mui/material';
 import { Tune } from '@mui/icons-material';
 import { useLocation } from 'react-router-dom';
 import { handleDeleteTag, handleDeleteOption} from './handle';
+import ListaProductos from './listaProductos';
 
 const drawerWidth = 340;
 
@@ -33,6 +34,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
 
 export default function Productos() {
   const [open, setOpen] = useState(false);
+  const [productos, setProductos] = useState([]);
   const [selectedOption, setSelectedOption] = useState('');
   const [selectedTags, setSelectedTags] = useState({
     minimo: '',
@@ -55,6 +57,16 @@ export default function Productos() {
   const location = useLocation();
   const query = new URLSearchParams(location.search);
   const categoriaSeleccionada = query.get('categoria');
+  
+  useEffect(() => {
+    fetch(`http://127.0.0.1:8000/productos/ordenar/?nombre=${categoriaSeleccionada}`)
+      .then(response => response.json())
+      .then(data => {
+        setProductos(data.results);
+        console.log(data);
+      })
+      .catch(error => console.log(error));
+  }, [categoriaSeleccionada]);
   return (
     <>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 10 , width: 1750 }}>
@@ -81,7 +93,7 @@ export default function Productos() {
           Ordenar por:
         </Typography>
       </Box>
-
+      <Divider sx={{ width: '100%' }} />
       <Box sx={{ display: 'flex', width:'100%'}}>
         <Drawer
           sx={{
@@ -107,8 +119,9 @@ export default function Productos() {
             setSelectedTags={setSelectedTags}
           />
         </Drawer>
+
         <Main open={open} sx={{p:0}}>
-          <Divider sx={{ width: '100%' }} />
+          <ListaProductos productos={productos} />
         </Main>
       </Box>
     </>

@@ -8,13 +8,13 @@ import { AppBar, Box, Toolbar, Typography, Autocomplete, TextField, InputAdornme
 import SearchIcon from '@mui/icons-material/Search';
 
 export default function Header() {
-  const [valorBuscador, setValorBuscador] = useState('');
-  const [productos, setProductos] = useState([]);
   const navigate = useNavigate();
 
   const handleSearchClick = () => {
     navigate(`/productos?categoria=${valorBuscador}`);
   };
+  const [valorBuscador, setValorBuscador] = useState('');
+  const [productos, setProductos] = useState([]);
 
   useEffect(() => {
     if (valorBuscador) {
