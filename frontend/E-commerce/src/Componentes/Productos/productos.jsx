@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import Filtros from './filtros';
-import { styled, Box, Drawer, Typography, IconButton, Stack, Chip, Divider } from '@mui/material';
+import { styled, Box, Drawer, Typography, IconButton, Stack, Chip, Divider, Button, ButtonGroup } from '@mui/material';
 import { Tune } from '@mui/icons-material';
 import { useLocation } from 'react-router-dom';
 import { handleDeleteTag, handleDeleteOption} from './handle';
 import ListaProductos from './listaProductos';
+import Paginacion from './paginacion';
+import Ordenar from './ordenar';
 
 const drawerWidth = 340;
 
@@ -36,6 +38,9 @@ export default function Productos() {
   const [open, setOpen] = useState(false);
   const [productos, setProductos] = useState([]);
   const [selectedOption, setSelectedOption] = useState('');
+  const [cantidad, setCantidad] = useState(1);
+  const [paginacion, setPaginacion] = useState(1);
+  const [ ordenar, setOrdenar ] = useState('');
   const [selectedTags, setSelectedTags] = useState({
     minimo: '',
     maximo: '',
@@ -59,14 +64,16 @@ export default function Productos() {
   const categoriaSeleccionada = query.get('categoria');
   
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/productos/ordenar/?nombre=${categoriaSeleccionada}`)
+    if ( paginacion <= cantidad ) {
+    fetch(`http://127.0.0.1:8000/productos/ordenar/?nombre=${categoriaSeleccionada}&page=${paginacion}&orden=${ordenar}`)
       .then(response => response.json())
       .then(data => {
+        setCantidad(Math.ceil(data.count / 20));
         setProductos(data.results);
-        console.log(data);
       })
       .catch(error => console.log(error));
-  }, [categoriaSeleccionada]);
+    }
+  }, [categoriaSeleccionada, paginacion, ordenar]);
   return (
     <>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 10 , width: 1750 }}>
@@ -89,9 +96,10 @@ export default function Productos() {
           </>
           }
         </Stack>
-        <Typography variant="h6" component="div">
-          Ordenar por:
-        </Typography>
+        <Ordenar
+        setOrdenar={setOrdenar}
+        ordenar={ordenar}
+        />
       </Box>
       <Divider sx={{ width: '100%' }} />
       <Box sx={{ display: 'flex', width:'100%'}}>
@@ -121,7 +129,14 @@ export default function Productos() {
         </Drawer>
 
         <Main open={open} sx={{p:0}}>
-          <ListaProductos productos={productos} />
+          <ListaProductos productos={productos}/>
+          <Paginacion 
+          categoriaSeleccionada={categoriaSeleccionada} 
+          setProductos={setProductos} 
+          setPaginacion={setPaginacion}
+          paginacion={paginacion}
+          cantidad={cantidad}
+          />
         </Main>
       </Box>
     </>
