@@ -22,7 +22,7 @@ export default function Ordenar({setOrdenar, ordenar}) {
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
-        sx={{ color: 'black', textTransform: 'none' }}
+        sx={{ color: 'black', textTransform: 'none', mr: 2 }}
         >
         Ordenar por:
         {ordenar === 'asc' && ' Menor precio'}

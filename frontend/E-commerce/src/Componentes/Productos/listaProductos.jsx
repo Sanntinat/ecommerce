@@ -6,7 +6,7 @@ export default function ListaProductos({productos}) {
     <>
     <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 2, mt:2 }}>
       {console.log(productos)}
-      {productos.map((producto) => (
+      {productos?.results?.map((producto) => (
         <CartaProducto key={producto.id} producto={producto} />
       ))}
     </Box>

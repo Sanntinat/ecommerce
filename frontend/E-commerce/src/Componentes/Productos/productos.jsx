@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import Filtros from './filtros';
-import { styled, Box, Drawer, Typography, IconButton, Stack, Chip, Divider, Button, ButtonGroup } from '@mui/material';
+import { styled, Box, Drawer, Typography, IconButton, Stack, Chip, Divider, CircularProgress  } from '@mui/material';
 import { Tune } from '@mui/icons-material';
 import { useLocation } from 'react-router-dom';
 import { handleDeleteTag, handleDeleteOption} from './handle';
 import ListaProductos from './listaProductos';
 import Paginacion from './paginacion';
 import Ordenar from './ordenar';
+import { useFetchDataOnDemand } from '../../Request/fetch';
 
 const drawerWidth = 340;
 
@@ -36,7 +37,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
 
 export default function Productos() {
   const [open, setOpen] = useState(false);
-  const [productos, setProductos] = useState([]);
+  // const [productos, setProductos] = useState([]);
   const [selectedOption, setSelectedOption] = useState('');
   const [cantidad, setCantidad] = useState(1);
   const [paginacion, setPaginacion] = useState(1);
@@ -62,21 +63,37 @@ export default function Productos() {
   const location = useLocation();
   const query = new URLSearchParams(location.search);
   const categoriaSeleccionada = query.get('categoria');
-  
+
   useEffect(() => {
-    if ( paginacion <= cantidad ) {
-    fetch(`http://127.0.0.1:8000/productos/ordenar/?nombre=${categoriaSeleccionada}&page=${paginacion}&orden=${ordenar}`)
-      .then(response => response.json())
-      .then(data => {
-        setCantidad(Math.ceil(data.count / 20));
-        setProductos(data.results);
-      })
-      .catch(error => console.log(error));
+    setPaginacion(1);
+    setOrdenar('');
+    setCantidad(1);
+  }, [categoriaSeleccionada]);
+  
+  let url = `/productos/ordenar/?`
+  if (categoriaSeleccionada) url += `&nombre=${categoriaSeleccionada}`
+  if (paginacion) url += `&page=${paginacion}`
+  if (ordenar) url += `&orden=${ordenar}`
+  
+  const { data: productos, loading: isLoading, error, fetchData} = useFetchDataOnDemand(url)
+
+  useEffect(() => {
+    fetchData();
+    if (productos?.count) {
+      console.log(productos?.count)
+      setCantidad(Math.ceil(productos?.count / 20));
     }
-  }, [categoriaSeleccionada, paginacion, ordenar]);
+  }, [url]);
+  console.log(cantidad)
+
   return (
     <>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 10, width: '100%' }}>
+        {isLoading && <CircularProgress sx={{ mt: 10 }} />}
+        {error && <Typography variant="h6" sx={{ mt: 10 }}>Error</Typography>}
+        {productos?.results?.length === 0 && <Typography variant="h6" sx={{ mt: 10 }}>No se encontraron productos</Typography>}
+        {productos?.results?.length > 0 &&
+        <>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 10, width: '100%', minWidth:'100vw' }}>
         <IconButton
           sx={{ ml: 3 }}
           aria-label="drawer"
@@ -132,14 +149,14 @@ export default function Productos() {
         <Main open={open} sx={{p:0}}>
           <ListaProductos productos={productos}/>
           <Paginacion 
-          categoriaSeleccionada={categoriaSeleccionada} 
-          setProductos={setProductos} 
           setPaginacion={setPaginacion}
           paginacion={paginacion}
           cantidad={cantidad}
           />
         </Main>
       </Box>
+      </>
+    }
     </>
   );
 }

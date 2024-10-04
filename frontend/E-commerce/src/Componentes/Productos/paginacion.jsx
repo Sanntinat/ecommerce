@@ -1,9 +1,8 @@
 import { Button, ButtonGroup } from '@mui/material'
-import { useEffect, useState } from 'react'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 
-export default function Paginacion({categoriaSeleccionada, setProductos, setPaginacion, paginacion, cantidad}) {
+export default function Paginacion({ setPaginacion, paginacion, cantidad}) {
 
   return (
     <>
@@ -27,7 +26,11 @@ export default function Paginacion({categoriaSeleccionada, setProductos, setPagi
         ><KeyboardArrowLeftIcon/> Anterior 
         </Button>
 
-        <Button sx={{color: 'black'}}>{paginacion}</Button>
+        <Button
+        onClick={() => {window.scrollTo({ top: 0, behavior: 'smooth' });}} 
+        sx={{color: 'black'}}>
+          {paginacion}
+        </Button>
         
         <Button 
         onClick={() => { 
