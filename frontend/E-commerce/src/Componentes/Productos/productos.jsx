@@ -76,8 +76,9 @@ export default function Productos() {
   }, [categoriaSeleccionada, paginacion, ordenar]);
   return (
     <>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 10 , width: 1750 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 10, width: '100%' }}>
         <IconButton
+          sx={{ ml: 3 }}
           aria-label="drawer"
           onClick={handleDrawer}
           edge="start"
