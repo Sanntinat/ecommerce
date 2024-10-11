@@ -27,7 +27,7 @@ export function CartaCategoria({ suplementos, titulo }) {
   );
 }
 
-export function CartaProducto({ producto}) {
+export function CartaProducto({ producto }) {
 
   return (
     <Card 
@@ -45,7 +45,7 @@ export function CartaProducto({ producto}) {
       <CardActionArea sx={{ flex: '1', display: 'flex', flexDirection: 'column' }}>
         <CardMedia
           component="img"
-          image={producto.imagen}
+          image={producto.imagen_url}
           alt={producto.nombre}
           sx={{ maxHeight: '200px', width: '100%', objectFit: 'cover' }}
         />
