@@ -1,7 +1,7 @@
 import banner from '../../assets/banner.jpg';
 import entrenamiento from '../../assets/entrenamiento.webp';
 import Grid from '@mui/material/Grid2';
-import { CartaCategoria } from './card';
+import { CartaCategoria } from '../Card/card';
 import suplementos from '../../assets/suplementos-gym.jpg';
 import gimnasio from '../../assets/gimnasio.jpeg';
 import kinesiologia from '../../assets/kinesiologia.jpg';

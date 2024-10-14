@@ -147,7 +147,10 @@ export default function Productos() {
         </Drawer>
 
         <Main open={open} sx={{p:0}}>
+          <Box sx={{display: 'flex', justifyContent: 'center'}}>
+
           <ListaProductos productos={productos}/>
+          </Box>
           <Paginacion 
           setPaginacion={setPaginacion}
           paginacion={paginacion}

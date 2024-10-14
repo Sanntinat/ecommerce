@@ -3,7 +3,7 @@ import { useState } from 'react';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import CloseIcon from '@mui/icons-material/Close';
 import CarritoVacio from './carritoVacio';
-// import CarritoProductos from './carritoProductos';
+import CarritoProductos from './carritoProductos';
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   '& .MuiBadge-badge': {
@@ -22,10 +22,16 @@ export default function Carrito() {
     setDrawerOpen(!drawerOpen);
   };
 
+  const [productosSeleccionados, setProductosSeleccionados] = useState(
+    JSON.parse(localStorage.getItem('productosSeleccionados')) || []
+  );
+
   return (
     <>
       <Button onClick={handleDrawerToggle} sx={{ backgroundColor: '#00a1ed', color: 'white' , m:1}}>
-        <StyledBadge badgeContent={2} color="secondary">
+        <StyledBadge badgeContent={
+          productosSeleccionados.length > 0 ? productosSeleccionados.length : "0"
+          } color="secondary">
           <ShoppingCartIcon />
         </StyledBadge>
         <Box sx={{ pl: '18px' }}>Carrito</Box>
@@ -49,8 +55,10 @@ export default function Carrito() {
           </Button>
         </Box>
         <Divider />
-        <CarritoVacio drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen}/>
-        {/* <CarritoProductos/> */}
+        {productosSeleccionados.length > 0 ? 
+          <CarritoProductos productosSeleccionados={productosSeleccionados} setProductosSeleccionados={setProductosSeleccionados}/> : 
+          <CarritoVacio drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen}/>
+          }
       </Drawer>
     </>
   )
