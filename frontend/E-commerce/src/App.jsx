@@ -8,6 +8,7 @@ import GestionarProductos from './Componentes/GestionarProductos/gestionarProduc
 import Signin from './Componentes/Login/SignIn';
 import HeaderLogin from './Componentes/HeaderLogin/header';
 import { AuthProvider, useAuth } from './Componentes/Login/authContext';  
+import { CarritoProvider } from './Componentes/Header/Carrito/carritoContext';
 
 function App() {
   const location = useLocation();
@@ -21,7 +22,6 @@ function App() {
   return (
     <>
       {location.pathname === '/login' ? <HeaderLogin /> : <Header />}
-      
       <Routes>
         <Route path="/" element={<Principal />} />
         <Route path="/login" element={<Signin />} />
@@ -36,9 +36,11 @@ function App() {
 export default function AppWrapper() {
   return (
     <AuthProvider>
-      <Router>
-        <App />
-      </Router>
+      <CarritoProvider>
+        <Router>
+          <App />
+        </Router>
+      </CarritoProvider>
     </AuthProvider>
   );
 }

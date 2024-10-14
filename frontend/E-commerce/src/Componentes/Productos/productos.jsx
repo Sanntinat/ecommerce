@@ -39,7 +39,7 @@ export default function Productos() {
   const [open, setOpen] = useState(false);
   // const [productos, setProductos] = useState([]);
   const [selectedOption, setSelectedOption] = useState('');
-  const [cantidad, setCantidad] = useState(1);
+  const [paginaSiguiente, setPaginaSiguiente] = useState("");
   const [paginacion, setPaginacion] = useState(1);
   const [ ordenar, setOrdenar ] = useState('');
   const [selectedTags, setSelectedTags] = useState({
@@ -67,7 +67,7 @@ export default function Productos() {
   useEffect(() => {
     setPaginacion(1);
     setOrdenar('');
-    setCantidad(1);
+    setPaginaSiguiente("");
   }, [categoriaSeleccionada]);
   
   let url = `/productos/ordenar/?`
@@ -79,12 +79,8 @@ export default function Productos() {
 
   useEffect(() => {
     fetchData();
-    if (productos?.count) {
-      console.log(productos?.count)
-      setCantidad(Math.ceil(productos?.count / 20));
-    }
+      setPaginaSiguiente(productos?.next ? productos?.next : "");
   }, [url]);
-  console.log(cantidad)
 
   return (
     <>
@@ -154,7 +150,7 @@ export default function Productos() {
           <Paginacion 
           setPaginacion={setPaginacion}
           paginacion={paginacion}
-          cantidad={cantidad}
+          paginaSiguiente={paginaSiguiente}
           />
         </Main>
       </Box>

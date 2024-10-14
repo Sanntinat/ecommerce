@@ -1,9 +1,11 @@
-import {  Button, Drawer, Box, Typography, Divider, styled, Badge } from '@mui/material';
-import { useState } from 'react';
+import { Button, Drawer, Box, Typography, Divider, styled, Badge } from '@mui/material';
+import { useContext } from 'react';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import CloseIcon from '@mui/icons-material/Close';
 import CarritoVacio from './carritoVacio';
 import CarritoProductos from './carritoProductos';
+import { useState } from 'react';
+import { CarritoContext } from './carritoContext';
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   '& .MuiBadge-badge': {
@@ -16,22 +18,17 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 }));
 
 export default function Carrito() {
+  const { productosSeleccionados, setProductosSeleccionados } = useContext(CarritoContext); // Consumir el contexto
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const handleDrawerToggle = () => {
     setDrawerOpen(!drawerOpen);
   };
 
-  const [productosSeleccionados, setProductosSeleccionados] = useState(
-    JSON.parse(localStorage.getItem('productosSeleccionados')) || []
-  );
-
   return (
     <>
-      <Button onClick={handleDrawerToggle} sx={{ backgroundColor: '#00a1ed', color: 'white' , m:1}}>
-        <StyledBadge badgeContent={
-          productosSeleccionados.length > 0 ? productosSeleccionados.length : "0"
-          } color="secondary">
+      <Button onClick={handleDrawerToggle} sx={{ backgroundColor: '#00a1ed', color: 'white', m: 1 }}>
+        <StyledBadge badgeContent={productosSeleccionados.length > 0 ? productosSeleccionados.length : "0"} color="secondary">
           <ShoppingCartIcon />
         </StyledBadge>
         <Box sx={{ pl: '18px' }}>Carrito</Box>
@@ -58,8 +55,8 @@ export default function Carrito() {
         {productosSeleccionados.length > 0 ? 
           <CarritoProductos productosSeleccionados={productosSeleccionados} setProductosSeleccionados={setProductosSeleccionados}/> : 
           <CarritoVacio drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen}/>
-          }
+        }
       </Drawer>
     </>
-  )
+  );
 }

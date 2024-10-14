@@ -4,7 +4,8 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
-
+import { useContext } from 'react';
+import { CarritoContext } from '../Header/Carrito/carritoContext';
 
 export function CartaCategoria({ suplementos, titulo }) {
   const navigate = useNavigate();
@@ -33,26 +34,20 @@ export function CartaCategoria({ suplementos, titulo }) {
 }
 
 
-export function CartaProducto({ producto, setProductosSeleccionados }) {
-  const agregarProducto = () => {
-    setProductosSeleccionados((prevProductos) => {
-      // Asegúrate de que prevProductos sea un array y agrega el nuevo producto
-      if (!Array.isArray(prevProductos)) {
-        return [producto]; // Si no es un array, crea uno nuevo
-      }
+export function CartaProducto({ producto }) {
+  const { productosSeleccionados, agregarProducto } = useContext(CarritoContext); // Consumir el contexto
 
-      // Verifica si el producto ya está en el array
-      const productoYaSeleccionado = prevProductos.some(
-        (p) => p.id === producto.id // Asegúrate de que `id` sea una propiedad única del producto
-      );
+  const handleAgregarProducto = () => {
+    // Verificar si el producto ya está en el carrito
+    const productoYaSeleccionado = productosSeleccionados.some(
+      (p) => p.id === producto.id
+    );
 
-      if (productoYaSeleccionado) {
-        return prevProductos; // Si ya está, no hacemos nada
-      }
-
-      return [...prevProductos, producto]; // Agrega el nuevo producto si no está
-    });
+    if (!productoYaSeleccionado) {
+      agregarProducto(producto); // Si no está en el carrito, agregarlo
+    }
   };
+
   return (
     <Card 
       sx={{ 
@@ -68,7 +63,7 @@ export function CartaProducto({ producto, setProductosSeleccionados }) {
         display: 'flex', 
         flexDirection: 'column',
       }}
-      onClick={() => agregarProducto(producto)}
+      onClick={handleAgregarProducto} // Usar la función de agregar producto del contexto
     >
       <CardActionArea sx={{ flex: '1', display: 'flex', flexDirection: 'column' }}>
         <CardMedia
@@ -113,9 +108,9 @@ export function CartaProducto({ producto, setProductosSeleccionados }) {
   );
 }
 
-export default function CartaProductoCarrito({ producto, setCantidadTotal, productosSeleccionados, setProductosSeleccionados }) {
+export default function CartaProductoCarrito({ producto, setCantidadTotal}) {
   const [cantidad, setCantidad] = useState(1);
-
+  const { productosSeleccionados, eliminarProducto } = useContext(CarritoContext);
   // Este efecto se ejecuta cuando `cantidad` cambia
   useEffect(() => {
     // Actualizar el total solo si `cantidad` ha cambiado
@@ -137,11 +132,7 @@ export default function CartaProductoCarrito({ producto, setCantidadTotal, produ
   };
 
   const handleEliminar = () => {
-    setProductosSeleccionados((prevProductos) => {
-      localStorage.setItem('productosSeleccionados', JSON.stringify(prevProductos.filter((p) => p.id !== producto.id)));
-      return prevProductos.filter((p) => p.id !== producto.id);
-    });
-    console.log(productosSeleccionados);  
+    eliminarProducto(producto.id);
   };
 
   return (
