@@ -18,7 +18,7 @@ export default function Header() {
   const [valorBuscador, setValorBuscador] = useState('');
 
   const parseData = (data) => data.results;
-  const [data, loading, error, searchData] = useFetchSearch('/productos/', 300, parseData);
+  const [data, loading, error, searchData] = useFetchSearch('/productos/?nombre=', 300, parseData);
 
   useEffect(() => {
     if (valorBuscador) {

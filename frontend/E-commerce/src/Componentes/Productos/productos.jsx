@@ -37,7 +37,6 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
 
 export default function Productos() {
   const [open, setOpen] = useState(false);
-  // const [productos, setProductos] = useState([]);
   const [selectedOption, setSelectedOption] = useState('');
   
   const [paginacion, setPaginacion] = useState(1);
@@ -80,7 +79,6 @@ export default function Productos() {
   console.log(paginaSiguiente);
   useEffect(() => {
     fetchData();
-      setPaginaSiguiente(productos?.next ? productos?.next : "");
   }, [url]);
 
   useEffect(() => {

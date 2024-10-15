@@ -110,7 +110,7 @@ export function CartaProducto({ producto }) {
 
 export default function CartaProductoCarrito({ producto, setCantidadTotal}) {
   const [cantidad, setCantidad] = useState(1);
-  const { productosSeleccionados, eliminarProducto } = useContext(CarritoContext);
+  const { eliminarProducto } = useContext(CarritoContext);
   // Este efecto se ejecuta cuando `cantidad` cambia
   useEffect(() => {
     // Actualizar el total solo si `cantidad` ha cambiado

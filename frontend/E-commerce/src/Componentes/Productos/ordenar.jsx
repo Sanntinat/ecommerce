@@ -1,7 +1,4 @@
 import {useState} from 'react'
-import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
-import LockOpenIcon from '@mui/icons-material/LockOpen';
-import LogoutIcon from '@mui/icons-material/Logout';
 import { Menu, MenuItem, Button } from '@mui/material';
 
 export default function Ordenar({setOrdenar, ordenar}) {

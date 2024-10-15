@@ -9,7 +9,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import { Typography, Divider, Box, List, ListItem, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-export default function principal() {
+export default function Principal() {
   const navigate = useNavigate();
 
   const handleSearchClick = () => {
