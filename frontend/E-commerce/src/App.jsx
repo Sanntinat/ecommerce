@@ -9,8 +9,15 @@ import Signin from './Componentes/Login/SignIn';
 import HeaderLogin from './Componentes/HeaderLogin/header';
 import { AuthProvider, useAuth } from './Componentes/Login/authContext';  
 import { CarritoProvider } from './Componentes/Header/Carrito/carritoContext';
+import SignUp from './Componentes/Registrar/SignUp'
+
 
 function App() {
+
+  const App = () => {
+    const location = useLocation();
+  }
+  const loginRoutes = ['/login', '/registrar'];
   const location = useLocation();
   const { logout } = useAuth();
   React.useEffect(() => {
@@ -21,10 +28,12 @@ function App() {
 
   return (
     <>
-      {location.pathname === '/login' ? <HeaderLogin /> : <Header />}
+      {loginRoutes.includes(location.pathname) ? <HeaderLogin /> : <Header />}
+
       <Routes>
         <Route path="/" element={<Principal />} />
         <Route path="/login" element={<Signin />} />
+        <Route path="/registrar" element={<SignUp />} />
         <Route path="/productos" element={<Productos />} />
         <Route path="/admin" element={<GestionarProductos />} />
         <Route path="*" element={<Navigate to="/" />} />
