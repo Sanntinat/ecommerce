@@ -5,7 +5,6 @@ import Checkbox from '@mui/material/Checkbox';
 import CssBaseline from '@mui/material/CssBaseline';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Divider from '@mui/material/Divider';
-import FormLabel from '@mui/material/FormLabel';
 import FormControl from '@mui/material/FormControl';
 import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
@@ -21,46 +20,24 @@ import { fetchLogin } from '../../request/v2/fetchLogin';
 import { useAuth } from './authContext'; 
 import { useNavigate } from 'react-router-dom';
 
-const Card = styled(MuiCard)(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  alignSelf: 'center',
-  width: '100%',
-  padding: theme.spacing(6),
-  marginTop: theme.spacing(4),
-  gap: theme.spacing(2),
-  margin: 'auto',
-  [theme.breakpoints.up('sm')]: {
-    minWidth: '450px',
-    marginTop: theme.spacing(6.44),
-  },
-  boxShadow:
-    'hsla(220, 30%, 5%, 0.05) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.05) 0px 15px 35px -5px',
-  ...theme.applyStyles('dark', {
-    boxShadow:
-      'hsla(220, 30%, 5%, 0.5) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.08) 0px 15px 35px -5px',
-  }),
-}));
+
 
 const SignInContainer = styled(Stack)(({ theme }) => ({
+  border: '1px solid black', 
+  borderRadius: '16px',   
+  marginTop: '110px',
+  padding: theme.spacing(6),
+  minWidth: '450px',
+  width: '100%',
+  background: '#0092d6',
   minHeight: '100%',
-  padding: theme.spacing(2),
-  [theme.breakpoints.up('sm')]: {
-    padding: theme.spacing(4),
-  },
   '&::before': {
+    background: 'rgba(256, 256, 256)',
     content: '""',
     display: 'block',
     position: 'absolute',
     zIndex: -1,
     inset: 0,
-    backgroundImage:
-      'radial-gradient(ellipse at 50% 50%, hsl(210, 100%, 97%), hsl(0, 0%, 100%))',
-    backgroundRepeat: 'no-repeat',
-    ...theme.applyStyles('dark', {
-      backgroundImage:
-        'radial-gradient(at 50% 50%, hsla(210, 100%, 16%, 0.5), hsl(220, 30%, 5%))',
-    }),
   },
 }));
 
@@ -125,7 +102,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
       <CssBaseline enableColorScheme />
       <SignInContainer direction="column" justifyContent="space-between">
         <ColorModeSelect sx={{ position: 'fixed', top: '1rem', right: '1rem' }} />
-        <Card variant="outlined">
+        
           <Typography
             component="h1"
             variant="h4"
@@ -146,7 +123,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
           >
             <FormControl>
               <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                <FormLabel htmlFor="email">Email</FormLabel>
+                <Typography htmlFor="email">Email</Typography>
               </Box>
               <TextField
                 error={emailError}
@@ -166,7 +143,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
             </FormControl>
             <FormControl>
               <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                <FormLabel htmlFor="password">Contraseña</FormLabel>
+                <Typography htmlFor="password">Contraseña</Typography>
                 <Link
                   component="button"
                   type="button"
@@ -231,7 +208,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
               Ingrese con Facebook
             </Button>
           </Box>
-        </Card>
+        
       </SignInContainer>
     </AppTheme>
   );

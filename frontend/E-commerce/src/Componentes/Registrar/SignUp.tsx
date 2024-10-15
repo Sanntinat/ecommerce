@@ -20,46 +20,23 @@ import ColorModeSelect from '../shared-theme/ColorModeSelect';
 import { useNavigate } from 'react-router-dom';
 import { fetchRegistro } from '../../request/v2/fetchRegistro'; 
 
-const Card = styled(MuiCard)(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  alignSelf: 'center',
-  width: '100%',
-  padding: theme.spacing(6),
-  marginTop: theme.spacing(4),
-  gap: theme.spacing(2),
-  margin: 'auto',
-  [theme.breakpoints.up('sm')]: {
-    minWidth: '450px',
-    marginTop: theme.spacing(6.44),
-  },
-  boxShadow:
-    'hsla(220, 30%, 5%, 0.05) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.05) 0px 15px 35px -5px',
-  ...theme.applyStyles('dark', {
-    boxShadow:
-      'hsla(220, 30%, 5%, 0.5) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.08) 0px 15px 35px -5px',
-  }),
-}));
 
 const SignInContainer = styled(Stack)(({ theme }) => ({
+  border: '1px solid black', 
+  borderRadius: '16px',   
+  width: '100%',
+  minWidth: '450px',
+  padding: theme.spacing(6),
+  marginTop: '110px',
+  background: '#0092d6',
   minHeight: '100%',
-  padding: theme.spacing(2),
-  [theme.breakpoints.up('sm')]: {
-    padding: theme.spacing(4),
-  },
   '&::before': {
+    background: 'rgba(256, 256, 256)',
     content: '""',
     display: 'block',
     position: 'absolute',
     zIndex: -1,
     inset: 0,
-    backgroundImage:
-      'radial-gradient(ellipse at 50% 50%, hsl(210, 100%, 97%), hsl(0, 0%, 100%))',
-    backgroundRepeat: 'no-repeat',
-    ...theme.applyStyles('dark', {
-      backgroundImage:
-        'radial-gradient(at 50% 50%, hsla(210, 100%, 16%, 0.5), hsl(220, 30%, 5%))',
-    }),
   },
 }));
 
@@ -102,7 +79,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault(); // Previene el comportamiento por defecto del formulario
+    event.preventDefault(); 
 
     if (validateInputs()) {
       const email = (document.getElementById('email') as HTMLInputElement).value;
@@ -110,7 +87,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
 
       const result = await fetchRegistro(email, password, navigate);
       if (result) {
-        // Puedes manejar errores aquí, si es necesario
+        
         console.error(result);
       }
     }
@@ -120,8 +97,6 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
     <AppTheme {...props}>
       <CssBaseline enableColorScheme />
       <SignInContainer direction="column" justifyContent="space-between">
-        <ColorModeSelect sx={{ position: 'fixed', top: '1rem', right: '1rem' }} />
-        <Card variant="outlined">
           <Typography
             component="h1"
             variant="h4"
@@ -132,7 +107,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
           <Box
             component="form"
             noValidate
-            onSubmit={handleSubmit} // Cambia aquí para manejar el envío
+            onSubmit={handleSubmit} 
             sx={{
               display: 'flex',
               flexDirection: 'column',
@@ -142,7 +117,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
           >
             <FormControl>
               <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                <FormLabel htmlFor="email">Email</FormLabel>
+                <Typography htmlFor="email">Email</Typography>
               </Box>
               <TextField
                 error={emailError}
@@ -162,7 +137,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
             </FormControl>
             <FormControl>
               <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                <FormLabel htmlFor="password">Contraseña</FormLabel>
+                <Typography htmlFor="password">Contraseña</Typography>
               </Box>
               <TextField
                 error={passwordError}
@@ -218,7 +193,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
               Regístrese con Facebook
             </Button>
           </Box>
-        </Card>
+        
       </SignInContainer>
     </AppTheme>
   );

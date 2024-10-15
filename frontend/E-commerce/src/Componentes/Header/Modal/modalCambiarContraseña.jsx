@@ -73,7 +73,7 @@ export function ModalCambiarContraseña({ open, onClose }) {
 
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogContent>
+      <DialogContent sx={{ backgroundColor: 'rgba(0, 0, 0, 0.9)'}}>
         <Container>
           {successMessage && (
             <Typography variant="h6" color="success.main" align="center" gutterBottom>
@@ -107,6 +107,9 @@ export function ModalCambiarContraseña({ open, onClose }) {
                   </InputAdornment>
                 ),
               }}
+              sx={{
+                backgroundColor: '#fff',
+              }}
             />
 
             <TextField
@@ -131,6 +134,9 @@ export function ModalCambiarContraseña({ open, onClose }) {
                     </IconButton>
                   </InputAdornment>
                 ),
+              }}
+              sx={{
+                backgroundColor: '#fff',
               }}
             />
 
@@ -157,15 +163,18 @@ export function ModalCambiarContraseña({ open, onClose }) {
                   </InputAdornment>
                 ),
               }}
+              sx={{
+                backgroundColor: '#fff',
+              }}
             />
           </form>
         </Container>
       </DialogContent>
-      <DialogActions>
-        <Button onClick={handleSubmit} variant="outlined">
+      <DialogActions sx={{ backgroundColor: '#00a1ed'}}>
+        <Button onClick={handleSubmit} variant="contained" sx={{ backgroundColor: '#00a1ed', color: '#fff' }}>
           Cambiar contraseña
         </Button>
-        <Button onClick={onClose} variant="outlined">
+        <Button onClick={onClose} variant="contained" sx={{ backgroundColor: 'rgba(0, 0, 0, 0.9)', color: '#fff' }}>
           Cerrar
         </Button>
       </DialogActions>
