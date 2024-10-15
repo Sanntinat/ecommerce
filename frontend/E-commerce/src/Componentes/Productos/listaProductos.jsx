@@ -1,6 +1,5 @@
 import { Box } from '@mui/material'
 import { CartaProducto }  from '../Card/card'
-import { useState, useEffect } from 'react'
 
 export default function ListaProductos({productos}) {
   return (

@@ -2,7 +2,7 @@ import { Button, ButtonGroup } from '@mui/material'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 
-export default function Paginacion({ setPaginacion, paginacion, cantidad}) {
+export default function Paginacion({ setPaginacion, paginacion, paginaSiguiente}) {
   return (
     <>
       <ButtonGroup
@@ -37,7 +37,7 @@ export default function Paginacion({ setPaginacion, paginacion, cantidad}) {
           window.scrollTo({ top: 0, behavior: 'smooth' }); 
         }}
         sx={{ textTransform: 'none', color: 'black' }}
-        disabled={cantidad === ""}
+        disabled={paginaSiguiente === ""}
         >Siguiente <KeyboardArrowRightIcon/>
         </Button>
       </ButtonGroup>
