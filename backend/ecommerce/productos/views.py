@@ -43,7 +43,7 @@ class ProductosOrdered(generics.ListAPIView):
             queryset = queryset.annotate(
                 similarity=TrigramSimilarity('nombre', nombre)
             ).filter(
-                similarity__gt=0.3  # 30% similar
+                similarity__gt=0.2  # 30% similar
             ).order_by('-similarity')
 
         # Si 'orden' está presente, aplicar el orden por precio
