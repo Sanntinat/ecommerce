@@ -19,7 +19,7 @@ import ColorModeSelect from '../shared-theme/ColorModeSelect';
 import { fetchLogin } from '../../request/v2/fetchLogin'; 
 import { useAuth } from './authContext'; 
 import { useNavigate } from 'react-router-dom';
-
+import fondologin from '../../assets/fondologin.jpg';
 
 
 const SignInContainer = styled(Stack)(({ theme }) => ({
@@ -32,7 +32,8 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
   background: '#0092d6',
   minHeight: '100%',
   '&::before': {
-    background: 'rgba(256, 256, 256)',
+    backgroundImage: `url(${fondologin})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat',
+    backgroundAttachment: 'fixed',
     content: '""',
     display: 'block',
     position: 'absolute',
@@ -100,7 +101,9 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
   return (
     <AppTheme {...props}>
       <CssBaseline enableColorScheme />
-      <SignInContainer direction="column" justifyContent="space-between">
+      <SignInContainer direction="column" justifyContent="space-between"
+        //sx={{backgroundImage: `url(${fondologin})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat'}}
+      >
         <ColorModeSelect sx={{ position: 'fixed', top: '1rem', right: '1rem' }} />
         
           <Typography
