@@ -10,6 +10,8 @@ import HeaderLogin from './Componentes/HeaderLogin/header';
 import { AuthProvider, useAuth } from './Componentes/Login/authContext';  
 import { CarritoProvider } from './Componentes/Header/Carrito/carritoContext';
 import SignUp from './Componentes/Registrar/SignUp'
+import EditarProducto from './Componentes/GestionarProductos/ModalProductos/editarProducto';
+import CrearProducto from './Componentes/GestionarProductos/ModalProductos/crearProducto';
 
 
 function App() {
@@ -36,6 +38,8 @@ function App() {
         <Route path="/registrar" element={<SignUp />} />
         <Route path="/productos" element={<Productos />} />
         <Route path="/admin" element={<GestionarProductos />} />
+        <Route path="/editar-producto/:id" element={<EditarProducto />} />
+        <Route path="/crear-producto" element={<CrearProducto />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </>
