@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from rest_framework import generics
 from .serializers import ProductosSerializer
-from .models import Productos, ProductosFilter
+from .models import Productos
+from .filters import ProductosFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.pagination import PageNumberPagination
 from django.contrib.postgres.search import TrigramSimilarity

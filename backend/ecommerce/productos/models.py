@@ -28,17 +28,4 @@ class Tag(models.Model):
     def __str__(self):
         return self.nombre
 
-class CharInFilter(django_filters.BaseInFilter, django_filters.CharFilter):
-    pass
-
-class ProductosFilter(django_filters.FilterSet):
-    nombre = django_filters.CharFilter(lookup_expr='icontains')
-    precioMinimo = django_filters.NumberFilter(field_name='precio', lookup_expr='gte')
-    precioMaximo = django_filters.NumberFilter(field_name='precio', lookup_expr='lte')
-    tags = CharInFilter(field_name='tags__nombre')
-    categoria = django_filters.CharFilter(field_name='tags__idCategoria__nombre', lookup_expr='icontains')
-
-    class Meta:
-        model = Productos
-        fields = ['precioMinimo', 'precioMaximo', 'tags', 'categoria']
 
