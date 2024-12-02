@@ -1,23 +1,29 @@
-import { IconButton, Alert,Paper, Table, TableBody, TableContainer, TableHead, TableRow, Box, FormControl, OutlinedInput, InputAdornment } from '@mui/material'
+import { IconButton, Alert,Paper, Table, TableBody, TableContainer, TableHead, Fab, TableRow, Box, FormControl, OutlinedInput, InputAdornment } from '@mui/material'
 import { StyledTableCell, StyledTableRow } from './styledTable'
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useEffect, useState } from 'react';
 import Paginacion from '../Productos/paginacion';
-import ModalProductos from './ModalProductos/modalProductos';
 import { useFetchSearch }  from '../../Request/fetch';
 import SearchIcon from '@mui/icons-material/Search';
+import AddIcon from '@mui/icons-material/Add';
+import { useNavigate, useLocation } from 'react-router-dom';
+import EliminarProducto from './ModalProductos/eliminarProducto';
+
 
 export default function GestionarProductos() {
   const [paginacion, setPaginacion] = useState(1);
   const [modalShow, setModalShow] = useState(false);
   const [estadoModal, setEstadoModal] = useState(false);
+  const [productoSeleccionado, setProductoSeleccionado] = useState(null);
   const [valorBuscador, setValorBuscador] = useState('');
+  const navigate = useNavigate();
   const parseData = (data) => data;
   const [ data, loading, error, searchData ] = useFetchSearch(`/productos/?&page=${paginacion}&nombre=`, 300, parseData);
 
   useEffect(() => {
     setValorBuscador('');
+    navigate('/admin', { replace: true });
   }, []);
 
   useEffect(() => {
@@ -26,39 +32,97 @@ export default function GestionarProductos() {
         setPaginacion(1);
       }
 
-  }, [valorBuscador, searchData ]);
+  }, [valorBuscador, searchData, estadoModal ]);
+
+  const location = useLocation();
+  const [showAlertEdit, setShowAlertEdit] = useState(false);
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    if (queryParams.get('editado') === 'true') {
+      setShowAlertEdit(true);
+      setTimeout(() => {
+        setShowAlertEdit(false);
+      }, 5000);
+    }
+  }, [location.search]);
+
 
   return (
-    <Box sx={{ mt: 10 , width: 1350 }}>
-      <FormControl sx={{ width:'100%', mb:2 }} variant="outlined">
-      <OutlinedInput
-        endAdornment={<InputAdornment position="end"><SearchIcon/></InputAdornment>}
-        placeholder="Buscar producto"
-        value={valorBuscador}
-        onChange={(e) => setValorBuscador(e.target.value)}
-      />
-    </FormControl>
-      {loading && <Alert severity="info" sx={{width:'100%'}}>Cargando...</Alert>}
-      {error && <Alert severity="error" sx={{width:'100%'}}>{error}</Alert>}
-      {data && !loading && !error &&
-      <>
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 700 }} aria-label="customized table">
-            <TableHead>
-              <TableRow>
-                <StyledTableCell align="center">Nombre producto</StyledTableCell>
-                <StyledTableCell align="center">Categoria</StyledTableCell>
-                <StyledTableCell align="center">Precio</StyledTableCell>
-                <StyledTableCell align="center">Stock</StyledTableCell>
-                <StyledTableCell align="center">Accion</StyledTableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {data.results?.map((producto) => (
+    <Box sx={{ mt: 10}}>
+      {showAlertEdit && (
+        <Alert sx={{ mb: 2 }} severity="warning">
+          Producto editado correctamente
+        </Alert>
+      )}
+      {estadoModal === "Eliminado" && (
+        <Alert sx={{ mb: 2 }} severity="error">
+          Producto eliminado correctamente
+        </Alert>
+      )}
+      
+      <FormControl sx={{ mb:2, width:'100%' }} variant="outlined">
+        <OutlinedInput
+          endAdornment={<InputAdornment position="end"><SearchIcon/></InputAdornment>}
+          placeholder="Buscar producto"
+          value={valorBuscador}
+          onChange={(e) => setValorBuscador(e.target.value)}
+        />
+      </FormControl>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <StyledTableRow>
+              {['Nombre producto', 'Categoria', 'Precio', 'Stock', 'Acción'].map((header, index) => (
+                <StyledTableCell
+                  key={index}
+                  align="center"
+                  sx={index === 0 ? { width: '600px' } : {}}
+                >
+                  {header}
+                </StyledTableCell>
+              ))}
+            </StyledTableRow>
+          </TableHead>
+          <TableBody>
+            {/* Mensaje de error */}
+            {error && (
+              <StyledTableRow>
+                <StyledTableCell colSpan={5} align="center">
+                  <Alert severity="error" sx={{ width: '100%' }}>Error al cargar los productos</Alert>
+                </StyledTableCell>
+              </StyledTableRow>
+            )}
+
+            {/* Mensaje de carga */}
+            {loading && !error && (
+              <StyledTableRow>
+                <StyledTableCell colSpan={5} align="center">
+                  <Alert severity="info" sx={{ width: '95%'}}>Cargando...</Alert>
+                </StyledTableCell>
+              </StyledTableRow>
+            )}
+
+            {/* Mensaje de datos vacíos */}
+            {!loading && data?.results?.length === 0 && !error && (
+              <StyledTableRow>
+                <StyledTableCell colSpan={5} align="center">
+                  No se encontraron productos
+                </StyledTableCell>
+              </StyledTableRow>
+            )}
+
+            {/* Renderizar productos */}
+            {data?.results?.length > 0 && !error &&
+              data.results.map((producto) => (
                 <StyledTableRow key={producto.id}>
-                  <StyledTableCell component="th" scope="row" align="center">
+                  <StyledTableCell align="center" sx={{ minWidth: '200px' }}>
                     <Box display="flex" alignItems="center">
-                      <img src={producto.imagen_url} alt={producto.nombre} style={{ width: '50px', height: '50px', objectFit: 'cover', marginRight: '8px' }} />
+                      <img
+                        src={producto.imagen_url}
+                        alt={producto.nombre}
+                        style={{ width: '50px', height: '50px', objectFit: 'cover', marginRight: '8px' }}
+                      />
                       <span>{producto.nombre}</span>
                     </Box>
                   </StyledTableCell>
@@ -66,32 +130,56 @@ export default function GestionarProductos() {
                   <StyledTableCell align="center">{producto.precio}</StyledTableCell>
                   <StyledTableCell align="center">{producto.stock}</StyledTableCell>
                   <StyledTableCell align="center">
-                    <IconButton onClick={() => {setModalShow(true)}} className='w-100' variant="contained">
-                      <EditIcon color='warning'/>
+                    <IconButton
+                      onClick={() => {
+                        navigate(`/editar-producto/${producto.id}`);
+                      }}
+                    >
+                      <EditIcon color="warning" />
                     </IconButton>
-                    <IconButton onClick={() => {}} className='w-100' variant="contained">
-                      <DeleteIcon color='error'/>
+                    <IconButton onClick={() => {
+                      setModalShow(true);
+                      setProductoSeleccionado(producto.id);}}>
+                      <DeleteIcon color="error" />
                     </IconButton>
                   </StyledTableCell>
                 </StyledTableRow>
               ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <Paginacion
-        setPaginacion={setPaginacion}
-        paginacion={paginacion}
-        paginaSiguiente={data?.next ? data?.next : ""}
-        />
-      </>
-    }
-      {modalShow && (
-        <ModalProductos
-          open={modalShow} 
-          onClose={() => setModalShow(false)}
-          setEstadoModal={setEstadoModal}
-        />
-      )}
+          </TableBody>
+        </Table>
+      </TableContainer>
+
+      {!loading && !error &&
+      <Paginacion
+      setPaginacion={setPaginacion}
+      paginacion={paginacion}
+      paginaSiguiente={data?.next ? data?.next : ""}
+      />
+      }
+  
+      <Fab
+        sx={{
+          position: "fixed",
+          bottom: 16,
+          right: 16,
+        }}
+        color="primary"
+        variant="extended"
+        onClick={() => {
+          navigate(`/crear-producto`);
+        }}
+      >
+        <AddIcon sx={{ mr: 1 }} />
+        Agregar producto
+      </Fab>
+      <EliminarProducto
+        open={modalShow}
+        onClose={() => setModalShow(false)}
+        seleccionado={productoSeleccionado}
+        setEstadoModal={setEstadoModal}
+        url="/productos/"
+      />
+
     </Box>
   )
 }
