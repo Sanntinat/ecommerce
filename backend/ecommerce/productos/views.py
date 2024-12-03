@@ -52,8 +52,18 @@ class ProductosOrdered(generics.ListAPIView):
             queryset = queryset.order_by('precio')
         elif orden == 'desc':
             queryset = queryset.order_by('-precio')
+        
+        #Aumentar la popularidad de los productos consultados
+        for producto in queryset:
+            producto.popularidad += 1
+            producto.save()
 
         return queryset
+
+class ProductosDestacados(generics.ListAPIView):
+    serializer_class = ProductosSerializer
+    def get_queryset(self):
+        return Productos.objects.all().order_by('-popularidad')[:10]
 
 class CategoriasList(generics.ListCreateAPIView):
     queryset = Categorias.objects.all() 

@@ -9,6 +9,7 @@ class Productos(models.Model):
     imagen = models.ImageField(upload_to='productos', null=True, blank=True)
     imagen_url = models.URLField(null=True, blank=True, max_length=1024)
     tags = models.ManyToManyField('Tag', related_name='productos')
+    popularidad = models.IntegerField(default=0)
 
     def __str__(self):
         return self.nombre

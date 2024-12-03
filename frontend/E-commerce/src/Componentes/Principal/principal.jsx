@@ -8,6 +8,8 @@ import kinesiologia from '../../assets/kinesiologia.jpg';
 import CheckIcon from '@mui/icons-material/Check';
 import { Typography, Divider, Box, List, ListItem, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import CarruselDestacados from '../Destacados/destacados.jsx';
+
 export default function Principal() {
   const navigate = useNavigate();
 
@@ -86,12 +88,8 @@ export default function Principal() {
           </Grid>
         </Grid>
       </Box>
-      <Divider sx={{ width: '70%', m: 3 }} />
-      <Typography
-        variant="h1"
-        sx={{ fontSize: '3rem', fontWeight: '600', color: '#333', textAlign: 'center', }}>
-        Productos destacados
-      </Typography>
+	  <Divider sx={{ width: '70%', m: 3 }} />
+	  <CarruselDestacados />
     </>
   );
 }
