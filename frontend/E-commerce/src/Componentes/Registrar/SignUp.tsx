@@ -4,19 +4,14 @@ import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
 import CssBaseline from '@mui/material/CssBaseline';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import Divider from '@mui/material/Divider';
-import FormLabel from '@mui/material/FormLabel';
 import FormControl from '@mui/material/FormControl';
 import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
-import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
 import ForgotPassword from './ForgotPassword';
-import { GoogleIcon, FacebookIcon } from './CustomIcons';
 import AppTheme from '../shared-theme/AppTheme';
-import ColorModeSelect from '../shared-theme/ColorModeSelect';
 import { useNavigate } from 'react-router-dom';
 import { fetchRegistro } from '../../request/v2/fetchRegistro'; 
 
@@ -27,9 +22,9 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
   width: '100%',
   minWidth: '450px',
   padding: theme.spacing(6),
-  marginTop: '110px',
+  marginTop: '145px',
   background: '#0092d6',
-  minHeight: '100%',
+  minHeight: '450px',
   '&::before': {
     background: 'rgba(256, 256, 256)',
     content: '""',
@@ -174,26 +169,6 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
               </span>
             </Typography>
           </Box>
-          <Divider>o</Divider>
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-            <Button
-              fullWidth
-              variant="outlined"
-              onClick={() => alert('Regístrese con Google')}
-              startIcon={<GoogleIcon />}
-            >
-              Regístrese con Google
-            </Button>
-            <Button
-              fullWidth
-              variant="outlined"
-              onClick={() => alert('Regístrese con Facebook')}
-              startIcon={<FacebookIcon />}
-            >
-              Regístrese con Facebook
-            </Button>
-          </Box>
-        
       </SignInContainer>
     </AppTheme>
   );

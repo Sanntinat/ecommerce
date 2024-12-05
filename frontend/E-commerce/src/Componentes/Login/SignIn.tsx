@@ -4,16 +4,13 @@ import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
 import CssBaseline from '@mui/material/CssBaseline';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import Divider from '@mui/material/Divider';
 import FormControl from '@mui/material/FormControl';
 import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
-import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
 import ForgotPassword from './ForgotPassword';
-import { GoogleIcon, FacebookIcon } from './CustomIcons';
 import AppTheme from '../shared-theme/AppTheme';
 import ColorModeSelect from '../shared-theme/ColorModeSelect';
 import { fetchLogin } from '../../request/v2/fetchLogin'; 
@@ -25,12 +22,12 @@ import { useNavigate } from 'react-router-dom';
 const SignInContainer = styled(Stack)(({ theme }) => ({
   border: '1px solid black', 
   borderRadius: '16px',   
-  marginTop: '110px',
+  marginTop: '145px',
   padding: theme.spacing(6),
   minWidth: '450px',
   width: '100%',
   background: '#0092d6',
-  minHeight: '100%',
+  minHeight: '450px',
   '&::before': {
     background: 'rgba(256, 256, 256)',
     content: '""',
@@ -188,27 +185,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
                 </Link>
               </span>
             </Typography>
-          </Box>
-          <Divider>o</Divider>
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-            <Button
-              fullWidth
-              variant="outlined"
-              onClick={() => alert('Ingrese con Google')}
-              startIcon={<GoogleIcon />}
-            >
-              Ingrese con Google
-            </Button>
-            <Button
-              fullWidth
-              variant="outlined"
-              onClick={() => alert('Ingrese con Facebook')}
-              startIcon={<FacebookIcon />}
-            >
-              Ingrese con Facebook
-            </Button>
-          </Box>
-        
+          </Box>  
       </SignInContainer>
     </AppTheme>
   );
