@@ -1,85 +1,58 @@
 import { useEffect, useState } from 'react';
 import Filtros from './filtros';
-import { styled, Box, Drawer, Typography, IconButton, Stack, Chip, Divider, CircularProgress  } from '@mui/material';
+import { Box, Typography, IconButton, Stack, Chip, Divider, CircularProgress  } from '@mui/material';
 import { Tune } from '@mui/icons-material';
-import { useLocation } from 'react-router-dom';
-import { handleDeleteTag, handleDeleteOption} from './handle';
+import { useSearchParams } from 'react-router-dom';
 import ListaProductos from './listaProductos';
 import Paginacion from './paginacion';
 import Ordenar from './ordenar';
-import { useFetchDataOnDemand } from '../../Request/fetch';
+import { CustomDrawer, Main } from './mainConDrawer';
 
-const drawerWidth = 340;
+import { useFetchProductos } from '../../Request/v2/fetchProductos';
 
-const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
-  ({ theme }) => ({
-    flexGrow: 1,
-    padding: theme.spacing(3),
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    marginLeft: `-${drawerWidth}px`,
-    variants: [
-      {
-        props: ({ open }) => open,
-        style: {
-          transition: theme.transitions.create('margin', {
-            easing: theme.transitions.easing.easeOut,
-            duration: theme.transitions.duration.enteringScreen,
-          }),
-          marginLeft: 0,
-        },
-      },
-    ],
-  }),
-);
 
 export default function Productos() {
   const [open, setOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState('');
-  
-  const [paginacion, setPaginacion] = useState(1);
-  const [ ordenar, setOrdenar ] = useState('');
-  const [selectedTags, setSelectedTags] = useState({
-    minimo: '',
-    maximo: '',
-  });
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const handleDrawer = () => {
-    {open ? setOpen(false) : setOpen(true)}
-  };
+  const precios = {
+    min: searchParams.get('min') || '',
+    max: searchParams.get('max') || ''
+  }
+  // const tags = searchParams.get('tags') || '';
+  const nombre = searchParams.get('nombre') || '';
+  const categoria = searchParams.get('categoria') || '';
+  const orden = searchParams.get('orden') || '';
+  const page = parseInt(searchParams.get('page')) || 1;
+  
+  const { data: productos, loading: isLoading, error, fetchData} = useFetchProductos()
+  const handleChangeParams = (key, value, restart=true, replace=true) => {
+    const extra = restart ? { page: 1 } : {};
+    setSearchParams({ ...Object.fromEntries(searchParams), [key]: value, ...extra }, { replace: replace });
+    // fetchData(nombre, categoria, null, precioMinimo, precioMaximo, orden, page);
+    console.log({...Object.fromEntries(searchParams), [key]: value, ...extra});
+  }
+  const setPrecios = (precios) => {
+    setSearchParams({ ...Object.fromEntries(searchParams), page:1, ...precios }, { replace: true });
+    // fetchData(nombre, categoria, null, precioMinimo, precioMaximo, orden, page);
+    console.log({...Object.fromEntries(searchParams), page:1, ...precios});
+  }
+
+  // const setTags = (value) => handleChangeParams('tags', value);
+  const setNombre = (value) => handleChangeParams('nombre', value);
+  const setCategoria = (value) => handleChangeParams('categoria', value);
+  const setOrden = (value) => handleChangeParams('orden', value);
+  const setPage = (value) => handleChangeParams('page', value, false, false);
+
 
   useEffect(() => {
-    if (selectedOption !== '') {
-      setSelectedTags({
-        minimo: '',
-        maximo: '',
-      });
-    }
-  }, [selectedOption]); 
+    fetchData(nombre, categoria, null, precios.min, precios.max, orden, page);
+  }, [searchParams]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const location = useLocation();
-  const query = new URLSearchParams(location.search);
-  const categoriaSeleccionada = query.get('categoria');
+  
 
-  useEffect(() => {
-    setPaginacion(1);
-    setOrdenar('');
-    setPaginaSiguiente("");
-  }, [categoriaSeleccionada]);
-  
-  let url = `/productos/ordenar/?`
-  if (categoriaSeleccionada) url += `&nombre=${categoriaSeleccionada}`
-  if (paginacion) url += `&page=${paginacion}`
-  if (ordenar) url += `&orden=${ordenar}`
-  
-  const { data: productos, loading: isLoading, error, fetchData} = useFetchDataOnDemand(url)
   const [paginaSiguiente, setPaginaSiguiente] = useState("");
-  console.log(paginaSiguiente);
-  useEffect(() => {
-    fetchData();
-  }, [url]);
+
 
   useEffect(() => {
       setPaginaSiguiente(productos?.next ? productos?.next : "");
@@ -87,73 +60,45 @@ export default function Productos() {
 
   return (
     <>
+      <ProductosHeader
+        open={open} setOpen={setOpen}
+        categoria={categoria} setCategoria={setCategoria}
+        precios = {precios} setPrecios={setPrecios}
+        nombre={nombre} setNombre={setNombre}
+        ordenar={orden} setOrdenar={setOrden}
+      />
+  
+      <Divider sx={{ width: '100%' }} />
         {isLoading && <CircularProgress sx={{ mt: 10 }} />}
         {error && <Typography variant="h6" sx={{ mt: 10 }}>Error</Typography>}
         {productos?.results?.length === 0 && <Typography variant="h6" sx={{ mt: 10 }}>No se encontraron productos</Typography>}
         {productos?.results?.length > 0 &&
         <>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 10, width: '100%', minWidth:'100vw' }}>
-        <IconButton
-          sx={{ ml: 3 }}
-          aria-label="drawer"
-          onClick={handleDrawer}
-          edge="start"
-        >
-          <Tune />
-          <Typography variant="h6" noWrap component="div">
-            {open ? 'Ocultar filtros' : 'Ver filtros'}
-          </Typography>
-        </IconButton>
-        <Stack direction="row" spacing={1}>
-          {selectedOption !== '' && 
-          <>
-            <Chip label={selectedOption} variant="outlined" sx={{backgroundColor:'#00a1ed', color: 'white'}} onDelete={() => handleDeleteOption(setSelectedOption)} />
-            {selectedTags.minimo !== '' && selectedTags.maximo !== '' &&
-            <Chip label={'$'+selectedTags.minimo +' - $'+ selectedTags.maximo} variant="outlined" sx={{backgroundColor:'#00a1ed', color: 'white'}} onDelete={() => handleDeleteTag(setSelectedTags)} />}
-          </>
-          }
-        </Stack>
-        <Ordenar
-        setOrdenar={setOrdenar}
-        ordenar={ordenar}
-        />
-      </Box>
-      <Divider sx={{ width: '100%' }} />
+
+      {/* //! CONTENIDO  */}
       <Box sx={{ display: 'flex', width:'100%'}}>
-        <Drawer
-          sx={{
-            width: drawerWidth,
-            flexShrink: 0,
-            '& .MuiDrawer-paper': {
-              width: drawerWidth,
-              boxSizing: 'border-box',
-              top: '200px',
-              overflowY: 'auto',
-              border: 'none',
-              ml: 5,
-            },
-          }}
-          variant="persistent"
-          anchor="left"
-          open={open}
-        >
+        <CustomDrawer open={open} >
           <Filtros 
-            categoriaSeleccionada={categoriaSeleccionada} 
-            selectedOption={selectedOption} 
-            setSelectedOption={setSelectedOption}
-            setSelectedTags={setSelectedTags}
+            categoriaSeleccionada={categoria} 
+            precios={precios} setPrecios={setPrecios}
+            categoria={categoria} setCategoria={setCategoria}
+            nombre={nombre} setNombre={setNombre}
           />
-        </Drawer>
+        </CustomDrawer>
 
         <Main open={open} sx={{p:0}}>
+          <Paginacion 
+            paginacion={page}
+            setPaginacion={setPage}
+            paginaSiguiente={paginaSiguiente}
+          />
           <Box sx={{display: 'flex', justifyContent: 'center'}}>
-
-          <ListaProductos productos={productos}/>
+            <ListaProductos productos={productos}/>
           </Box>
           <Paginacion 
-          setPaginacion={setPaginacion}
-          paginacion={paginacion}
-          paginaSiguiente={paginaSiguiente}
+            paginacion={page}
+            setPaginacion={setPage}
+            paginaSiguiente={paginaSiguiente}
           />
         </Main>
       </Box>
@@ -161,4 +106,72 @@ export default function Productos() {
     }
     </>
   );
+}
+
+function ProductosHeader({
+  open, setOpen,
+  precios, setPrecios,
+  categoria, setCategoria,
+  // tags, setTags,
+  ordenar, setOrdenar,
+  nombre, setNombre
+}){
+  
+  const handleDrawer = () => {setOpen(!open)};
+
+  return (
+    <Box sx={{ 
+      display: 'flex', 
+      justifyContent: 'space-between', 
+      alignItems: 'center', 
+      mt: 10, 
+      width: '100%', 
+      minWidth:'90vw' 
+    }}>
+      <IconButton
+        sx={{ ml: 3 }}
+        aria-label="drawer"
+        onClick={handleDrawer}
+        edge="start"
+      >
+        <Tune />
+        <Typography variant="h6" noWrap component="div">
+          {open ? 'Ocultar filtros' : 'Ver filtros'}
+        </Typography>
+      </IconButton>
+      {/* //TODO Cambiar logica de chips */}
+      <ChipsFiltros
+        nombre={nombre} setNombre={setNombre}
+        precios={precios} setPrecios={setPrecios}
+        categoria={categoria} setCategoria={setCategoria}
+        // tags={tags} setTags={setTags}
+      />
+      <Ordenar
+      setOrdenar={setOrdenar}
+      ordenar={ordenar}
+      />
+    </Box>
+  )
+}
+
+function ChipsFiltros({
+  nombre, setNombre,
+  precios, setPrecios,
+  // tags, setTags,
+  categoria, setCategoria,
+}){
+  const isEmpty = (value) => value == '' || value == 0 || value == null;
+  const minimo = precios.min;
+  const maximo = precios.max;
+  const setMinimo = (value) => setPrecios({min: value, max: maximo});
+  const setMaximo = (value) => setPrecios({min: minimo, max: value});
+
+  return (
+    <Stack direction="row" spacing={1}>
+      {!isEmpty(nombre) && <Chip label={nombre} onDelete={() => setNombre('')} />}
+      {!isEmpty(minimo) && <Chip label={'Desde $'+minimo} onDelete={() => setMinimo(0)} />}
+      {!isEmpty(maximo) && <Chip label={'Hasta $'+maximo} onDelete={() => setMaximo(0)} />}
+      {!isEmpty(categoria) && <Chip label={categoria} onDelete={() => setCategoria('')} />}
+    </Stack>
+  )
 }

@@ -4,7 +4,7 @@ from .models import User
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'email', 'password','is_active', 'is_admin']
+        fields = ['id', 'email', 'password','is_active', 'is_staff']
         extra_kwargs = {
             'password': {'write_only': True}
         }
@@ -12,7 +12,7 @@ class UserSerializer(serializers.ModelSerializer):
 class UserDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'email', 'is_active', 'is_admin']
+        fields = ['id', 'email', 'is_active', 'is_staff']
         
 class ChangePasswordSerializer(serializers.Serializer):
     old_password = serializers.CharField(required=True)

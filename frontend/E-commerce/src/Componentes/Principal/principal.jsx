@@ -8,6 +8,7 @@ import kinesiologia from '../../assets/kinesiologia.jpg';
 import CheckIcon from '@mui/icons-material/Check';
 import { Typography, Divider, Box, List, ListItem, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import CarruselDestacados from '../Destacados/destacados.jsx';
 
 export default function Principal() {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ export default function Principal() {
   };
   return (
     <>
-      <img src={banner} alt="Banner" />
+      <img src={banner} alt="Banner" style={{width:"100%"}} />
       <Divider sx={{ width: '70%', m: 3 }} />
       <Typography
         variant="h1"
@@ -38,16 +39,16 @@ export default function Principal() {
       </Grid>
       <Divider sx={{ width: '70%', m: 3 }} />
 
-      <Box sx={{ width: '100%' }}>
+      <Box sx={{ width: '100%' }}> 
         <Grid container spacing={2}>
-          <Grid >
-            <img src={entrenamiento} alt="entrenamiento" />
+          <Grid size={6}>
+            <img src={entrenamiento} alt="entrenamiento" style={{objectFit:'cover',width:'auto'}}/>
           </Grid>
-          <Grid>
+          <Grid size={6}>
             <Box
               flex={1}
               padding={1}
-              sx={{ bgcolor: '#f5f5f5', borderRadius: '8px', height: '515px' }}
+              sx={{ bgcolor: '#f5f5f5', borderRadius: '8px', height: '100%' }}
             >
               <Typography
                 variant="h3"
@@ -87,12 +88,8 @@ export default function Principal() {
           </Grid>
         </Grid>
       </Box>
-      <Divider sx={{ width: '70%', m: 3 }} />
-      <Typography
-        variant="h1"
-        sx={{ fontSize: '3rem', fontWeight: '600', color: '#333', textAlign: 'center', }}>
-        Productos destacados
-      </Typography>
+	  <Divider sx={{ width: '70%', m: 3 }} />
+	  <CarruselDestacados />
     </>
   );
 }

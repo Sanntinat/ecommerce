@@ -13,7 +13,7 @@ import { styled } from '@mui/material/styles';
 import ForgotPassword from './ForgotPassword';
 import AppTheme from '../shared-theme/AppTheme';
 import { useNavigate } from 'react-router-dom';
-import { fetchRegistro } from '../../request/v2/fetchRegistro'; 
+import { fetchRegistro } from '../../Request/v2/fetchRegistro'; 
 
 
 const SignInContainer = styled(Stack)(({ theme }) => ({

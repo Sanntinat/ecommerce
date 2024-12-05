@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from rest_framework import generics
 from .serializers import ProductosSerializer
-from .models import Productos, ProductosFilter
+from .models import Productos
+from .filters import ProductosFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.pagination import PageNumberPagination
 from django.contrib.postgres.search import TrigramSimilarity
@@ -15,21 +16,17 @@ class ProductosPagination(PageNumberPagination):
     page_size_query_param = 'page_size'
     max_page_size = 100
 
-class ProductosList(generics.ListCreateAPIView):
-    queryset = Productos.objects.all()
-    serializer_class = ProductosSerializer
-    pagination_class = ProductosPagination
-    filter_backends = (DjangoFilterBackend,)
-    filterset_class = ProductosFilter
 
 class ProductosDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Productos.objects.all()
     serializer_class = ProductosSerializer
 
-class ProductosOrdered(generics.ListAPIView):
+class ProductosList(generics.ListAPIView):
     queryset = Productos.objects.all()
     serializer_class = ProductosSerializer
     pagination_class = ProductosPagination
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class = ProductosFilter
 
     def get_queryset(self):
         # Obtener los parámetros de la URL o de los query params (si existen)
@@ -43,7 +40,7 @@ class ProductosOrdered(generics.ListAPIView):
             queryset = queryset.annotate(
                 similarity=TrigramSimilarity('nombre', nombre)
             ).filter(
-                similarity__gt=0.3  # 30% similar
+                similarity__gt=0.2  # 30% similar
             ).order_by('-similarity')
 
         # Si 'orden' está presente, aplicar el orden por precio
@@ -51,8 +48,18 @@ class ProductosOrdered(generics.ListAPIView):
             queryset = queryset.order_by('precio')
         elif orden == 'desc':
             queryset = queryset.order_by('-precio')
+        
+        #Aumentar la popularidad de los productos consultados
+        for producto in queryset:
+            producto.popularidad += 1
+            producto.save()
 
         return queryset
+
+class ProductosDestacados(generics.ListAPIView):
+    serializer_class = ProductosSerializer
+    def get_queryset(self):
+        return Productos.objects.all().order_by('-popularidad')[:10]
 
 class CategoriasList(generics.ListCreateAPIView):
     queryset = Categorias.objects.all() 
