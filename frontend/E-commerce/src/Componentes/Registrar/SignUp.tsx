@@ -18,7 +18,7 @@ import { GoogleIcon, FacebookIcon } from './CustomIcons';
 import AppTheme from '../shared-theme/AppTheme';
 import ColorModeSelect from '../shared-theme/ColorModeSelect';
 import { useNavigate } from 'react-router-dom';
-import { fetchRegistro } from '../../request/v2/fetchRegistro'; 
+import { fetchRegistro } from '../../Request/v2/fetchRegistro'; 
 
 
 const SignInContainer = styled(Stack)(({ theme }) => ({
