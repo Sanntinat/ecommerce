@@ -16,21 +16,17 @@ class ProductosPagination(PageNumberPagination):
     page_size_query_param = 'page_size'
     max_page_size = 100
 
-class ProductosList(generics.ListCreateAPIView):
-    queryset = Productos.objects.all()
-    serializer_class = ProductosSerializer
-    pagination_class = ProductosPagination
-    filter_backends = (DjangoFilterBackend,)
-    filterset_class = ProductosFilter
 
 class ProductosDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Productos.objects.all()
     serializer_class = ProductosSerializer
 
-class ProductosOrdered(generics.ListAPIView):
+class ProductosList(generics.ListAPIView):
     queryset = Productos.objects.all()
     serializer_class = ProductosSerializer
     pagination_class = ProductosPagination
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class = ProductosFilter
 
     def get_queryset(self):
         # Obtener los parámetros de la URL o de los query params (si existen)

@@ -20,7 +20,7 @@ export default function Paginacion({ setPaginacion, paginacion, paginaSiguiente}
           setPaginacion(paginacion - 1); 
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }}
-        disabled={paginacion === 1}
+        disabled={paginacion <= 1}
         sx={{ textTransform: 'none', color: 'black' }}
         ><KeyboardArrowLeftIcon/> Anterior 
         </Button>
