@@ -8,25 +8,27 @@ import FormControl from '@mui/material/FormControl';
 import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
 import ForgotPassword from './ForgotPassword';
 import AppTheme from '../shared-theme/AppTheme';
 import { useNavigate } from 'react-router-dom';
 import { fetchRegistro } from '../../Request/v2/fetchRegistro'; 
-
+import fondologin from '../../assets/fondologin.jpg';
 
 const SignInContainer = styled(Stack)(({ theme }) => ({
-  border: '1px solid black', 
-  borderRadius: '16px',   
+  border: '1px solid black',
+  borderRadius: '16px',
   width: '100%',
-  minWidth: '450px',
+  maxWidth: '550px',
   padding: theme.spacing(6),
   marginTop: '145px',
   background: '#0092d6',
-  minHeight: '450px',
+  minHeight: '525px',
   '&::before': {
-    background: 'rgba(256, 256, 256)',
+    backgroundImage: `url(${fondologin})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat',
+    backgroundAttachment: 'fixed',
     content: '""',
     display: 'block',
     position: 'absolute',
@@ -82,7 +84,6 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
 
       const result = await fetchRegistro(email, password, navigate);
       if (result) {
-        
         console.error(result);
       }
     }
@@ -92,83 +93,153 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
     <AppTheme {...props}>
       <CssBaseline enableColorScheme />
       <SignInContainer direction="column" justifyContent="space-between">
-          <Typography
-            component="h1"
-            variant="h4"
-            sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
-          >
+        <Typography
+          component="h1"
+          variant="h4"
+          sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
+        >
+          Registrarse
+        </Typography>
+        <Box
+          component="form"
+          noValidate
+          onSubmit={handleSubmit} 
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            width: '100%',
+            gap: 2,
+          }}
+        >
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <FormControl fullWidth>
+              <Typography htmlFor="email">Email</Typography>
+                <TextField
+                  error={emailError}
+                  helperText={emailErrorMessage}
+                  id="email"
+                  type="email"
+                  name="email"
+                  placeholder="your@email.com"
+                  autoComplete="email"
+                  autoFocus
+                  required
+                  variant="outlined"
+                  color={emailError ? 'error' : 'primary'}
+                />
+              </FormControl>
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <FormControl fullWidth>
+              <Typography htmlFor="password">Contraseña</Typography>
+                <TextField
+                  error={passwordError}
+                  helperText={passwordErrorMessage}
+                  name="password"
+                  placeholder="••••••"
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
+                  required
+                  variant="outlined"
+                  color={passwordError ? 'error' : 'primary'}
+                />
+              </FormControl>
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <FormControl fullWidth>
+              <Typography htmlFor="password">Repetir contraseña</Typography>
+                <TextField
+                  error={passwordError}
+                  helperText={passwordErrorMessage}
+                  name="password"
+                  placeholder="••••••"
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
+                  required
+                  variant="outlined"
+                  color={passwordError ? 'error' : 'primary'}
+                />
+              </FormControl>
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <FormControl fullWidth>
+              <Typography htmlFor="name">Nombre</Typography>
+                <TextField
+                  error={passwordError}
+                  helperText={passwordErrorMessage}
+                  name="name"
+                  id="name"
+                  placeholder="nombre"
+                  required
+                  variant="outlined"
+                  color={passwordError ? 'error' : 'primary'}
+                />
+              </FormControl>
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <FormControl fullWidth>
+              <Typography htmlFor="surname">Apellido</Typography>
+                <TextField
+                  error={passwordError}
+                  helperText={passwordErrorMessage}
+                  name="surname"
+                  id="surname"
+                  placeholder="apellido"
+                  required
+                  variant="outlined"
+                  color={passwordError ? 'error' : 'primary'}
+                />
+              </FormControl>
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <FormControl fullWidth>
+              <Typography htmlFor="dni">DNI</Typography>
+                <TextField
+                  error={passwordError}
+                  helperText={passwordErrorMessage}
+                  name="dni"
+                  placeholder="12345678"
+                  type="int"
+                  autoComplete="current-password"
+                  required
+                  fullWidth
+                  variant="outlined"
+                  color={passwordError ? 'error' : 'primary'}
+                />
+              </FormControl>
+            </Grid>
+          </Grid>
+
+          <FormControlLabel
+            control={<Checkbox value="remember" color="primary" />}
+            label="Deseo recibir novedades por email"
+          />
+
+          <ForgotPassword open={open} handleClose={handleClose} />
+          <Button type="submit" fullWidth variant="contained">
             Registrarse
+          </Button>
+          <Typography sx={{ textAlign: 'center' }}>
+            ¿Ya tienes una cuenta?{' '}
+            <span>
+              <Link
+                href="/login"
+                variant="body2"
+                sx={{ alignSelf: 'center' }}
+              >
+                Iniciar sesión
+              </Link>
+            </span>
           </Typography>
-          <Box
-            component="form"
-            noValidate
-            onSubmit={handleSubmit} 
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              width: '100%',
-              gap: 2,
-            }}
-          >
-            <FormControl>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Typography htmlFor="email">Email</Typography>
-              </Box>
-              <TextField
-                error={emailError}
-                helperText={emailErrorMessage}
-                id="email"
-                type="email"
-                name="email"
-                placeholder="your@email.com"
-                autoComplete="email"
-                autoFocus
-                required
-                fullWidth
-                variant="outlined"
-                color={emailError ? 'error' : 'primary'}
-                sx={{ ariaLabel: 'email' }}
-              />
-            </FormControl>
-            <FormControl>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Typography htmlFor="password">Contraseña</Typography>
-              </Box>
-              <TextField
-                error={passwordError}
-                helperText={passwordErrorMessage}
-                name="password"
-                placeholder="••••••"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-                required
-                fullWidth
-                variant="outlined"
-                color={passwordError ? 'error' : 'primary'}
-              />
-            </FormControl>
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Deseo recibir novedades por email"
-            />
-            <ForgotPassword open={open} handleClose={handleClose} />
-            <Button type="submit" fullWidth variant="contained">
-              Registrarse
-            </Button>
-            <Typography sx={{ textAlign: 'center' }}>
-              ¿Ya tienes una cuenta?{' '}
-              <span>
-                <Link
-                  href="/login"
-                  variant="body2"
-                  sx={{ alignSelf: 'center' }}
-                >
-                  Iniciar sesión
-                </Link>
-              </span>
-            </Typography>
-          </Box>
+        </Box>
       </SignInContainer>
     </AppTheme>
   );
