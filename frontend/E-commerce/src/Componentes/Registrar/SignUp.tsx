@@ -16,6 +16,10 @@ import AppTheme from '../shared-theme/AppTheme';
 import { useNavigate } from 'react-router-dom';
 import { fetchRegistro } from '../../Request/v2/fetchRegistro'; 
 import fondologin from '../../assets/fondologin.jpg';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+
+const theme = createTheme({
+});
 
 const SignInContainer = styled(Stack)(({ theme }) => ({
   border: '1px solid black',
@@ -25,7 +29,7 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
   padding: theme.spacing(6),
   marginTop: '145px',
   background: '#0092d6',
-  minHeight: '525px',
+  minHeight: '500px',
   '&::before': {
     backgroundImage: `url(${fondologin})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat',
     backgroundAttachment: 'fixed',
@@ -43,6 +47,8 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
   const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
+  const [repeatPasswordError, setRepeatPasswordError] = React.useState(false);
+  const [repeatPasswordErrorMessage, setRepeatPasswordErrorMessage] = React.useState('');
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => setOpen(true);
@@ -51,9 +57,14 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
   const validateInputs = () => {
     const email = document.getElementById('email') as HTMLInputElement;
     const password = document.getElementById('password') as HTMLInputElement;
+    const repeatPassword = document.getElementById('rpassword') as HTMLInputElement;
+    const nombre = document.getElementById('name') as HTMLInputElement;
+    const apellido = document.getElementById('surname') as HTMLInputElement;
+    const dni = document.getElementById('dni') as HTMLInputElement;
 
     let isValid = true;
 
+    // Validación del email
     if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
       setEmailError(true);
       setEmailErrorMessage('Por favor ingrese un e-mail válido.');
@@ -63,6 +74,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
       setEmailErrorMessage('');
     }
 
+    // Validación de la contraseña
     if (!password.value || password.value.length < 6) {
       setPasswordError(true);
       setPasswordErrorMessage('La contraseña debe tener al menos 6 caracteres.');
@@ -70,6 +82,31 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
     } else {
       setPasswordError(false);
       setPasswordErrorMessage('');
+    }
+
+    // Validación de la repetición de la contraseña
+    if (repeatPassword.value !== password.value) {
+      setRepeatPasswordError(true);
+      setRepeatPasswordErrorMessage('Las contraseñas no coinciden.');
+      isValid = false;
+    } else {
+      setRepeatPasswordError(false);
+      setRepeatPasswordErrorMessage('');
+    }
+
+    // Validación del nombre
+    if (!nombre.value || nombre.value.length > 50) {
+      isValid = false;
+    }
+
+    // Validación del apellido
+    if (!apellido.value || apellido.value.length > 50) {
+      isValid = false;
+    }
+
+    // Validación del DNI (longitud y formato numérico)
+    if (!dni.value || dni.value.length !== 8) {
+      isValid = false;
     }
 
     return isValid;
@@ -81,8 +118,12 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
     if (validateInputs()) {
       const email = (document.getElementById('email') as HTMLInputElement).value;
       const password = (document.getElementById('password') as HTMLInputElement).value;
+      const nombre = (document.getElementById('name') as HTMLInputElement).value;
+      const apellido = (document.getElementById('surname') as HTMLInputElement).value;
+      const dni = (document.getElementById('dni') as HTMLInputElement).value;
 
-      const result = await fetchRegistro(email, password, navigate);
+      // Enviar los datos al servidor
+      const result = await fetchRegistro(email, password, nombre, apellido, dni, navigate);
       if (result) {
         console.error(result);
       }
@@ -114,7 +155,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <FormControl fullWidth>
-              <Typography htmlFor="email">Email</Typography>
+                <Typography htmlFor="email">Email</Typography>
                 <TextField
                   error={emailError}
                   helperText={emailErrorMessage}
@@ -133,7 +174,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
 
             <Grid item xs={12} sm={6}>
               <FormControl fullWidth>
-              <Typography htmlFor="password">Contraseña</Typography>
+                <Typography htmlFor="password">Contraseña</Typography>
                 <TextField
                   error={passwordError}
                   helperText={passwordErrorMessage}
@@ -151,68 +192,64 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
 
             <Grid item xs={12} sm={6}>
               <FormControl fullWidth>
-              <Typography htmlFor="password">Repetir contraseña</Typography>
+                <Typography htmlFor="password">Repetir contraseña</Typography>
                 <TextField
-                  error={passwordError}
-                  helperText={passwordErrorMessage}
-                  name="password"
+                  error={repeatPasswordError}
+                  helperText={repeatPasswordErrorMessage}
+                  name="rpassword"
                   placeholder="••••••"
                   type="password"
-                  id="password"
+                  id="rpassword"
                   autoComplete="current-password"
                   required
                   variant="outlined"
-                  color={passwordError ? 'error' : 'primary'}
+                  color={repeatPasswordError ? 'error' : 'primary'}
                 />
               </FormControl>
             </Grid>
 
             <Grid item xs={12} sm={6}>
               <FormControl fullWidth>
-              <Typography htmlFor="name">Nombre</Typography>
+                <Typography htmlFor="name">Nombre</Typography>
                 <TextField
-                  error={passwordError}
-                  helperText={passwordErrorMessage}
-                  name="name"
+                  error={false}
                   id="name"
                   placeholder="nombre"
                   required
                   variant="outlined"
-                  color={passwordError ? 'error' : 'primary'}
+                  color="primary"
+                  inputProps={{ maxLength: 50 }}
                 />
               </FormControl>
             </Grid>
 
             <Grid item xs={12} sm={6}>
               <FormControl fullWidth>
-              <Typography htmlFor="surname">Apellido</Typography>
+                <Typography htmlFor="surname">Apellido</Typography>
                 <TextField
-                  error={passwordError}
-                  helperText={passwordErrorMessage}
-                  name="surname"
+                  error={false}
                   id="surname"
                   placeholder="apellido"
                   required
                   variant="outlined"
-                  color={passwordError ? 'error' : 'primary'}
+                  color="primary"
+                  inputProps={{ maxLength: 50 }}
                 />
               </FormControl>
             </Grid>
 
             <Grid item xs={12} sm={6}>
               <FormControl fullWidth>
-              <Typography htmlFor="dni">DNI</Typography>
+                <Typography htmlFor="dni">DNI</Typography>
                 <TextField
-                  error={passwordError}
-                  helperText={passwordErrorMessage}
-                  name="dni"
+                  error={false}
+                  id="dni"
                   placeholder="12345678"
-                  type="int"
-                  autoComplete="current-password"
+                  type="number"
                   required
-                  fullWidth
                   variant="outlined"
-                  color={passwordError ? 'error' : 'primary'}
+                  color="primary"
+                  inputProps={{ maxLength: 8 }}
                 />
               </FormControl>
             </Grid>

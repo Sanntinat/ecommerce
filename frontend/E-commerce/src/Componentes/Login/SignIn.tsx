@@ -12,7 +12,6 @@ import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
 import ForgotPassword from './ForgotPassword';
 import AppTheme from '../shared-theme/AppTheme';
-import ColorModeSelect from '../shared-theme/ColorModeSelect';
 import { fetchLogin } from '../../Request/v2/fetchLogin.js'; 
 import { useAuth } from './authContext'; 
 import { useNavigate } from 'react-router-dom';
@@ -101,7 +100,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
       <SignInContainer direction="column" justifyContent="space-between"
         //sx={{backgroundImage: `url(${fondologin})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat'}}
       >
-        <ColorModeSelect sx={{ position: 'fixed', top: '1rem', right: '1rem' }} />
+        
         
           <Typography
             component="h1"

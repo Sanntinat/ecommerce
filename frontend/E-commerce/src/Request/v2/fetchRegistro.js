@@ -1,22 +1,22 @@
-export const fetchRegistro = async (email, password, navigate) => {
+export const fetchRegistro = async (email, password, nombre, apellido, dni, navigate) => {
   try {
     const response = await fetch('http://127.0.0.1:8000/user/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ email, password, nombre, apellido, dni }), 
     });
 
     if (response.ok) {
-      navigate('/login'); 
+      navigate('/login');  
     } else {
-      const errorText = await response.text(); 
-      console.error('Error:', errorText); 
-      return `Error al realizar la solicitud: ${errorText}`; 
+      const errorText = await response.text();
+      console.error('Error:', errorText);
+      return `Error al realizar la solicitud: ${errorText}`;
     }
   } catch (error) {
-    console.error('Error de red:', error); 
+    console.error('Error de red:', error);
     return 'Error al realizar la solicitud';
   }
 };
