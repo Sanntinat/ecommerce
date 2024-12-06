@@ -12,6 +12,7 @@ export const fetchLogin = async (username, password, login, navigate) => {
       const data = await response.json();
       const token = data.token;
       login(token); 
+      console.log(token);
       navigate('/'); 
     } else {
       return 'Error de autenticación';

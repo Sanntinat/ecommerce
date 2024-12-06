@@ -13,6 +13,9 @@ import { styled } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import fondologin from '../../assets/fondologin.jpg';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { fetchLogin } from '../../Request/v2/fetchLogin'; 
+import { useAuth } from './AuthContext'; 
+
 
 // Crear un tema global con Material UI
 const theme = createTheme({
@@ -47,6 +50,7 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
 }));
 
 export default function Login() {
+  const { login } = useAuth(); 
   const navigate = useNavigate();
   const [emailError, setEmailError] = React.useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
@@ -89,11 +93,13 @@ export default function Login() {
       const email = (document.getElementById('email') as HTMLInputElement).value;
       const password = (document.getElementById('password') as HTMLInputElement).value;
 
-      // Implement authentication here, e.g., call an API
-      console.log('Logged in with:', email, password);
-      navigate('/home'); // Redirect after successful login
+      const result = await fetchLogin(email, password, login, navigate);
+      if (result) {
+        console.error(result);
+      }
     }
   };
+
 
   return (
     <ThemeProvider theme={theme}>
