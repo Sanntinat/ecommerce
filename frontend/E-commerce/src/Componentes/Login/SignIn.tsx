@@ -5,27 +5,35 @@ import Checkbox from '@mui/material/Checkbox';
 import CssBaseline from '@mui/material/CssBaseline';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
-import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
-import ForgotPassword from './ForgotPassword';
-import AppTheme from '../shared-theme/AppTheme';
-import { fetchLogin } from '../../Request/v2/fetchLogin.js'; 
-import { useAuth } from './authContext'; 
 import { useNavigate } from 'react-router-dom';
 import fondologin from '../../assets/fondologin.jpg';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 
+// Crear un tema global con Material UI
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#0092d6', // Color principal
+    },
+    background: {
+      default: '#f4f4f4', // Fondo por defecto
+    },
+  },
+});
 
 const SignInContainer = styled(Stack)(({ theme }) => ({
-  border: '1px solid black', 
-  borderRadius: '16px',   
-  marginTop: '145px',
-  padding: theme.spacing(6),
-  minWidth: '450px',
+  border: '1px solid black',
+  borderRadius: '16px',
   width: '100%',
-  background: '#0092d6',
+  maxWidth: '450px',
+  padding: theme.spacing(6),
+  marginTop: '170px',
+  background: '#fff9',
   minHeight: '450px',
   '&::before': {
     backgroundImage: `url(${fondologin})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat',
@@ -38,34 +46,12 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
   },
 }));
 
-export default function SignIn(props: { disableCustomTheme?: boolean }) {
-  const { login } = useAuth(); 
-  const navigate = useNavigate(); 
+export default function Login() {
+  const navigate = useNavigate();
   const [emailError, setEmailError] = React.useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
-  const [open, setOpen] = React.useState(false);
-
-  const handleClickOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault(); 
-
-    if (!validateInputs()) {
-      return;
-    }
-
-    const data = new FormData(event.currentTarget);
-    const email = data.get('email')?.toString() || ''; 
-    const password = data.get('password')?.toString() || ''; 
-
-    const errorMessage = await fetchLogin(email, password, login, navigate);
-    if (errorMessage) {
-      console.error(errorMessage); 
-    }
-  };
 
   const validateInputs = () => {
     const email = document.getElementById('email') as HTMLInputElement;
@@ -73,6 +59,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
 
     let isValid = true;
 
+    // Validación del email
     if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
       setEmailError(true);
       setEmailErrorMessage('Por favor ingrese un e-mail válido.');
@@ -82,6 +69,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
       setEmailErrorMessage('');
     }
 
+    // Validación de la contraseña
     if (!password.value || password.value.length < 6) {
       setPasswordError(true);
       setPasswordErrorMessage('La contraseña debe tener al menos 6 caracteres.');
@@ -94,101 +82,105 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
     return isValid;
   };
 
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (validateInputs()) {
+      const email = (document.getElementById('email') as HTMLInputElement).value;
+      const password = (document.getElementById('password') as HTMLInputElement).value;
+
+      // Implement authentication here, e.g., call an API
+      console.log('Logged in with:', email, password);
+      navigate('/home'); // Redirect after successful login
+    }
+  };
+
   return (
-    <AppTheme {...props}>
+    <ThemeProvider theme={theme}>
       <CssBaseline enableColorScheme />
-      <SignInContainer direction="column" justifyContent="space-between"
-        //sx={{backgroundImage: `url(${fondologin})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat'}}
-      >
-        
-        
-          <Typography
-            component="h1"
-            variant="h4"
-            sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
-          >
-            Ingresar
-          </Typography>
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              width: '100%',
-              gap: 2,
-            }}
-          >
-            <FormControl>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+      <SignInContainer direction="column" justifyContent="space-between">
+        <Typography
+          component="h1"
+          variant="h4"
+          sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
+        >
+          Iniciar sesión
+        </Typography>
+        <Box
+          component="form"
+          noValidate
+          onSubmit={handleSubmit}
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            width: '100%',
+            gap: 2,
+          }}
+        >
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <FormControl fullWidth>
                 <Typography htmlFor="email">Email</Typography>
-              </Box>
-              <TextField
-                error={emailError}
-                helperText={emailErrorMessage}
-                id="email"
-                type="email"
-                name="email"
-                placeholder="your@email.com"
-                autoComplete="email"
-                autoFocus
-                required
-                fullWidth
-                variant="outlined"
-                color={emailError ? 'error' : 'primary'}
-                sx={{ ariaLabel: 'email' }}
-              />
-            </FormControl>
-            <FormControl>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                <TextField
+                  error={emailError}
+                  helperText={emailErrorMessage}
+                  id="email"
+                  type="email"
+                  name="email"
+                  placeholder="your@email.com"
+                  autoComplete="email"
+                  autoFocus
+                  required
+                  variant="outlined"
+                  color={emailError ? 'error' : 'primary'}
+                  InputProps={{
+                    style: { backgroundColor: 'black', color: 'white' },
+                  }}
+                />
+              </FormControl>
+            </Grid>
+
+            <Grid item xs={12}>
+              <FormControl fullWidth>
                 <Typography htmlFor="password">Contraseña</Typography>
-                <Link
-                  component="button"
-                  type="button"
-                  onClick={handleClickOpen}
-                  variant="body2"
-                  sx={{ alignSelf: 'baseline' }}
-                >
-                  ¿Olvidó su contraseña?
-                </Link>
-              </Box>
-              <TextField
-                error={passwordError}
-                helperText={passwordErrorMessage}
-                name="password"
-                placeholder="••••••"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-                required
-                fullWidth
-                variant="outlined"
-                color={passwordError ? 'error' : 'primary'}
-              />
-            </FormControl>
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Recordarme"
-            />
-            <ForgotPassword open={open} handleClose={handleClose} />
-            <Button type="submit" fullWidth variant="contained">
-              Ingresar
+                <TextField
+                  error={passwordError}
+                  helperText={passwordErrorMessage}
+                  name="password"
+                  placeholder="••••••"
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
+                  required
+                  variant="outlined"
+                  color={passwordError ? 'error' : 'primary'}
+                  InputProps={{
+                    style: { backgroundColor: 'black', color: 'white' },
+                  }}
+                />
+              </FormControl>
+            </Grid>
+          </Grid>
+
+          <FormControlLabel
+            control={<Checkbox value="remember" color="primary" />}
+            label="Recordarme"
+          />
+
+          <Stack direction="row" alignItems="center" justifyContent="space-between">
+            <Button variant="contained" color="primary" onClick={() => navigate('/registrar')}>
+              Crear cuenta
             </Button>
-            <Typography sx={{ textAlign: 'center' }}>
-              ¿No tienes cuenta?{' '}
-              <span>
-                <Link
-                  href="/registrar"
-                  variant="body2"
-                  sx={{ alignSelf: 'center' }}
-                >
-                  Registrarse
-                </Link>
-              </span>
-            </Typography>
-          </Box>  
+            <Button
+              variant="contained"
+              type="submit"
+              sx={{ backgroundColor: '#1a72b8' }}
+            >
+              Iniciar sesión
+            </Button>
+          </Stack>
+        </Box>
       </SignInContainer>
-    </AppTheme>
+    </ThemeProvider>
   );
 }

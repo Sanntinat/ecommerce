@@ -5,20 +5,27 @@ import Checkbox from '@mui/material/Checkbox';
 import CssBaseline from '@mui/material/CssBaseline';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
-import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
 import ForgotPassword from './ForgotPassword';
-import AppTheme from '../shared-theme/AppTheme';
 import { useNavigate } from 'react-router-dom';
-import { fetchRegistro } from '../../Request/v2/fetchRegistro'; 
+import { fetchRegistro } from '../../Request/v2/fetchRegistro';
 import fondologin from '../../assets/fondologin.jpg';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
+
 const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#0092d6', 
+    },
+    background: {
+      default: '#f4f4f4', 
+    },
+  },
 });
 
 const SignInContainer = styled(Stack)(({ theme }) => ({
@@ -27,9 +34,9 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
   width: '100%',
   maxWidth: '550px',
   padding: theme.spacing(6),
-  marginTop: '145px',
-  background: '#0092d6',
-  minHeight: '500px',
+  marginTop: '130px',
+  background: '#fff9',
+  minHeight: '540px',
   '&::before': {
     backgroundImage: `url(${fondologin})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat',
     backgroundAttachment: 'fixed',
@@ -42,7 +49,7 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
 }));
 
 export default function SignUp(props: { disableCustomTheme?: boolean }) {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const [emailError, setEmailError] = React.useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
   const [passwordError, setPasswordError] = React.useState(false);
@@ -113,7 +120,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault(); 
+    event.preventDefault();
 
     if (validateInputs()) {
       const email = (document.getElementById('email') as HTMLInputElement).value;
@@ -131,7 +138,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
   };
 
   return (
-    <AppTheme {...props}>
+    <ThemeProvider theme={theme}> {/* Aplicar el tema global aquí */}
       <CssBaseline enableColorScheme />
       <SignInContainer direction="column" justifyContent="space-between">
         <Typography
@@ -144,7 +151,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
         <Box
           component="form"
           noValidate
-          onSubmit={handleSubmit} 
+          onSubmit={handleSubmit}
           sx={{
             display: 'flex',
             flexDirection: 'column',
@@ -168,6 +175,10 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
                   required
                   variant="outlined"
                   color={emailError ? 'error' : 'primary'}
+                  InputProps={{
+                    style: { backgroundColor: 'black', color: 'white' },
+                  }}
+                  
                 />
               </FormControl>
             </Grid>
@@ -186,6 +197,9 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
                   required
                   variant="outlined"
                   color={passwordError ? 'error' : 'primary'}
+                  InputProps={{
+                    style: { backgroundColor: 'black', color: 'white' },
+                  }}
                 />
               </FormControl>
             </Grid>
@@ -204,6 +218,9 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
                   required
                   variant="outlined"
                   color={repeatPasswordError ? 'error' : 'primary'}
+                  InputProps={{
+                    style: { backgroundColor: 'black', color: 'white' },
+                  }}
                 />
               </FormControl>
             </Grid>
@@ -219,6 +236,9 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
                   variant="outlined"
                   color="primary"
                   inputProps={{ maxLength: 50 }}
+                  InputProps={{
+                    style: { backgroundColor: 'black', color: 'white' },
+                  }}
                 />
               </FormControl>
             </Grid>
@@ -234,6 +254,9 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
                   variant="outlined"
                   color="primary"
                   inputProps={{ maxLength: 50 }}
+                  InputProps={{
+                    style: { backgroundColor: 'black', color: 'white' },
+                  }}
                 />
               </FormControl>
             </Grid>
@@ -250,6 +273,9 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
                   variant="outlined"
                   color="primary"
                   inputProps={{ maxLength: 8 }}
+                  InputProps={{
+                    style: { backgroundColor: 'black', color: 'white' },
+                  }}
                 />
               </FormControl>
             </Grid>
@@ -261,23 +287,20 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
           />
 
           <ForgotPassword open={open} handleClose={handleClose} />
-          <Button type="submit" fullWidth variant="contained">
-            Registrarse
-          </Button>
-          <Typography sx={{ textAlign: 'center' }}>
-            ¿Ya tienes una cuenta?{' '}
-            <span>
-              <Link
-                href="/login"
-                variant="body2"
-                sx={{ alignSelf: 'center' }}
-              >
-                Iniciar sesión
-              </Link>
-            </span>
-          </Typography>
+          <Stack direction="row" alignItems="center" justifyContent="space-between">
+            <Button variant="contained" color="primary" onClick={() => navigate('/login')}>
+              Volver
+            </Button>
+            <Button
+              variant="contained"
+              type="submit"
+              sx={{ backgroundColor: '#1a72b8' }}
+            >
+              Registrar
+            </Button>
+          </Stack>
         </Box>
       </SignInContainer>
-    </AppTheme>
+    </ThemeProvider>
   );
 }
