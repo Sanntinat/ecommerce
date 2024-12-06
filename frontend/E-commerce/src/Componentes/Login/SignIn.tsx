@@ -56,6 +56,7 @@ export default function Login() {
   const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
+  const [authError, setAuthError] = React.useState(''); // Estado para el error general
 
   const validateInputs = () => {
     const email = document.getElementById('email') as HTMLInputElement;
@@ -93,13 +94,18 @@ export default function Login() {
       const email = (document.getElementById('email') as HTMLInputElement).value;
       const password = (document.getElementById('password') as HTMLInputElement).value;
 
-      const result = await fetchLogin(email, password, login, navigate);
-      if (result) {
-        console.error(result);
+      try {
+        const result = await fetchLogin(email, password, login, navigate);
+        if (result) {
+          setAuthError(result); // Establece el mensaje de error en caso de fallo
+        } else {
+          setAuthError(''); // Limpia el mensaje de error si la autenticación es exitosa
+        }
+      } catch (error) {
+        setAuthError('Error al realizar la solicitud. Por favor, intente nuevamente.');
       }
     }
   };
-
 
   return (
     <ThemeProvider theme={theme}>
@@ -112,6 +118,9 @@ export default function Login() {
         >
           Iniciar sesión
         </Typography>
+
+        
+
         <Box
           component="form"
           noValidate
@@ -172,6 +181,16 @@ export default function Login() {
             control={<Checkbox value="remember" color="primary" />}
             label="Recordarme"
           />
+
+          {authError && (
+          <Typography
+            variant="body2"
+            color="error"
+            sx={{ textAlign: 'center', marginBottom: 2 }}
+          >
+            {authError}
+          </Typography>
+          )}
 
           <Stack direction="row" alignItems="center" justifyContent="space-between">
             <Button variant="contained" color="primary" onClick={() => navigate('/registrar')}>
