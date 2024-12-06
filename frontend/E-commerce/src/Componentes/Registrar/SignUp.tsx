@@ -10,7 +10,6 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
-import ForgotPassword from './ForgotPassword';
 import { useNavigate } from 'react-router-dom';
 import { fetchRegistro } from '../../Request/v2/fetchRegistro';
 import fondologin from '../../assets/fondologin.jpg';
@@ -285,8 +284,6 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
             control={<Checkbox value="remember" color="primary" />}
             label="Deseo recibir novedades por email"
           />
-
-          <ForgotPassword open={open} handleClose={handleClose} />
           <Stack direction="row" alignItems="center" justifyContent="space-between">
             <Button variant="contained" color="primary" onClick={() => navigate('/login')}>
               Volver
