@@ -17,14 +17,14 @@ import { fetchLogin } from '../../Request/v2/fetchLogin';
 import { useAuth } from './AuthContext'; 
 
 
-// Crear un tema global con Material UI
+
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#0092d6', // Color principal
+      main: '#0092d6', 
     },
     background: {
-      default: '#f4f4f4', // Fondo por defecto
+      default: '#f4f4f4', 
     },
   },
 });
@@ -35,7 +35,7 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
   width: '100%',
   maxWidth: '450px',
   padding: theme.spacing(6),
-  marginTop: '170px',
+  marginTop: '155px',
   background: '#fff9',
   minHeight: '450px',
   '&::before': {
@@ -56,7 +56,7 @@ export default function Login() {
   const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
-  const [authError, setAuthError] = React.useState(''); // Estado para el error general
+  const [authError, setAuthError] = React.useState(''); 
 
   const validateInputs = () => {
     const email = document.getElementById('email') as HTMLInputElement;
@@ -64,7 +64,7 @@ export default function Login() {
 
     let isValid = true;
 
-    // Validación del email
+    
     if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
       setEmailError(true);
       setEmailErrorMessage('Por favor ingrese un e-mail válido.');
@@ -74,7 +74,7 @@ export default function Login() {
       setEmailErrorMessage('');
     }
 
-    // Validación de la contraseña
+    
     if (!password.value || password.value.length < 6) {
       setPasswordError(true);
       setPasswordErrorMessage('La contraseña debe tener al menos 6 caracteres.');
@@ -97,9 +97,9 @@ export default function Login() {
       try {
         const result = await fetchLogin(email, password, login, navigate);
         if (result) {
-          setAuthError(result); // Establece el mensaje de error en caso de fallo
+          setAuthError(result); 
         } else {
-          setAuthError(''); // Limpia el mensaje de error si la autenticación es exitosa
+          setAuthError(''); 
         }
       } catch (error) {
         setAuthError('Error al realizar la solicitud. Por favor, intente nuevamente.');
@@ -114,12 +114,14 @@ export default function Login() {
         <Typography
           component="h1"
           variant="h4"
-          sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
+          sx={{ 
+            width: '100%', 
+            fontSize: 'clamp(2rem, 10vw, 2.15rem)', 
+            marginBottom: 3 
+          }}
         >
           Iniciar sesión
         </Typography>
-
-        
 
         <Box
           component="form"
@@ -183,26 +185,37 @@ export default function Login() {
           />
 
           {authError && (
-          <Typography
-            variant="body2"
-            color="error"
-            sx={{ textAlign: 'center', marginBottom: 2 }}
-          >
-            {authError}
-          </Typography>
+            <Typography
+              variant="body2"
+              color="error"
+              sx={{ textAlign: 'center', marginBottom: 2 }}
+            >
+              {authError}
+            </Typography>
           )}
 
-          <Stack direction="row" alignItems="center" justifyContent="space-between">
-            <Button variant="contained" color="primary" onClick={() => navigate('/registrar')}>
-              Crear cuenta
-            </Button>
+          <Stack direction="column" alignItems="center" justifyContent="center" spacing={2}>
             <Button
               variant="contained"
               type="submit"
-              sx={{ backgroundColor: '#1a72b8' }}
+              sx={{
+                backgroundColor: '#1a72b8',
+                width: '100%',
+                maxWidth: '200px',
+                textAlign: 'center',
+              }}
             >
               Iniciar sesión
             </Button>
+            
+            <Typography
+              variant="body2"
+              color="primary"
+              sx={{ cursor: 'pointer', textAlign: 'center' }}
+              onClick={() => navigate('/registrar')}
+            >
+              ¿No tienes cuenta? Regístrate
+            </Typography>
           </Stack>
         </Box>
       </SignInContainer>

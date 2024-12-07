@@ -183,38 +183,43 @@ export function ModalCambiarContraseña({ open, onClose }) {
           </form>
         </Container>
       </DialogContent>
-      <DialogActions sx={{ backgroundColor: '#00a1ed', padding: 2 }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-          <Button
-            onClick={handleSubmit}
-            variant="contained"
-            sx={{
-              backgroundColor: '#00a1ed',
-              color: '#fff',
-              width: '48%',
-              '&:hover': {
-                backgroundColor: '#007bb5',
-              },
-            }}
-          >
-            Cambiar contraseña
-          </Button>
-          <Button
-            onClick={onClose}
-            variant="contained"
-            sx={{
-              backgroundColor: '#333',
-              color: '#fff',
-              width: '48%',
-              '&:hover': {
-                backgroundColor: '#555',
-              },
-            }}
-          >
-            Cerrar
-          </Button>
-        </Box>
-      </DialogActions>
+      <DialogActions sx={{ backgroundColor: '#005f87', padding: 2 }}> {/* Cambié el fondo celeste a un tono más oscuro */}
+  <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+    <Button
+      onClick={handleSubmit}
+      variant="contained"
+      sx={{
+        backgroundColor: '#00a1ed',  // Mantén el color de botón de "Cambiar contraseña"
+        color: '#fff',
+        width: '48%',
+        '&:hover': {
+          backgroundColor: '#007bb5',
+        },
+        boxShadow: 2,  // Añadí una sombra para resaltar el botón
+        borderRadius: 2,
+      }}
+    >
+      Cambiar contraseña
+    </Button>
+    <Button
+      onClick={onClose}
+      variant="contained"
+      sx={{
+        backgroundColor: '#333',  // El color del botón "Cerrar" sigue siendo oscuro
+        color: '#fff',
+        width: '48%',
+        '&:hover': {
+          backgroundColor: '#555',
+        },
+        boxShadow: 2,  // Añadí una sombra para que resalte más
+        borderRadius: 2,
+      }}
+    >
+      Cerrar
+    </Button>
+  </Box>
+</DialogActions>
+
     </Dialog>
   );
 }

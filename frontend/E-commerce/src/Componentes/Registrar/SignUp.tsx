@@ -14,15 +14,19 @@ import { useNavigate } from 'react-router-dom';
 import { fetchRegistro } from '../../Request/v2/fetchRegistro';
 import fondologin from '../../assets/fondologin.jpg';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import { Link } from 'react-router-dom';
 
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#0092d6', 
+      main: '#0092d6',
     },
     background: {
-      default: '#f4f4f4', 
+      default: '#f4f4f4',
     },
   },
 });
@@ -36,6 +40,7 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
   marginTop: '130px',
   background: '#fff9',
   minHeight: '540px',
+  maxHeight: '580px',
   '&::before': {
     backgroundImage: `url(${fondologin})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat',
     backgroundAttachment: 'fixed',
@@ -55,10 +60,14 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
   const [repeatPasswordError, setRepeatPasswordError] = React.useState(false);
   const [repeatPasswordErrorMessage, setRepeatPasswordErrorMessage] = React.useState('');
-  const [open, setOpen] = React.useState(false);
+  const [dniError, setDniError] = React.useState(false);
+  const [dniErrorMessage, setDniErrorMessage] = React.useState('');
+  const [errorMessage, setErrorMessage] = React.useState('');
+  const [showPassword, setShowPassword] = React.useState(false);
+  const [showRepeatPassword, setShowRepeatPassword] = React.useState(false);
 
-  const handleClickOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClickShowPassword = () => setShowPassword((prev) => !prev);
+  const handleClickShowRepeatPassword = () => setShowRepeatPassword((prev) => !prev);
 
   const validateInputs = () => {
     const email = document.getElementById('email') as HTMLInputElement;
@@ -112,7 +121,12 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
 
     // Validación del DNI (longitud y formato numérico)
     if (!dni.value || dni.value.length !== 8) {
+      setDniError(true);
+      setDniErrorMessage('El DNI debe tener 8 caracteres.');
       isValid = false;
+    } else {
+      setDniError(false);
+      setDniErrorMessage('');
     }
 
     return isValid;
@@ -131,22 +145,25 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
       // Enviar los datos al servidor
       const result = await fetchRegistro(email, password, nombre, apellido, dni, navigate);
       if (result) {
-        console.error(result);
+        
+          setErrorMessage('DNI o email ya existentes.');
+        
       }
     }
   };
 
   return (
-    <ThemeProvider theme={theme}> {/* Aplicar el tema global aquí */}
+    <ThemeProvider theme={theme}>
       <CssBaseline enableColorScheme />
       <SignInContainer direction="column" justifyContent="space-between">
-        <Typography
-          component="h1"
-          variant="h4"
-          sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
-        >
+        <Typography component="h1" variant="h4" sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)', marginBottom: '20px' }}>
           Registrarse
         </Typography>
+        {errorMessage && (
+          <Typography color="error" variant="body1" sx={{ marginBottom: 2 }}>
+            {errorMessage}
+          </Typography>
+        )}
         <Box
           component="form"
           noValidate
@@ -161,7 +178,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <FormControl fullWidth>
-                <Typography htmlFor="email">Email</Typography>
+                <Typography htmlFor="email" sx={{ textAlign: 'left' }}>Email</Typography>
                 <TextField
                   error={emailError}
                   helperText={emailErrorMessage}
@@ -177,25 +194,23 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
                   InputProps={{
                     style: { backgroundColor: 'black', color: 'white' },
                   }}
-                  
                 />
               </FormControl>
             </Grid>
 
             <Grid item xs={12} sm={6}>
               <FormControl fullWidth>
-                <Typography htmlFor="password">Contraseña</Typography>
+                <Typography htmlFor="dni" sx={{ textAlign: 'left' }}>DNI</Typography>
                 <TextField
-                  error={passwordError}
-                  helperText={passwordErrorMessage}
-                  name="password"
-                  placeholder="••••••"
-                  type="password"
-                  id="password"
-                  autoComplete="current-password"
+                  error={dniError}
+                  helperText={dniErrorMessage}
+                  id="dni"
+                  placeholder="12345678"
+                  type="number"
                   required
                   variant="outlined"
-                  color={passwordError ? 'error' : 'primary'}
+                  color={dniError ? 'error' : 'primary'}
+                  inputProps={{ maxLength: 8 }}
                   InputProps={{
                     style: { backgroundColor: 'black', color: 'white' },
                   }}
@@ -205,28 +220,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
 
             <Grid item xs={12} sm={6}>
               <FormControl fullWidth>
-                <Typography htmlFor="password">Repetir contraseña</Typography>
-                <TextField
-                  error={repeatPasswordError}
-                  helperText={repeatPasswordErrorMessage}
-                  name="rpassword"
-                  placeholder="••••••"
-                  type="password"
-                  id="rpassword"
-                  autoComplete="current-password"
-                  required
-                  variant="outlined"
-                  color={repeatPasswordError ? 'error' : 'primary'}
-                  InputProps={{
-                    style: { backgroundColor: 'black', color: 'white' },
-                  }}
-                />
-              </FormControl>
-            </Grid>
-
-            <Grid item xs={12} sm={6}>
-              <FormControl fullWidth>
-                <Typography htmlFor="name">Nombre</Typography>
+                <Typography htmlFor="name" sx={{ textAlign: 'left' }}>Nombre</Typography>
                 <TextField
                   error={false}
                   id="name"
@@ -244,7 +238,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
 
             <Grid item xs={12} sm={6}>
               <FormControl fullWidth>
-                <Typography htmlFor="surname">Apellido</Typography>
+                <Typography htmlFor="surname" sx={{ textAlign: 'left' }}>Apellido</Typography>
                 <TextField
                   error={false}
                   id="surname"
@@ -262,17 +256,50 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
 
             <Grid item xs={12} sm={6}>
               <FormControl fullWidth>
-                <Typography htmlFor="dni">DNI</Typography>
+                <Typography htmlFor="password" sx={{ textAlign: 'left' }}>Contraseña</Typography>
                 <TextField
-                  error={false}
-                  id="dni"
-                  placeholder="12345678"
-                  type="number"
+                  error={passwordError}
+                  helperText={passwordErrorMessage}
+                  id="password"
+                  type={showPassword ? 'text' : 'password'}
+                  name="password"
                   required
                   variant="outlined"
-                  color="primary"
-                  inputProps={{ maxLength: 8 }}
+                  color={passwordError ? 'error' : 'primary'}
                   InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton onClick={handleClickShowPassword} sx={{ color: 'grey' }}>
+                          {showPassword ? <Visibility /> : <VisibilityOff />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                    style: { backgroundColor: 'black', color: 'white' },
+                  }}
+                />
+              </FormControl>
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <FormControl fullWidth>
+                <Typography htmlFor="rpassword" sx={{ textAlign: 'left' }}>Repetir Contraseña</Typography>
+                <TextField
+                  error={repeatPasswordError}
+                  helperText={repeatPasswordErrorMessage}
+                  id="rpassword"
+                  type={showRepeatPassword ? 'text' : 'password'}
+                  name="rpassword"
+                  required
+                  variant="outlined"
+                  color={repeatPasswordError ? 'error' : 'primary'}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton onClick={handleClickShowRepeatPassword} sx={{ color: 'grey' }}>
+                          {showRepeatPassword ? <Visibility /> : <VisibilityOff />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
                     style: { backgroundColor: 'black', color: 'white' },
                   }}
                 />
@@ -280,22 +307,29 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
             </Grid>
           </Grid>
 
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Deseo recibir novedades por email"
-          />
-          <Stack direction="row" alignItems="center" justifyContent="space-between">
-            <Button variant="contained" color="primary" onClick={() => navigate('/login')}>
-              Volver
-            </Button>
-            <Button
-              variant="contained"
-              type="submit"
-              sx={{ backgroundColor: '#1a72b8' }}
-            >
-              Registrar
-            </Button>
-          </Stack>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            sx={{
+              marginTop: 3,
+              marginBottom: 1,
+            }}
+          >
+            Registrarse
+          </Button>
+
+          <Grid container justifyContent="center">
+            <Grid item>
+              <Typography variant="body2" color="textSecondary">
+                ¿Ya tienes una cuenta?{' '}
+                <Link to="/login" style={{ color: '#0092d6' }}>
+                  Iniciar sesión
+                </Link>
+              </Typography>
+            </Grid>
+          </Grid>
         </Box>
       </SignInContainer>
     </ThemeProvider>
