@@ -1,16 +1,19 @@
 import { useState, useEffect } from 'react';
 import SwipeableViews from 'react-swipeable-views';
 import { autoPlay } from 'react-swipeable-views-utils';
-import { Box, Typography, Button } from '@mui/material';
+import { Box, Typography, Button, Link } from '@mui/material';
 import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material';
 import { useFetch } from '../../Request/fetch.js'
+import { useNavigate } from 'react-router-dom';
+
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 const CarruselDestacados = () => {
 	const { data, loading, error } = useFetch('/productos/destacados/');
-	console.log(data);
 	const [indiceActivo, setIndiceActivo] = useState(0);
 	const [productos, cambiarProductos] = useState([]);
+	const navigate = useNavigate();
+
  	const handleStepChange = (step) => {
     	setIndiceActivo(step);
 	};
@@ -23,7 +26,6 @@ const CarruselDestacados = () => {
 
 	useEffect(() => {
 		if(data){
-			console.log(data);
 			cambiarProductos(data);
 		}
 	}, [data]);
@@ -36,8 +38,15 @@ const CarruselDestacados = () => {
 		return result;
 	}, []);
 
+	const linkProductoDetalle = (id) => {
+		navigate(`/productos/${id}/`);
+	};
+
 	return (
 		<>
+			<Typography variant="h1" sx={{ fontSize: '3rem', fontWeight: '600', color: '#333', textAlign: 'center' }}>
+        		Productos destacados
+     	 	</Typography>
 			<Box sx={{ position: 'relative', overflow: 'hidden' }}>
 				<Button 
        	 		onClick={handleBack}
@@ -63,16 +72,22 @@ const CarruselDestacados = () => {
         			{grupos.map((grupo, index) => (
 						<Box key={index} sx={{ display: 'flex', justifyContent: 'space-between', gap : 2, padding: 2 }}>
 							{grupo.map((producto) => (
-								<Box key={producto.id} sx={{ textAlign: 'center', flex: '1 1 calc(20% - 16px)', maxWidth: '20%', }}>
+								<Link key={producto.id} onClick={()=> linkProductoDetalle(producto.id)} sx={{ 
+									cursor: 'pointer', 
+									textAlign: 'center', 
+									flex: '1 1 calc(20% - 16px)', 
+									maxWidth: '20%',
+									textDecoration: 'none',
+									color: 'inherit',
+								}}>
             				    	<img src={producto.imagen_url} alt={producto.nombre} style={{ 
 										width: '100%', height: '200px', objectFit: 'cover', borderRadius: '8px' }} />
 									<Typography	variant="body1" sx={{ 
-										color: 'white', 
 										display: '-webkit-box', 
 										WebkitBoxOrient: 'vertical', 
 										overflow: 'hidden', 
 										textOverflow: 'ellipsis', 
-										WebkitLineClamp: 2, }}>
+										WebkitLineClamp: 2 }}>
 											{producto.nombre}
 									</Typography>
 									<Typography	variant="body1" sx={{ 
@@ -81,11 +96,11 @@ const CarruselDestacados = () => {
 										WebkitBoxOrient: 'vertical', 
 										overflow: 'hidden', 
 										textOverflow: 'ellipsis', 
-										WebkitLineClamp: 2, }}>
+										WebkitLineClamp: 2 }}>
 											$ {producto.precio} 
 									</Typography>
 
-	              				</Box>
+	              				</Link>
 							))}
 						</Box>
 					))}

@@ -19,23 +19,9 @@ export default function Principal() {
   };
   return (
 	  <>
-	  <Box sx={{ position: 'relative', width: '100%'}}>
-		  <img src={banner} alt="Banner" style={{width:"100%",height:"110%", objectFit: 'cover' }} />
-		  <Typography
-		  sx={{
-		      position: 'absolute',
-		      top: '80%',
-		      left: '50%',
-		      transform: 'translate(-50%, -50%)',
-		      padding: 2,
-		      borderRadius: 1,
-		      textAlign: 'center',
-		  }}> 
-		  		<CarruselDestacados />
-		  </Typography>
-	  </Box>
-	  <Divider sx={{ width: '70%', m: 5 }} />	 
-	  
+	  <img src={banner} alt="Banner" style={{width:"100%",height:"110%", objectFit: 'cover' }} />		      
+	  <Divider sx={{ width: '70%', m: 5 }} />
+	  <CarruselDestacados /> 
       <Typography
         variant="h1"
         sx={{ fontSize: '3rem', fontWeight: '600', color: '#333', textAlign: 'center' }}>
