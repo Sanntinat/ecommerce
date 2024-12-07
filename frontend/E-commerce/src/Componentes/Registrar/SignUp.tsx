@@ -134,24 +134,34 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
+  
     if (validateInputs()) {
       const email = (document.getElementById('email') as HTMLInputElement).value;
       const password = (document.getElementById('password') as HTMLInputElement).value;
       const nombre = (document.getElementById('name') as HTMLInputElement).value;
       const apellido = (document.getElementById('surname') as HTMLInputElement).value;
       const dni = (document.getElementById('dni') as HTMLInputElement).value;
-
-      // Enviar los datos al servidor
-      const result = await fetchRegistro(email, password, nombre, apellido, dni, navigate);
-      if (result) {
+  
+      try {
+        // Enviar los datos al servidor
+        const result = await fetchRegistro(email, password, nombre, apellido, dni, navigate);
         
-          setErrorMessage('DNI o email ya existentes.');
-        
+        if (typeof result === 'string') {
+          setErrorMessage(result); // Mostrar mensaje de error
+        }
+      } catch (error) {
+        // Manejar errores de red u otros errores no esperados
+        if ((error as Error).message.includes("Failed to fetch")) {
+          setErrorMessage("Error al realizar la solicitud. Verifique su conexión.");
+        } else {
+          setErrorMessage("Ocurrió un error inesperado.");
+        }
       }
     }
   };
-
+  
+  
+  
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline enableColorScheme />
