@@ -1,0 +1,46 @@
+from rest_framework import serializers
+from .models import Venta, VentaDetalle
+from productos.models import Productos
+
+class VentaDetalleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = VentaDetalle
+        fields = '__all__'
+        extra_kwargs = {
+            'subtotal': {'read_only': True},
+            'venta': {'read_only': True},
+            'producto': {'read_only': True}
+        }
+
+class VentaCreateSerializer(serializers.ModelSerializer):
+    detalles = serializers.ListField(child=serializers.DictField(), write_only=True)
+    class Meta:
+        model = Venta
+        fields = '__all__'
+        extra_kwargs = {
+            'total': {'read_only': True},
+        }
+    def create(self, validated_data):
+        detalles_data = validated_data.pop('detalles')
+        venta = Venta.objects.create(**validated_data, total=0)
+        print('venta', venta)
+        total = 0
+        for detalle_data in detalles_data:
+            producto_id = detalle_data.pop('producto')
+            venta_detalle = VentaDetalle.objects.create(
+                venta=venta,
+                producto=Productos.objects.get(id=producto_id),
+                **detalle_data
+            )
+            total += venta_detalle.subtotal
+            print('detalle_data', detalle_data)
+        venta.total = total
+        return venta
+    
+class VentaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Venta
+        fields = '__all__'
+        extra_kwargs = {
+            'total': {'read_only': True},
+        }
