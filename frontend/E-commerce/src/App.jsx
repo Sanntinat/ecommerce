@@ -46,8 +46,12 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route path="/editar-producto/:id" element={<EditarProducto />} />
-        <Route path="/crear-producto" element={<CrearProducto />} />
+        <Route path="/editar-producto/:id" element={<ProtectedRoute>
+          <EditarProducto />
+        </ProtectedRoute>} />
+        <Route path="/crear-producto" element={ <ProtectedRoute> 
+          <CrearProducto />
+        </ProtectedRoute>} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </>
