@@ -9,7 +9,6 @@ import CheckIcon from '@mui/icons-material/Check';
 import { Typography, Divider, Box, List, ListItem, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import CarruselDestacados from './destacados.jsx';
-import  Footer  from './footer.jsx';
 
 export default function Principal() {
   const navigate = useNavigate();
@@ -91,7 +90,6 @@ export default function Principal() {
         </Grid>
       </Box>
 	  <Divider sx={{ width: '70%', m: 3 }} />
-	  <Footer />
     </>
   );
 }

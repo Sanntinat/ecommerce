@@ -13,8 +13,8 @@ import SignUp from './Componentes/Registrar/SignUp'
 import EditarProducto from './Componentes/GestionarProductos/ModalProductos/editarProducto';
 import CrearProducto from './Componentes/GestionarProductos/ModalProductos/crearProducto';
 import ProtectedRoute from './Componentes/Login/ProtectedRoute';
-
-
+import ProductoDetalle from './Componentes/Productos/productoDetalle';
+import Footer from './Componentes/Principal/footer';
 function App() {
 
   const App = () => {
@@ -37,7 +37,8 @@ function App() {
         <Route path="/" element={<Principal />} />
         <Route path="/login" element={<Signin />} />
         <Route path="/registrar" element={<SignUp />} />
-        <Route path="/productos" element={<Productos />} />
+		<Route path="/productos" element={<Productos />} />
+		<Route path="/productos/:id" element={<ProductoDetalle />} />
         <Route
           path="/admin"
           element={
@@ -53,7 +54,8 @@ function App() {
           <CrearProducto />
         </ProtectedRoute>} />
         <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
+	</Routes>
+	  {!loginRoutes.includes(location.pathname) && <Footer />}  
     </>
   );
 }
