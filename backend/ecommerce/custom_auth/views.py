@@ -1,6 +1,6 @@
 from rest_framework import generics
 from .models import User
-from .serializers import UserSerializer, UserDetailSerializer, ChangePasswordSerializer
+from .serializers import UserSerializer, UserDetailSerializer, UserIdSerializer, ChangePasswordSerializer
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
@@ -11,6 +11,15 @@ class UserList(generics.ListCreateAPIView):
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserDetailSerializer
+
+class UserData(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserIdSerializer
+    permission_classes = (IsAuthenticated,)
+    
+    def get_object(self, queryset=None):
+    # Retrieve the authenticated user from the request
+        return self.request.user
 
 class ChangePassword(generics.UpdateAPIView):
     queryset = User.objects.all()

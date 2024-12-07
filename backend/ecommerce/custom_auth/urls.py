@@ -6,5 +6,6 @@ urlpatterns = [
     path('user/', views.UserList.as_view()),
     path('user/<int:pk>/', views.UserDetail.as_view()),
     path('getToken/', obtain_auth_token),
-    path('change-password/', views.ChangePassword.as_view())
+    path('change-password/', views.ChangePassword.as_view()),
+    path('user/me/', views.UserData.as_view()),
 ]
