@@ -1,4 +1,4 @@
-import React from 'react';  
+import React from 'react';   
 import './App.css';
 import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import Header from './Componentes/Header/header';
@@ -12,6 +12,7 @@ import { CarritoProvider } from './Componentes/Header/Carrito/carritoContext';
 import SignUp from './Componentes/Registrar/SignUp'
 import EditarProducto from './Componentes/GestionarProductos/ModalProductos/editarProducto';
 import CrearProducto from './Componentes/GestionarProductos/ModalProductos/crearProducto';
+import ProtectedRoute from './Componentes/Login/ProtectedRoute';
 
 
 function App() {
@@ -37,7 +38,14 @@ function App() {
         <Route path="/login" element={<Signin />} />
         <Route path="/registrar" element={<SignUp />} />
         <Route path="/productos" element={<Productos />} />
-        <Route path="/admin" element={<GestionarProductos />} />
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute>
+              <GestionarProductos />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/editar-producto/:id" element={<EditarProducto />} />
         <Route path="/crear-producto" element={<CrearProducto />} />
         <Route path="*" element={<Navigate to="/" />} />

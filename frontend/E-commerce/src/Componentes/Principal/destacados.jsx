@@ -15,10 +15,10 @@ const CarruselDestacados = () => {
     	setIndiceActivo(step);
 	};
 	const handleNext = () => {
-    	setIndiceActivo((prev) => (prev + 1) % productos.length);
+    	setIndiceActivo((prev) => (prev + 1) % grupos.length);
   	};
 	const handleBack = () => {
-    	setIndiceActivo((prev) => (prev - 1 + productos.length) % productos.length);
+    	setIndiceActivo((prev) => (prev - 1 + grupos.length) % grupos.length);
 	};
 
 	useEffect(() => {
@@ -28,18 +28,25 @@ const CarruselDestacados = () => {
 		}
 	}, [data]);
 
+	const mostrar = 5;
+	const grupos = productos.reduce((result, producto, index) => {
+		const grupoIndex = Math.floor(index / mostrar);
+		if (!result[grupoIndex]) result[grupoIndex] = [];
+		result[grupoIndex].push(producto);
+		return result;
+	}, []);
+
 	return (
 		<>
-			<h3 class="MuiTypography-root MuiTypography-h3 MuiTypography-gutterBottom css-hu96ex-MuiTypography-root">Productos destacados</h3>
-			<Box sx={{ maxWidth: 800, flexGrow: 1 }}>
+			<Box sx={{ position: 'relative', overflow: 'hidden' }}>
 				<Button 
        	 		onClick={handleBack}
         		sx={{
           			position: 'absolute',
           			top: '50%',
-          			left: 150,
+					left: 16,
           			zIndex: 1,
-          			transform: 'translateY(4410%)',
+          			transform: 'translateY(-155%)',
           			backgroundColor: 'rgba(0,0,0,0.5)',
           			color: 'white',
           			'&:hover': { backgroundColor: 'rgba(0,0,0,0.7)' },
@@ -53,26 +60,44 @@ const CarruselDestacados = () => {
      		   	onChangeIndex={handleStepChange}
 		        enableMouseEvents
     			>
-        			{productos.map((producto, index) => (
-    			      <div key={producto.id}>
-           				 {Math.abs(indiceActivo - index) <= 2 ? (
-				            <Box sx={{ padding: 2, textAlign: 'center' }}>
-            				    <img src={producto.imagen_url} alt={producto.nombre} style={{ width: '100%', height: '300px', objectFit: 'cover' }} />
-       					        <Typography variant="h6">{producto.nombre}</Typography>
-                				<Typography variant="body1">{producto.descripcion}</Typography>
-              				</Box>
-            			 ) : null}
-			         </div>
-        		    ))}
+        			{grupos.map((grupo, index) => (
+						<Box key={index} sx={{ display: 'flex', justifyContent: 'space-between', gap : 2, padding: 2 }}>
+							{grupo.map((producto) => (
+								<Box key={producto.id} sx={{ textAlign: 'center', flex: '1 1 calc(20% - 16px)', maxWidth: '20%', }}>
+            				    	<img src={producto.imagen_url} alt={producto.nombre} style={{ 
+										width: '100%', height: '200px', objectFit: 'cover', borderRadius: '8px' }} />
+									<Typography	variant="body1" sx={{ 
+										color: 'white', 
+										display: '-webkit-box', 
+										WebkitBoxOrient: 'vertical', 
+										overflow: 'hidden', 
+										textOverflow: 'ellipsis', 
+										WebkitLineClamp: 2, }}>
+											{producto.nombre}
+									</Typography>
+									<Typography	variant="body1" sx={{ 
+										color: '#00D5FF', 
+										display: '-webkit-box', 
+										WebkitBoxOrient: 'vertical', 
+										overflow: 'hidden', 
+										textOverflow: 'ellipsis', 
+										WebkitLineClamp: 2, }}>
+											$ {producto.precio} 
+									</Typography>
+
+	              				</Box>
+							))}
+						</Box>
+					))}
 				 </AutoPlaySwipeableViews>
 				 <Button
 			        onClick={handleNext}
 			        sx={{
 			        position: 'absolute',
 			        top: '50%',
-			        right: 150,
-          			zIndex: 1,
-			        transform: 'translateY(4410%)',
+			        right: 20,
+          			zIndex: 18,
+			        transform: 'translateY(-155%)',
           			backgroundColor: 'rgba(0,0,0,0.5)',
           			color: 'white',
           			'&:hover': { backgroundColor: 'rgba(0,0,0,0.7)' },

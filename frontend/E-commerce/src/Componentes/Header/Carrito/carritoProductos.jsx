@@ -2,9 +2,21 @@ import { Divider, Typography, Box, Button } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import CartaProductoCarrito from '../../Card/card';
 import { useState } from 'react';
+import { useAuth } from '../../Login/authContext'; 
+import { useNavigate } from 'react-router-dom';
 
 export default function CarritoProductos({ productosSeleccionados, setProductosSeleccionados }) {
   const [cantidadTotal, setCantidadTotal] = useState(0);
+  const { isAuthenticated, logout } = useAuth();
+  const  navigate  = useNavigate(); 
+  const handleButtonClick = () => {
+    if (isAuthenticated) {
+      // Lógica para finalizar la compra
+      console.log('Compra finalizada.');
+    } else {
+      navigate('/login');
+    }
+  };
 
   return (
     <Box
@@ -52,8 +64,8 @@ export default function CarritoProductos({ productosSeleccionados, setProductosS
             </Typography>
           </Grid>
         </Grid>
-        <Button sx={{ m: 1, borderRadius: 5, backgroundColor: '#00a1ed', width: '90%' }} variant="contained">
-          Finalizar compra
+        <Button sx={{ m: 1, borderRadius: 5, backgroundColor: '#00a1ed', width: '90%' }} variant="contained" onClick={handleButtonClick}>
+        Finalizar compra
         </Button>
       </Box>
     </Box>

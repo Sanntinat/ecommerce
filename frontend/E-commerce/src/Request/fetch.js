@@ -1,16 +1,26 @@
 import { useState, useEffect, useCallback } from "react";
 import debounce from '@mui/material/utils/debounce';
 
-// export const token = localStorage.getItem('token');
+export const token = localStorage.getItem('token');
 
 const apiUrl = import.meta.env.VITE_BASE_URL;
 const _fetchWithHeaders = async (url) => {
-  return fetch(apiUrl+url, {
-    // headers: {
-    //   Authorization: "Token " + localStorage.getItem("token"),
-    // },
-  });
-}
+  const token = localStorage.getItem("token");
+  const headers = token
+    ? { Authorization: "Token " + token }
+    : {};
+
+  const response = await fetch(apiUrl + url, { headers });
+
+  if (response.status === 401) {
+    localStorage.removeItem("token"); 
+    window.location.replace("/login"); 
+    return Promise.reject(new Error("Unauthorized")); 
+  }
+
+  return response;
+};
+
 
 export const useFetch = (url) => {
   const [data, setData] = useState(null);

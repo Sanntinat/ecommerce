@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { fetchContraseña } from '../../../Request/v2/fetchContraseña'; 
 import {
   TextField, InputAdornment, IconButton, Button, Container,
-  Dialog, DialogActions, DialogContent, Typography
+  Dialog, DialogActions, DialogContent, Typography, Box
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
@@ -35,8 +35,8 @@ export function ModalCambiarContraseña({ open, onClose }) {
     let newPasswordError = '';
     let repeatPasswordError = '';
 
-    if (newPassword.length < 8) {
-      newPasswordError = 'La nueva contraseña debe tener al menos 8 caracteres.';
+    if (newPassword.length < 6) {
+      newPasswordError = 'La nueva contraseña debe tener al menos 6 caracteres.';
       valid = false;
     }
 
@@ -73,8 +73,9 @@ export function ModalCambiarContraseña({ open, onClose }) {
 
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogContent sx={{ backgroundColor: 'rgba(0, 0, 0, 0.9)'}}>
-        <Container>
+      <DialogContent sx={{ backgroundColor: 'rgba(0, 0, 0, 0.9)', padding: 3 }}>
+        <Container maxWidth="sm">
+          {/* Success and Error Messages */}
           {successMessage && (
             <Typography variant="h6" color="success.main" align="center" gutterBottom>
               {successMessage}
@@ -86,14 +87,15 @@ export function ModalCambiarContraseña({ open, onClose }) {
             </Typography>
           )}
           <form>
+            {/* Old Password Field */}
             <TextField
               fullWidth
-              label="Contraseña actual"
               name="oldPassword"
               value={formData.oldPassword}
               onChange={handleChange}
               type={showPassword ? 'text' : 'password'}
               margin="normal"
+              placeholder="Contraseña actual"
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -109,12 +111,15 @@ export function ModalCambiarContraseña({ open, onClose }) {
               }}
               sx={{
                 backgroundColor: '#fff',
+                borderRadius: 2,
+                boxShadow: 2,
+                marginBottom: 2,
               }}
             />
 
+            {/* New Password Field */}
             <TextField
               fullWidth
-              label="Contraseña nueva"
               name="newPassword"
               value={formData.newPassword}
               onChange={handleChange}
@@ -122,6 +127,7 @@ export function ModalCambiarContraseña({ open, onClose }) {
               margin="normal"
               error={!!errors.newPassword}
               helperText={errors.newPassword}
+              placeholder="Contraseña nueva"
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -137,12 +143,15 @@ export function ModalCambiarContraseña({ open, onClose }) {
               }}
               sx={{
                 backgroundColor: '#fff',
+                borderRadius: 2,
+                boxShadow: 2,
+                marginBottom: 2,
               }}
             />
 
+            {/* Repeat New Password Field */}
             <TextField
               fullWidth
-              label="Repetir contraseña nueva"
               name="repeatPassword"
               value={formData.repeatPassword}
               onChange={handleChange}
@@ -150,6 +159,7 @@ export function ModalCambiarContraseña({ open, onClose }) {
               margin="normal"
               error={!!errors.repeatPassword}
               helperText={errors.repeatPassword}
+              placeholder="Repetir contraseña nueva"
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -165,19 +175,51 @@ export function ModalCambiarContraseña({ open, onClose }) {
               }}
               sx={{
                 backgroundColor: '#fff',
+                borderRadius: 2,
+                boxShadow: 2,
+                marginBottom: 2,
               }}
             />
           </form>
         </Container>
       </DialogContent>
-      <DialogActions sx={{ backgroundColor: '#00a1ed'}}>
-        <Button onClick={handleSubmit} variant="contained" sx={{ backgroundColor: '#00a1ed', color: '#fff' }}>
-          Cambiar contraseña
-        </Button>
-        <Button onClick={onClose} variant="contained" sx={{ backgroundColor: 'rgba(0, 0, 0, 0.9)', color: '#fff' }}>
-          Cerrar
-        </Button>
-      </DialogActions>
+      <DialogActions sx={{ backgroundColor: '#005f87', padding: 2 }}> {/* Cambié el fondo celeste a un tono más oscuro */}
+  <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+    <Button
+      onClick={handleSubmit}
+      variant="contained"
+      sx={{
+        backgroundColor: '#00a1ed',  // Mantén el color de botón de "Cambiar contraseña"
+        color: '#fff',
+        width: '48%',
+        '&:hover': {
+          backgroundColor: '#007bb5',
+        },
+        boxShadow: 2,  // Añadí una sombra para resaltar el botón
+        borderRadius: 2,
+      }}
+    >
+      Cambiar contraseña
+    </Button>
+    <Button
+      onClick={onClose}
+      variant="contained"
+      sx={{
+        backgroundColor: '#333',  // El color del botón "Cerrar" sigue siendo oscuro
+        color: '#fff',
+        width: '48%',
+        '&:hover': {
+          backgroundColor: '#555',
+        },
+        boxShadow: 2,  // Añadí una sombra para que resalte más
+        borderRadius: 2,
+      }}
+    >
+      Cerrar
+    </Button>
+  </Box>
+</DialogActions>
+
     </Dialog>
   );
 }
