@@ -137,7 +137,7 @@ export default function Login() {
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <FormControl fullWidth>
-                <Typography htmlFor="email">Email</Typography>
+                <Typography htmlFor="email" sx={{ textAlign: 'left' }}> Email</Typography>
                 <TextField
                   error={emailError}
                   helperText={emailErrorMessage}
@@ -159,7 +159,7 @@ export default function Login() {
 
             <Grid item xs={12}>
               <FormControl fullWidth>
-                <Typography htmlFor="password">Contraseña</Typography>
+                <Typography htmlFor="password" sx={{ textAlign: 'left' }}> Contraseña</Typography>
                 <TextField
                   error={passwordError}
                   helperText={passwordErrorMessage}
