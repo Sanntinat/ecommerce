@@ -12,7 +12,6 @@ import { CarritoProvider } from './Componentes/Header/Carrito/carritoContext';
 import SignUp from './Componentes/Registrar/SignUp'
 import EditarProducto from './Componentes/GestionarProductos/ModalProductos/editarProducto';
 import CrearProducto from './Componentes/GestionarProductos/ModalProductos/crearProducto';
-import Perfil from './Componentes/Perfil/perfil';
 import ProtectedRoute from './Componentes/Login/ProtectedRoute';
 
 
@@ -49,7 +48,6 @@ function App() {
         />
         <Route path="/editar-producto/:id" element={<EditarProducto />} />
         <Route path="/crear-producto" element={<CrearProducto />} />
-        <Route path="/perfil" element={<Perfil/>} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </>

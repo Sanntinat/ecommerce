@@ -5,15 +5,16 @@ import LockOpenIcon from '@mui/icons-material/LockOpen';
 import PersonIcon from '@mui/icons-material/Person';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { Menu, MenuItem, Button } from '@mui/material';
-import { Link, useNavigate } from 'react-router-dom'; 
-import { useAuth } from '../Login/authContext'; 
+import { Link } from 'react-router-dom';
+import { useAuth } from '../Login/authContext';
+import { ModalCambiarContraseña } from './Modal/modalCambiarContraseña';  // Importar el modal
 
 export default function Cuenta() {
   
   const [openModal, setOpenModal] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-  const { isAuthenticated, logout } = useAuth(); 
+  const { isAuthenticated, logout } = useAuth();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -62,10 +63,8 @@ export default function Cuenta() {
           <ShoppingBasketIcon sx={{ marginRight: 1 }} /> Mis compras
         </MenuItem>
         {isAuthenticated && (
-        <MenuItem onClick={handleClose} sx={{ display: 'flex', alignItems: 'center' }}>
-          <Link to="/perfil" style={{ textDecoration: 'none', color: 'inherit' }}>
-          <PersonIcon sx={{ marginRight: 1 }} /> Perfil
-          </Link>
+        <MenuItem onClick={handleOpenModal} sx={{ display: 'flex', alignItems: 'center' }}>
+          <LockOpenIcon sx={{ marginRight: 1 }} /> Cambiar Contraseña
         </MenuItem>
         )}
         {isAuthenticated ? (
@@ -80,8 +79,9 @@ export default function Cuenta() {
           </MenuItem>
         )}
       </Menu>
-      
+
+      {/* Modal para cambiar la contraseña */}
+      <ModalCambiarContraseña open={openModal} onClose={handleCloseModal} />
     </>
   );
 }
-

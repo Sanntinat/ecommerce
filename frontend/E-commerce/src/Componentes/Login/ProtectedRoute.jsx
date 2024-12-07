@@ -7,6 +7,8 @@ export default function ProtectedRoute({ children }) {
   const { isAuthenticated, isLoading: authLoading } = useAuth();
   const { nombre, apellido, admin, email, dni, loading: userLoading, error } = useFetchUser(isAuthenticated);
   
+  console.log(nombre, apellido, admin, email)
+
   // Estado intermedio para asegurar que los datos están cargados
   const [isReady, setIsReady] = useState(false);
 
