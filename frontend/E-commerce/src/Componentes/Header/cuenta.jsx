@@ -59,9 +59,13 @@ export default function Cuenta() {
           'aria-labelledby': 'basic-button',
         }}
       >
+        {isAuthenticated && (
         <MenuItem onClick={handleClose} sx={{ display: 'flex', alignItems: 'center' }}>
+        <Link to="/compras" style={{ textDecoration: 'none', color: 'inherit' }}>
           <ShoppingBasketIcon sx={{ marginRight: 1 }} /> Mis compras
+          </Link>
         </MenuItem>
+        )}
         {isAuthenticated && (
         <MenuItem onClick={handleOpenModal} sx={{ display: 'flex', alignItems: 'center' }}>
           <LockOpenIcon sx={{ marginRight: 1 }} /> Cambiar Contraseña
