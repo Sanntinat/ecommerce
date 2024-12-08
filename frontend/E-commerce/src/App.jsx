@@ -10,9 +10,11 @@ import HeaderLogin from './Componentes/HeaderLogin/header';
 import { AuthProvider, useAuth } from './Componentes/Login/authContext';  
 import { CarritoProvider } from './Componentes/Header/Carrito/carritoContext';
 import SignUp from './Componentes/Registrar/SignUp'
+import MisCompras from './Componentes/MisCompras/MisCompras'
 import EditarProducto from './Componentes/GestionarProductos/ModalProductos/editarProducto';
 import CrearProducto from './Componentes/GestionarProductos/ModalProductos/crearProducto';
 import ProtectedRoute from './Componentes/Login/ProtectedRoute';
+import ProtectedRouteAuthenticated from './Componentes/Login/ProtectedNoAdmin';
 
 
 function App() {
@@ -38,6 +40,9 @@ function App() {
         <Route path="/login" element={<Signin />} />
         <Route path="/registrar" element={<SignUp />} />
         <Route path="/productos" element={<Productos />} />
+        <Route path="/compras" element={<ProtectedRouteAuthenticated> 
+          <MisCompras />
+          </ProtectedRouteAuthenticated >} />
         <Route
           path="/admin"
           element={
