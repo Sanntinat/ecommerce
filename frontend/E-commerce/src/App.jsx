@@ -10,14 +10,9 @@ import HeaderLogin from './Componentes/HeaderLogin/header';
 import { AuthProvider, useAuth } from './Componentes/Login/authContext';  
 import { CarritoProvider } from './Componentes/Header/Carrito/carritoContext';
 import SignUp from './Componentes/Registrar/SignUp'
-<<<<<<< HEAD
 import EditarProducto from './Componentes/GestionarProductos/CrudProductos/editarProducto';
 import CrearProducto from './Componentes/GestionarProductos/CrudProductos/crearProducto';
-=======
 import MisCompras from './Componentes/MisCompras/MisCompras'
-import EditarProducto from './Componentes/GestionarProductos/ModalProductos/editarProducto';
-import CrearProducto from './Componentes/GestionarProductos/ModalProductos/crearProducto';
->>>>>>> 0a5eef46c3020f43b8a8d42b88a6987f18f1f22e
 import ProtectedRoute from './Componentes/Login/ProtectedRoute';
 import ProtectedRouteAuthenticated from './Componentes/Login/ProtectedNoAdmin';
 import Footer from './Componentes/Principal/footer'

@@ -16,7 +16,6 @@ export default function GestionarProductos({data, loading, error, searchData, pa
   const [estadoProducto, setEstadoProducto] = useState(false);
   const [productoSeleccionado, setProductoSeleccionado] = useState(null);
   const navigate = useNavigate();
-  console.log(data);  
 
   useEffect(() => {
     setValorBuscador('');
@@ -27,6 +26,7 @@ export default function GestionarProductos({data, loading, error, searchData, pa
     // {valorBuscador !== '' &&
     //   searchData(valorBuscador);
     // }
+    console.log('valorBuscador', valorBuscador);
       searchData(valorBuscador);
       setEstadoModal(false);
       if (valorBuscador !== '') {
