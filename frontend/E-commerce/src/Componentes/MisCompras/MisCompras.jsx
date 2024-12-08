@@ -13,30 +13,25 @@ import {
   Typography,
   Paper,
   Button,
+  IconButton,
 } from '@mui/material';
 import { StyledTableCell, StyledTableRow } from '../GestionarProductos/styledTable';
 import { useNavigate } from 'react-router-dom';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 const MisCompras = () => {
   const { isAuthenticated } = useAuth();
   const { compras, loading, error } = useFetchCompras(isAuthenticated);
   const [productos, setProductos] = useState({});
+  const [expandedRows, setExpandedRows] = useState([]);
   const navigate = useNavigate();
 
+  // Función para obtener los detalles de la compra
   const obtenerDetallesVenta = async (ventaId) => {
     try {
       const response = await fetch(`http://localhost:8000/ventas/${ventaId}/detalles/`);
       const detalles = await response.json();
-
-      const productosDetalles = await Promise.all(
-        detalles.map(async (detalle) => {
-          const productoResponse = await fetch(`http://localhost:8000/productos/${detalle.producto}/`);
-          const producto = await productoResponse.json();
-          return { ...detalle, producto };
-        })
-      );
-
-      return productosDetalles;
+      return detalles;
     } catch (err) {
       console.error('Error al obtener los detalles de la venta:', err);
       return [];
@@ -63,6 +58,14 @@ const MisCompras = () => {
     }
   }, [compras]);
 
+  const toggleExpand = (ventaId) => {
+    setExpandedRows((prevState) =>
+      prevState.includes(ventaId)
+        ? prevState.filter((id) => id !== ventaId)
+        : [...prevState, ventaId]
+    );
+  };
+
   return (
     <Box sx={{ mt: 10, display: 'flex', justifyContent: 'center' }}>
       <Paper elevation={3} sx={{ p: 4, maxWidth: 900, width: '100%' }}>
@@ -79,15 +82,17 @@ const MisCompras = () => {
           </Alert>
         )}
 
-        <TableContainer>
-          <Table>
+        <TableContainer sx={{ width: '55vw', maxHeight: '60vh', overflowY: 'auto' }}>
+          <Table sx={{ width: '100%' }}>
             <TableHead>
               <StyledTableRow>
-                {['Fecha', 'Productos y Cantidades', 'Total'].map((header, index) => (
-                  <StyledTableCell key={index} align="center">
+                {['Fecha', 'Total'].map((header, index) => (
+                  <StyledTableCell key={index} align="center" sx={{ width: '33%' }}>
                     {header}
                   </StyledTableCell>
                 ))}
+                {/* Columna de detalles sin título */}
+                <StyledTableCell sx={{ width: '5%' }} />
               </StyledTableRow>
             </TableHead>
             <TableBody>
@@ -115,35 +120,45 @@ const MisCompras = () => {
                   if (!detalles) return null;
 
                   return (
-                    <StyledTableRow key={compra.id}>
-                      <StyledTableCell align="center">
-                        {new Date(compra.fecha).toLocaleDateString()}
-                      </StyledTableCell>
-                      <StyledTableCell align="center">
-                        {detalles.map((detalle) => (
-                          <Box
-                            key={detalle.producto.id}
-                            display="flex"
-                            alignItems="center"
-                            sx={{ marginBottom: '8px' }}
-                          >
-                            <img
-                              src={detalle.producto.imagen_url}
-                              alt={detalle.producto.nombre}
-                              style={{
-                                width: '50px',
-                                height: '50px',
-                                objectFit: 'cover',
-                                marginRight: '8px',
-                                borderRadius: '4px',
-                              }}
-                            />
-                            <span>{detalle.producto.nombre} - {detalle.cantidad}</span>
-                          </Box>
-                        ))}
-                      </StyledTableCell>
-                      <StyledTableCell align="center">${compra.total}</StyledTableCell>
-                    </StyledTableRow>
+                    <React.Fragment key={compra.id}>
+                      <StyledTableRow>
+                        <StyledTableCell align="center">
+                          {new Date(compra.fecha).toLocaleDateString()}
+                        </StyledTableCell>
+                        <StyledTableCell align="center">${compra.total}</StyledTableCell>
+                        {/* Columna de detalles con la flechita */}
+                        <StyledTableCell align="left">
+                          <IconButton onClick={() => toggleExpand(compra.id)}>
+                            <ExpandMoreIcon />
+                          </IconButton>
+                        </StyledTableCell>
+                      </StyledTableRow>
+
+                      {expandedRows.includes(compra.id) && (
+                        <StyledTableRow>
+                          <StyledTableCell colSpan={3} align="center">
+                            <Table>
+                              <TableHead>
+                                <StyledTableRow>
+                                  <StyledTableCell>Producto</StyledTableCell>
+                                  <StyledTableCell>Cantidad</StyledTableCell>
+                                  <StyledTableCell>Subtotal</StyledTableCell> {/* Nueva columna Subtotal */}
+                                </StyledTableRow>
+                              </TableHead>
+                              <TableBody>
+                                {detalles.map((detalle) => (
+                                  <StyledTableRow key={detalle.id}>
+                                    <StyledTableCell>{detalle.producto.nombre}</StyledTableCell>
+                                    <StyledTableCell>{detalle.cantidad}</StyledTableCell>
+                                    <StyledTableCell>${detalle.subtotal}</StyledTableCell> {/* Muestra el subtotal */}
+                                  </StyledTableRow>
+                                ))}
+                              </TableBody>
+                            </Table>
+                          </StyledTableCell>
+                        </StyledTableRow>
+                      )}
+                    </React.Fragment>
                   );
                 })}
             </TableBody>
@@ -151,11 +166,7 @@ const MisCompras = () => {
         </TableContainer>
 
         <Box sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => navigate('/')}
-          >
+          <Button variant="contained" color="primary" onClick={() => navigate('/')}>
             Volver
           </Button>
         </Box>
