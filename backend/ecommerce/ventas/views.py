@@ -6,11 +6,18 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
+from rest_framework.pagination import PageNumberPagination
+
+class VentasPagination(PageNumberPagination):
+    page_size = 20
+    page_size_query_param = 'page_size'
+    max_page_size = 100
 
 # Create your views here.
 class ListarVentas(generics.ListCreateAPIView):
     queryset = Venta.objects.all().order_by('-fecha')
     serializer_class = VentaSerializer
+    pagination_class = VentasPagination
     def get_serializer_class(self):
         if self.request.method == 'POST':
             return VentaCreateSerializer

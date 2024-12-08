@@ -1,25 +1,22 @@
-import { IconButton, Alert,Paper, Table, TableBody, TableContainer, TableHead, Fab, TableRow, Box, FormControl, OutlinedInput, InputAdornment } from '@mui/material'
+import { IconButton, Alert,Paper, Table, TableBody, TableContainer, TableHead, Fab, TableRow, Box, FormControl, OutlinedInput, InputAdornment, Button } from '@mui/material'
 import { StyledTableCell, StyledTableRow } from './styledTable'
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useEffect, useState } from 'react';
 import Paginacion from '../Productos/paginacion';
-import { useFetchSearch }  from '../../Request/fetch';
 import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate, useLocation } from 'react-router-dom';
-import EliminarProducto from './ModalProductos/eliminarProducto';
+import EliminarProducto from './CrudProductos/eliminarProducto';
 
 
-export default function GestionarProductos() {
-  const [paginacion, setPaginacion] = useState(1);
+export default function GestionarProductos({data, loading, error, searchData, paginacion, setPaginacion, parseData, valorBuscador, setValorBuscador}) {
   const [modalShow, setModalShow] = useState(false);
   const [estadoModal, setEstadoModal] = useState(false);
+  const [estadoProducto, setEstadoProducto] = useState(false);
   const [productoSeleccionado, setProductoSeleccionado] = useState(null);
-  const [valorBuscador, setValorBuscador] = useState('');
   const navigate = useNavigate();
-  const parseData = (data) => data;
-  const [ data, loading, error, searchData ] = useFetchSearch(`/productos/?&page=${paginacion}&nombre=`, 300, parseData);
+  console.log(data);  
 
   useEffect(() => {
     setValorBuscador('');
@@ -27,12 +24,16 @@ export default function GestionarProductos() {
   }, []);
 
   useEffect(() => {
+    // {valorBuscador !== '' &&
+    //   searchData(valorBuscador);
+    // }
       searchData(valorBuscador);
+      setEstadoModal(false);
       if (valorBuscador !== '') {
         setPaginacion(1);
       }
 
-  }, [valorBuscador, searchData, estadoModal ]);
+  }, [valorBuscador, estadoModal, paginacion]);
 
   const location = useLocation();
   const [showAlertEdit, setShowAlertEdit] = useState(false);
@@ -49,13 +50,13 @@ export default function GestionarProductos() {
 
 
   return (
-    <Box sx={{ mt: 10}}>
+    <Box>
       {showAlertEdit && (
         <Alert sx={{ mb: 2 }} severity="warning">
           Producto editado correctamente
         </Alert>
       )}
-      {estadoModal === "Eliminado" && (
+      {estadoProducto === "Eliminado" && (
         <Alert sx={{ mb: 2 }} severity="error">
           Producto eliminado correctamente
         </Alert>
@@ -177,6 +178,7 @@ export default function GestionarProductos() {
         onClose={() => setModalShow(false)}
         seleccionado={productoSeleccionado}
         setEstadoModal={setEstadoModal}
+        setEstado={setEstadoProducto}
         url="/productos/"
       />
 

@@ -2,14 +2,20 @@ from rest_framework import serializers
 from .models import Venta, VentaDetalle
 from productos.models import Productos
 
+class ProductoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Productos
+        fields = ['id', 'nombre']
+
 class VentaDetalleSerializer(serializers.ModelSerializer):
+    producto = ProductoSerializer(read_only=True)
+
     class Meta:
         model = VentaDetalle
         fields = '__all__'
         extra_kwargs = {
             'subtotal': {'read_only': True},
             'venta': {'read_only': True},
-            'producto': {'read_only': True}
         }
 
 class VentaCreateSerializer(serializers.ModelSerializer):
@@ -38,6 +44,7 @@ class VentaCreateSerializer(serializers.ModelSerializer):
         return venta
     
 class VentaSerializer(serializers.ModelSerializer):
+    usuario_email = serializers.EmailField(source='usuario.email', read_only=True)
     class Meta:
         model = Venta
         fields = '__all__'

@@ -2,9 +2,10 @@ import { Dialog, Typography, DialogActions, DialogContent, Button, Box } from '@
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import { deleteData } from "../../../Request/delete";
 
-export default function EliminarProducto({ open, onClose, seleccionado, setEstadoModal, url }) {
+export default function EliminarProducto({ open, onClose, seleccionado, setEstadoModal, setEstado, url  }) {
   const handleEliminar = async (id) => {
     setEstadoModal('Eliminado');
+    setEstado('Eliminado');
     await deleteData(url + `${id}/`);
     onClose();
   };

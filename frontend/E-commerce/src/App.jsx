@@ -4,14 +4,14 @@ import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'r
 import Header from './Componentes/Header/header';
 import Principal from './Componentes/Principal/principal';
 import Productos from './Componentes/Productos/productos';
-import GestionarProductos from './Componentes/GestionarProductos/gestionarProductos';
+import Gestionar from './Componentes/GestionarProductos/gestionar';
 import Signin from './Componentes/Login/SignIn';
 import HeaderLogin from './Componentes/HeaderLogin/header';
 import { AuthProvider, useAuth } from './Componentes/Login/authContext';  
 import { CarritoProvider } from './Componentes/Header/Carrito/carritoContext';
 import SignUp from './Componentes/Registrar/SignUp'
-import EditarProducto from './Componentes/GestionarProductos/ModalProductos/editarProducto';
-import CrearProducto from './Componentes/GestionarProductos/ModalProductos/crearProducto';
+import EditarProducto from './Componentes/GestionarProductos/CrudProductos/editarProducto';
+import CrearProducto from './Componentes/GestionarProductos/CrudProductos/crearProducto';
 import ProtectedRoute from './Componentes/Login/ProtectedRoute';
 
 
@@ -42,7 +42,7 @@ function App() {
           path="/admin"
           element={
             <ProtectedRoute>
-              <GestionarProductos />
+              <Gestionar />
             </ProtectedRoute>
           }
         />
