@@ -14,14 +14,10 @@ import MisCompras from './Componentes/MisCompras/MisCompras'
 import EditarProducto from './Componentes/GestionarProductos/ModalProductos/editarProducto';
 import CrearProducto from './Componentes/GestionarProductos/ModalProductos/crearProducto';
 import ProtectedRoute from './Componentes/Login/ProtectedRoute';
-<<<<<<< HEAD
 import ProtectedRouteAuthenticated from './Componentes/Login/ProtectedNoAdmin';
+import Footer from './Componentes/Principal/footer'
 
 
-=======
-import ProductoDetalle from './Componentes/Productos/productoDetalle';
-import Footer from './Componentes/Principal/footer';
->>>>>>> a7c4e7063f8074467ee1555f4102e2e202b11fa8
 function App() {
 
   const App = () => {
@@ -44,15 +40,10 @@ function App() {
         <Route path="/" element={<Principal />} />
         <Route path="/login" element={<Signin />} />
         <Route path="/registrar" element={<SignUp />} />
-<<<<<<< HEAD
         <Route path="/productos" element={<Productos />} />
         <Route path="/compras" element={<ProtectedRouteAuthenticated> 
           <MisCompras />
           </ProtectedRouteAuthenticated >} />
-=======
-		<Route path="/productos" element={<Productos />} />
-		<Route path="/productos/:id" element={<ProductoDetalle />} />
->>>>>>> a7c4e7063f8074467ee1555f4102e2e202b11fa8
         <Route
           path="/admin"
           element={
