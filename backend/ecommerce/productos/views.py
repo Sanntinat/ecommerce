@@ -10,6 +10,7 @@ from .serializers import CategoriasSerializer
 from .models import Categorias
 from .models import Tag
 from .serializers import TagsSerializer 
+from django import http
 
 class ProductosPagination(PageNumberPagination):
     page_size = 20
@@ -40,7 +41,7 @@ class ProductosList(generics.ListAPIView):
             queryset = queryset.annotate(
                 similarity=TrigramSimilarity('nombre', nombre)
             ).filter(
-                similarity__gt=0.2  # 30% similar
+                similarity__gt=0.03
             ).order_by('-similarity')
 
         # Si 'orden' está presente, aplicar el orden por precio
@@ -83,3 +84,12 @@ class TagsDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Tag.objects.all()
     serializer_class = TagsSerializer
 
+class TagsDeCategoria(generics.ListAPIView):
+    serializer_class = TagsSerializer
+    def get_queryset(self):
+        nombre_categoria = self.kwargs['cat']
+        tags = Tag.objects.filter(idCategoria__nombre=nombre_categoria)
+        if len(tags):
+            return tags
+        else:
+            raise http.Http404("No se encontraron tags para la categoría especificada")
