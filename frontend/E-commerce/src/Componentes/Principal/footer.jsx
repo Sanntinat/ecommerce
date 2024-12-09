@@ -1,5 +1,7 @@
 import React from 'react';
-import { Box, Typography, Grid, Link } from '@mui/material';
+import Box from '@mui/material/Box' 
+import Typography from '@mui/material/Typography' 
+import Grid from '@mui/material/Grid' 
 import { Facebook, Twitter, Instagram } from '@mui/icons-material';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 
@@ -18,7 +20,7 @@ const Footer = () => {
 	};
 
   return (
-    <Box sx={{ width: '100%', backgroundColor: '#1976d2', color: 'white', padding: 2 }}>
+    <Box sx={{ width: '100%', backgroundColor: '#1976d2', color: 'white', py: 2 }}>
       <Grid container justifyContent="space-between">
         <Grid item xs={5}>
      		<LoadScript googleMapsApiKey="AIzaSyDSY2z4DrAMaUtFBEkM9_Mn_DtMAeW9X2A">
