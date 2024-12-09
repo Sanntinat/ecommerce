@@ -77,10 +77,20 @@ export default function Productos() {
       />
   
       <Divider sx={{ width: '100%' }} />
-        {isLoading && <CircularProgress sx={{ mt: 10 }} />}
-        {error && <Typography variant="h6" sx={{ mt: 10 }}>Error</Typography>}
-        {productos?.results?.length === 0 && <Typography variant="h6" sx={{ mt: 10 }}>No se encontraron productos</Typography>}
-        {productos?.results?.length > 0 &&
+	  {isLoading ? (<Box sx={{
+			display: 'flex',
+			justifyContent:'center',
+			height: '100vh',
+			width: '100%',
+			mt: 10,
+			}}>
+		  <CircularProgress/>
+		</Box>
+	  ) : error ? (
+		  <Typography variant="h6" sx={{ mt: 10 }}>Error</Typography>
+		 ) : productos?.results?.length === 0 ? (
+			 <Typography variant="h6" sx={{ mt: 10 }}>No se encontraron productos</Typography>
+			) : (
         <>
 
       {/* //! CONTENIDO  */}
@@ -112,10 +122,9 @@ export default function Productos() {
         </Main>
       </Box>
       </>
-    }
+			)}
     </>
-  );
-}
+	 )
 
 function ProductosHeader({
   open, setOpen,
@@ -186,4 +195,4 @@ function ChipsFiltros({
       ))}
     </Stack>
   )
-}
+}}
