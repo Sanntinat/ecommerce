@@ -23,9 +23,6 @@ export default function GestionarProductos({data, loading, error, searchData, pa
   }, []);
 
   useEffect(() => {
-    // {valorBuscador !== '' &&
-    //   searchData(valorBuscador);
-    // }
     console.log('valorBuscador', valorBuscador);
       searchData(valorBuscador);
       setEstadoModal(false);
@@ -55,10 +52,6 @@ export default function GestionarProductos({data, loading, error, searchData, pa
     }
   }, [location.search]);
 
-  const handleChange = (e) => {
-    setValorBuscador(e.target.value);
-    searchData(valorBuscador);
-  }
 
 
   return (
@@ -84,8 +77,7 @@ export default function GestionarProductos({data, loading, error, searchData, pa
           endAdornment={<InputAdornment position="end"><SearchIcon/></InputAdornment>}
           placeholder="Buscar producto"
           value={valorBuscador}
-          // onChange={(e) => setValorBuscador(e.target.value)}
-          onChange={(e) => handleChange(e)}
+          onChange={(e) => setValorBuscador(e.target.value)}
         />
       </FormControl>
       <TableContainer component={Paper}>

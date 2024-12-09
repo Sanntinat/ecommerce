@@ -78,8 +78,8 @@ export function useFetchSearch(url, delay, getFunc = (x)=>x) {
   const searchData = useCallback(debounce(async (search) => { // eslint-disable-line
     try {
       setLoading(true);
-      console.log(`fetching ${url + search}`);
-      const response = await _fetchWithHeaders(url + search);
+      console.log(search);
+      const response = await _fetchWithHeaders(url +'?search='+ search);
       const jsonData = await response.json();
       setData(getFunc(jsonData));
     } catch (error) {
