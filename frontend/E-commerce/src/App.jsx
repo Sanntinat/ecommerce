@@ -12,7 +12,7 @@ import { CarritoProvider } from './Componentes/Header/Carrito/carritoContext';
 import SignUp from './Componentes/Registrar/SignUp'
 import EditarProducto from './Componentes/GestionarProductos/CrudProductos/editarProducto';
 import CrearProducto from './Componentes/GestionarProductos/CrudProductos/crearProducto';
-import MisCompras from './Componentes/MisCompras/MisCompras'
+import MisCompras from './Componentes/MisCompras/gestionar'
 import ProtectedRoute from './Componentes/Login/ProtectedRoute';
 import ProtectedRouteAuthenticated from './Componentes/Login/ProtectedNoAdmin';
 import Footer from './Componentes/Principal/footer';
@@ -46,10 +46,9 @@ function App() {
           </ProtectedRouteAuthenticated >} />
         <Route
           path="/admin"
-          element={
-            <ProtectedRoute>
+          element={ <ProtectedRoute>
               <Gestionar />
-            </ProtectedRoute>
+              </ProtectedRoute>
           }
         />
         <Route path="/editar-producto/:id" element={<ProtectedRoute>
