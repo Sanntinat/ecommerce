@@ -29,7 +29,7 @@ class VentaCreateSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         detalles_data = validated_data.pop('detalles')
         venta = Venta.objects.create(**validated_data, total=0)
-        print('venta', venta)
+        # print('venta', venta)
         total = 0
         for detalle_data in detalles_data:
             producto_id = detalle_data.pop('producto')
@@ -39,8 +39,10 @@ class VentaCreateSerializer(serializers.ModelSerializer):
                 **detalle_data
             )
             total += venta_detalle.subtotal
-            print('detalle_data', detalle_data)
+            # print('detalle_data', detalle_data)
+        # print('total', total)
         venta.total = total
+        venta.save()
         return venta
     
 class VentaSerializer(serializers.ModelSerializer):
