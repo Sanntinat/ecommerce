@@ -8,7 +8,8 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 export default function Filtros({
   precios, setPrecios,
-  categoria, setCategoria
+  categoria, setCategoria,
+  tags, toggleTag
 }) {
   const [expanded, setExpanded] = useState(true);
 
@@ -30,6 +31,13 @@ export default function Filtros({
           setPrecios={setPrecios}
         />
       </CustomAccordion>
+
+      {categoria.length >0 && <CustomAccordion label="Tags">
+        <SelectorTags
+          categoria={categoria}
+          toggleTag={toggleTag}
+        />
+      </CustomAccordion>}
       {/* <Alert variant="outlined" severity="warning">
         Selecciona una categoria para filtrar
       </Alert> */}
@@ -121,4 +129,29 @@ function SelectorPrecio({ precios, setPrecios }) {
       </IconButton>
     </Grid>
   );
+}
+
+
+import { useFetchDataOnDemand } from '../../Request/fetch';
+import { useEffect } from 'react';
+import Autocomplete from '@mui/material/Autocomplete';
+function SelectorTags({categoria, toggleTag}){
+  const { data, loading, error, fetchData } = useFetchDataOnDemand(`/categorias/${categoria}/tags/`);
+
+  const options = data.map((tag) => tag.nombre);
+  useEffect(() => {
+    if (categoria.length > 0) fetchData();
+  }, [categoria]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  if (!data || !categoria) return null;
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error</p>;
+  return (
+    <Autocomplete
+      options={options}
+      onChange={(event, value) => toggleTag(value)}
+      renderInput={(params) => <TextField {...params} label="Controllable" />}
+
+    />
+  )
 }
