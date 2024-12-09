@@ -26,9 +26,7 @@ export default function GestionarProductos({data, loading, error, searchData, pa
     console.log('valorBuscador', valorBuscador);
       searchData(valorBuscador);
       setEstadoModal(false);
-      if (valorBuscador !== '') {
-        setPaginacion(1);
-      }
+
 
   }, [valorBuscador, estadoModal, paginacion]);
 
