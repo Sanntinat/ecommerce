@@ -16,7 +16,6 @@ import MisCompras from './Componentes/MisCompras/MisCompras'
 import ProtectedRoute from './Componentes/Login/ProtectedRoute';
 import ProtectedRouteAuthenticated from './Componentes/Login/ProtectedNoAdmin';
 import Footer from './Componentes/Principal/footer';
-import MisCompras from './Componentes/MisCompras/MisCompras';
 
 
 function App() {

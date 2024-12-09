@@ -37,7 +37,7 @@ export default function GestionarProductos({data, loading, error, searchData, pa
 
   const location = useLocation();
   const [showAlertEdit, setShowAlertEdit] = useState(false);
-
+  const [showAlertCreate, setShowAlertCreate] = useState(false);
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     if (queryParams.get('editado') === 'true') {
@@ -46,7 +46,19 @@ export default function GestionarProductos({data, loading, error, searchData, pa
         setShowAlertEdit(false);
       }, 5000);
     }
+    if (queryParams.get('creado') === 'true') {
+      setShowAlertCreate(true);
+      setTimeout(() => {
+        setShowAlertCreate(false);
+      }
+      , 5000);
+    }
   }, [location.search]);
+
+  const handleChange = (e) => {
+    setValorBuscador(e.target.value);
+    searchData(valorBuscador);
+  }
 
 
   return (
@@ -54,6 +66,11 @@ export default function GestionarProductos({data, loading, error, searchData, pa
       {showAlertEdit && (
         <Alert sx={{ mb: 2 }} severity="warning">
           Producto editado correctamente
+        </Alert>
+      )}
+      {showAlertCreate && (
+        <Alert sx={{ mb: 2 }} severity="success">
+          Producto creado correctamente
         </Alert>
       )}
       {estadoProducto === "Eliminado" && (
@@ -67,7 +84,8 @@ export default function GestionarProductos({data, loading, error, searchData, pa
           endAdornment={<InputAdornment position="end"><SearchIcon/></InputAdornment>}
           placeholder="Buscar producto"
           value={valorBuscador}
-          onChange={(e) => setValorBuscador(e.target.value)}
+          // onChange={(e) => setValorBuscador(e.target.value)}
+          onChange={(e) => handleChange(e)}
         />
       </FormControl>
       <TableContainer component={Paper}>

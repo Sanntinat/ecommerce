@@ -2,27 +2,45 @@ import { Box, Typography, Button, TextField, Autocomplete } from '@mui/material'
 import Grid from '@mui/material/Grid2';
 import { useNavigate } from 'react-router-dom';
 import { useFetch } from '../../../Request/fetch';
-import { Upload as UploadIcon } from '@mui/icons-material';
 import { useState } from 'react';
+import Formulario from './formulario';
+import { usePostData } from '../../../Request/post';
+import { formato } from './formato';
 
 export default function CrearProducto() {
   const navigate = useNavigate();
   const { data: tags, loading: loadingTags } = useFetch('/tags/');
-
-  const handleButtonClick = () => {
-    console.log('Guardar Cambios');
-  };
+  const [createdProduct, setCreatedProduct] = useState(null);
 
   const [selectedImage, setSelectedImage] = useState(null);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const imageUrl = URL.createObjectURL(file); // Crear una URL para previsualizar la imagen
+      const imageUrl = URL.createObjectURL(file);
       setSelectedImage(imageUrl);
+      setCreatedProduct((prev) => ({
+        ...prev,
+        imagen_url: imageUrl,
+      }));
     }
   };
 
+  const handleInputChange = (field, value) => {
+    setCreatedProduct((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const { postData, errorPost, loadingPost } = usePostData();
+  const handleButtonClick = () => {
+    postData(`/productos/`, formato(createdProduct))
+      .then((data) => {
+        navigate(`/admin/?creado=true`);
+      })
+
+  };
 
   return (
     <Box sx={{ mt: 5, p: 4, bgcolor: '#f9fafa', borderRadius: 2 }}>
@@ -102,29 +120,7 @@ export default function CrearProducto() {
               gap: 2,
             }}
           >
-            <TextField fullWidth label="Nombre" variant="outlined" />
-
-            <Autocomplete // Selector de tags
-              multiple
-              options={tags?.results || []}
-              getOptionLabel={(option) => option.nombre}
-              // value={}
-              // onChange={(_, value) => handleInputChange('tags', value.map((tag) => tag.id))}
-              loading={loadingTags}
-              renderInput={(params) => (
-                <TextField
-                {...params}
-                label="Tags"
-                sx={{
-                  backgroundColor: 'white',
-                }}
-                />
-              )}
-              />
-  
-            <TextField fullWidth label="Precio" variant="outlined" type="number" />
-            <TextField fullWidth label="Stock" variant="outlined" type="number" />
-            <TextField fullWidth label="Descripción" variant="outlined" multiline rows={4} />
+            <Formulario editedProduct={createdProduct} setEditedProduct={setCreatedProduct} handleInputChange={handleInputChange} />
           </Box>
 
           {/* Botones debajo de los inputs */}

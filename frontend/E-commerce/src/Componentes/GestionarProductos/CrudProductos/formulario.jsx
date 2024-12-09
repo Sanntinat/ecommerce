@@ -2,19 +2,14 @@ import React from 'react';
 import { TextField, Autocomplete } from '@mui/material';
 import { useFetch } from '../../../Request/fetch';
 
-export default function Formulario({editedProduct, setEditedProduct}) {
+export default function Formulario({editedProduct, setEditedProduct, handleInputChange}) {
   const { data: tags, loading: loadingTags } = useFetch('/tags/');
-  const handleInputChange = (field, value) => {
-    setEditedProduct((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
+
   return (
     <>
     <TextField
     label="Nombre"
-    value={editedProduct.nombre || ''}
+    value={editedProduct?.nombre || ''}
     onChange={(e) => handleInputChange('nombre', e.target.value)}
     fullWidth
     sx={{
@@ -26,7 +21,7 @@ export default function Formulario({editedProduct, setEditedProduct}) {
     multiple
     options={tags?.results || []}
     getOptionLabel={(option) => option.nombre}
-    value={tags?.results.filter((tag) => editedProduct.tags.includes(tag.id)) || []}
+    value={tags?.results.filter((tag) => editedProduct?.tags?.includes(tag.id)) || []}
     onChange={(_, value) => handleInputChange('tags', value.map((tag) => tag.id))}
     loading={loadingTags}
     renderInput={(params) => (
@@ -43,7 +38,7 @@ export default function Formulario({editedProduct, setEditedProduct}) {
   <TextField
     label="Precio"
     type="number"
-    value={editedProduct.precio || ''}
+    value={editedProduct?.precio ?? ''}
     onChange={(e) => handleInputChange('precio', e.target.value)}
     fullWidth
     sx={{
@@ -53,7 +48,7 @@ export default function Formulario({editedProduct, setEditedProduct}) {
   <TextField
     label="Stock"
     type="number"
-    value={editedProduct.stock || ''}
+    value={editedProduct?.stock || ''}
     onChange={(e) => handleInputChange('stock', e.target.value)}
     fullWidth
     sx={{
@@ -64,7 +59,7 @@ export default function Formulario({editedProduct, setEditedProduct}) {
     label="Descripción"
     multiline
     rows={4}
-    value={editedProduct.descripcion || ''}
+    value={editedProduct?.descripcion || ''}
     onChange={(e) => handleInputChange('descripcion', e.target.value)}
     fullWidth
     sx={{

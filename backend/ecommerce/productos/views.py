@@ -22,7 +22,7 @@ class ProductosDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Productos.objects.all()
     serializer_class = ProductosSerializer
 
-class ProductosList(generics.ListAPIView):
+class ProductosList(generics.ListCreateAPIView):
     queryset = Productos.objects.all()
     serializer_class = ProductosSerializer
     pagination_class = ProductosPagination
@@ -41,7 +41,7 @@ class ProductosList(generics.ListAPIView):
             queryset = queryset.annotate(
                 similarity=TrigramSimilarity('nombre', nombre)
             ).filter(
-                similarity__gt=0.03
+                similarity__gt=0.05
             ).order_by('-similarity')
 
         # Si 'orden' está presente, aplicar el orden por precio

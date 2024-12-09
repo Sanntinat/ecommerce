@@ -28,8 +28,15 @@ export default function EditarProducto() {
       .then((data) => {
         navigate(`/admin/?editado=true`);
       })
-
   };
+
+  const handleInputChange = (field, value) => {
+    setEditedProduct((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+  
 
   if (loading) {
     return (
@@ -79,7 +86,7 @@ export default function EditarProducto() {
                 gap: 3,
               }}
             >
-              <Formulario editedProduct={editedProduct} setEditedProduct={setEditedProduct} />
+              <Formulario editedProduct={editedProduct} setEditedProduct={setEditedProduct} handleInputChange={handleInputChange} />
               <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, mt: 2 }}>
                 <Button
                   variant="contained"

@@ -23,11 +23,6 @@ export default function GestionarVentas({ventas, isLoading, error, ventasDetalle
   useEffect(() => {
     setEstadoModal(false);
     fetchData();
-  },[]);
-
-  useEffect(() => {
-    setEstadoModal(false);
-    fetchData();
   }, [estadoModal, paginacion]);
 
   if (error) {
