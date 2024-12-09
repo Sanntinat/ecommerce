@@ -9,6 +9,8 @@ import CheckIcon from '@mui/icons-material/Check';
 import { Typography, Divider, Box, List, ListItem, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import CarruselDestacados from './destacados.jsx';
+import './principal.css';
+
 
 export default function Principal() {
   const navigate = useNavigate();

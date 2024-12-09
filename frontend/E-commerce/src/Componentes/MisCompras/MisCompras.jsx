@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useFetchCompras } from '../../Request/v2/fetchCompras';
-import { useAuth } from '../login/authContext';
+import { useAuth } from '../Login/authContext.jsx';
 import {
   CircularProgress,
   Alert,

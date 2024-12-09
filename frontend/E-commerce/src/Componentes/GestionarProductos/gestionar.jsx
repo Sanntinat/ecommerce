@@ -12,9 +12,9 @@ export default function Gestionar() {
   const [paginacion, setPaginacion] = useState(1);
   const parseData = (data) => data;
   const [valorBuscador, setValorBuscador] = useState('');
-  const [ data, loading, error, searchData ] = useFetchSearch(`/productos/?&page=${paginacion}&nombre=${valorBuscador}`, 300, parseData);
+  const [ data, loading, error, searchData ] = useFetchSearch(`/productos/?&page=${paginacion}`, 200, parseData);
   const [paginacion2, setPaginacion2] = useState(1);
-  const { data: ventas, loading: isLoading, error:errorVenta, fetchData } = useFetchDataOnDemand(`/ventas/?&page=${paginacion2}`);
+  const { data: ventas, loading: isLoading, error:errorVenta, fetchData } = useFetchDataOnDemand(`/miscompras/?&page=${paginacion2}`);
   const { data: ventasDetalle, loading: isLoadingDetalle, errorDetalle } = useFetch(`/ventadetalles/`);
 
   return (
