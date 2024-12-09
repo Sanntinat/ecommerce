@@ -12,6 +12,7 @@ import { CarritoProvider } from './Componentes/Header/Carrito/carritoContext';
 import SignUp from './Componentes/Registrar/SignUp'
 import EditarProducto from './Componentes/GestionarProductos/CrudProductos/editarProducto';
 import CrearProducto from './Componentes/GestionarProductos/CrudProductos/crearProducto';
+import MisCompras from './Componentes/MisCompras/MisCompras'
 import ProtectedRoute from './Componentes/Login/ProtectedRoute';
 import ProtectedRouteAuthenticated from './Componentes/Login/ProtectedNoAdmin';
 import Footer from './Componentes/Principal/footer';
