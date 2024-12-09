@@ -47,7 +47,7 @@ const CarruselDestacados = () => {
 			<Typography variant="h1" sx={{ fontSize: '3rem', fontWeight: '600', color: '#333', textAlign: 'center' }}>
         		Productos destacados
      	 	</Typography>
-			<Box sx={{ position: 'relative', overflow: 'hidden' }}>
+			<Box sx={{ position: 'relative', overflow: 'hidden', maxWidth: '1150px', border: '1px solid #ccc', borderRadius: '8px', p:2, boxShadow:3 , m : 3, backgroundColor: 'white' }}>
 				<Button 
        	 		onClick={handleBack}
         		sx={{
@@ -82,7 +82,8 @@ const CarruselDestacados = () => {
 								}}>
             				    	<img src={producto.imagen_url} alt={producto.nombre} style={{ 
 										width: '100%', height: '200px', objectFit: 'cover', borderRadius: '8px' }} />
-									<Typography	variant="body1" sx={{ 
+									<Typography	variant="body1" sx={{
+										color: '#555',
 										display: '-webkit-box', 
 										WebkitBoxOrient: 'vertical', 
 										overflow: 'hidden', 
@@ -90,8 +91,10 @@ const CarruselDestacados = () => {
 										WebkitLineClamp: 2 }}>
 											{producto.nombre}
 									</Typography>
-									<Typography	variant="body1" sx={{ 
-										color: '#00D5FF', 
+									<Typography	variant="body1" sx={{
+										p: 1, 
+										fontSize: '20px',
+										color: 'green',
 										display: '-webkit-box', 
 										WebkitBoxOrient: 'vertical', 
 										overflow: 'hidden', 

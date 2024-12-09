@@ -3,7 +3,7 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography' 
 import Grid from '@mui/material/Grid' 
 import { Facebook, Twitter, Instagram } from '@mui/icons-material';
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import { GoogleMap, LoadScript, Marker, LoadScriptNext } from '@react-google-maps/api';
 
 const Footer = () => {
 
@@ -20,14 +20,14 @@ const Footer = () => {
 	};
 
   return (
-    <Box sx={{ width: '100%', backgroundColor: '#1976d2', color: 'white', py: 2 }}>
+    <Box sx={{ width: '100%', backgroundColor: '#1976d2', color: 'white', mb: 0}}>
       <Grid container justifyContent="space-between">
         <Grid item xs={5}>
-     		<LoadScript googleMapsApiKey="AIzaSyDSY2z4DrAMaUtFBEkM9_Mn_DtMAeW9X2A">
+     		<LoadScriptNext googleMapsApiKey="AIzaSyDSY2z4DrAMaUtFBEkM9_Mn_DtMAeW9X2A">
 	  		<GoogleMap mapContainerStyle={containerStyle} center={center} zoom={15}>
          	 <Marker position={center} />
         	</GoogleMap>
-		</LoadScript>
+		</LoadScriptNext>
 		</Grid>
 		<Grid item xs={3} sx={{textAlign: 'left', pt: 3}}>
 		 	<Typography variant="h5" sx={{ textAlign: 'left', pl:0 , ml:0 }}>Ubicación</Typography>

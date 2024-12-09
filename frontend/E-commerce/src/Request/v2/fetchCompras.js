@@ -1,13 +1,13 @@
-import { useFetch } from '../fetch';
+import { useFetchDataOnDemand } from '../fetch';
 
 const apiUrl = '/miscompras/';  // Endpoint para obtener las compras del usuario
 
-export const useFetchCompras = (isAuthenticated) => {
-  // Realiza siempre el fetch, pero devuelve valores predeterminados si no está autenticado
-  const { data = [], loading, error } = useFetch(apiUrl);
+export const useFetchCompras = (isAuthenticated, page) => {
+  const { data = { results: [], next, previous }, loading, error, fetchData } = useFetchDataOnDemand(apiUrl + `?page=${page}`);
 
-  // Solo si está autenticado, se usan los datos de compras
-  const compras = isAuthenticated && Array.isArray(data) ? data : [];
+  const compras = isAuthenticated && Array.isArray(data.results) ? data.results : [];
+  const paginaSiguiente = data.next;
 
-  return { compras, loading, error };
+  return { compras, loading, error, paginaSiguiente, fetchData };
 };
+
