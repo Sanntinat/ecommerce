@@ -56,21 +56,21 @@ export default function ProductoDetalle() {
 		return <Typography color="error"> Error al encontrar el producto</Typography>;
 	}
 	return (
-		<Box sx={{ mt: 5, p:4, bgcolor:'#f9fafa', borderRadius:2}}>
+		<Box sx={{ mt: 5, p:4, bgcolor:'#f9fafa', borderRadius:2, display: 'flex', justifyContent: 'center', width: '100vw'}}>
 			{productoActual && (
 				<>
-				<Typography variant="h3" sx={{ mt: 3,mb:3,  fontSize: '3rem', fontWeight: '600', color: '#333', textAlign: 'center'}}>
-					{productoActual.nombre}
-				</Typography>
 				<Grid container spacing={4} justifyContent={'center'}>
-						<Grid item xs={12} md={7} sx={{ display: 'flex', justifyContent: 'center' }}>
-						<Box 
+					<Typography variant="h3" sx={{ fontSize: '3rem', fontWeight: '600', color: '#333', textAlign: 'center'}}>
+						{productoActual.nombre}
+					</Typography>
+					<Grid item xs={12} md={6} sx={{ display: 'flex', justifyContent: 'center' }}>
+					<Box 
 							component="img"
 							src={productoActual.imagen_url || 'https://via.placeholder.com/150'}
 							alt={productoActual.nombre}
 						sx={{ maxWidth: 500, borderRadius:2, boxShadow: 3, objectFit: 'cover', width:'100%' }}/>
 					</Grid>
-					<Grid item xs={12} md={5} >
+					<Grid item xs={12} md={6} >
 						<Typography variant="body1" sx= {{ whiteSpace: 'normal', wordWrap: 'break-word', overflow: 'hidden' }}>
 							{productoActual.descripcion}
 							aca va la descripcion pero ningun producto tiene entonces meto texto de prueba

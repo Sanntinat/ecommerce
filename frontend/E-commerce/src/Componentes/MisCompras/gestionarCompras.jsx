@@ -26,7 +26,7 @@ export default function GestionarCompras({ ventas, isLoading, error, ventasDetal
   }
 
   return (
-    <Box sx={{ mr:1, ml:1 }}>
+	  <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center', width: "90%", maxWidth: 800, p: 3, m: 10}}>
       {/* Título Mis Compras */}
       <Typography
         variant="h4"
@@ -40,7 +40,7 @@ export default function GestionarCompras({ ventas, isLoading, error, ventasDetal
       >
         Mis Compras
       </Typography>
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} sx={{ width: "100%", overflowX: 'auto', mt: 2 }}>
         <Table aria-label="collapsible table">
           <TableHead>
             <StyledTableRow>
@@ -131,17 +131,19 @@ export default function GestionarCompras({ ventas, isLoading, error, ventasDetal
         </Table>
       </TableContainer>
 
-      {/* Paginación */}
-      {!isLoading && !error && (
-        <Paginacion
-          setPaginacion={setPaginacion}
-          paginacion={paginacion}
-          paginaSiguiente={ventas?.next ? ventas?.next : ""}
-        />
-      )}
+	  {/* Paginación */}
+	  <Box sx={{ mt: 2}}>
+	      {!isLoading && !error && (
+	        <Paginacion
+	          setPaginacion={setPaginacion}
+	          paginacion={paginacion}
+	          paginaSiguiente={ventas?.next ? ventas?.next : ""}
+	        />
+      		)}
+		</Box>
 
       {/* Botón Volver */}
-      <Box sx={{ marginTop: 2, marginBottom: 2, textAlign: 'center' }}>
+      <Box sx={{ marginTop: 2, textAlign: 'center' }}>
         <Button variant="contained" color="primary" onClick={() => navigate('/')}>
           Volver
         </Button>
