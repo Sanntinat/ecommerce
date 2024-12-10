@@ -82,7 +82,7 @@ export default function GestionarProductos({data, loading, error, searchData, pa
         <Table>
           <TableHead>
             <StyledTableRow>
-              {['Nombre producto', 'Categoria', 'Precio', 'Stock', 'Acción'].map((header, index) => (
+              {['Nombre producto', 'Precio', 'Stock', 'Acción'].map((header, index) => (
                 <StyledTableCell
                   key={index}
                   align="center"
@@ -135,7 +135,6 @@ export default function GestionarProductos({data, loading, error, searchData, pa
                       <span>{producto.nombre}</span>
                     </Box>
                   </StyledTableCell>
-                  <StyledTableCell align="center">{producto.categoria}</StyledTableCell>
                   <StyledTableCell align="center">{producto.precio}</StyledTableCell>
                   <StyledTableCell align="center">{producto.stock}</StyledTableCell>
                   <StyledTableCell align="center">
