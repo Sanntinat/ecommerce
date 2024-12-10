@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
+import Grid from '@mui/material/Grid2';
 import { GoogleMap, LoadScriptNext, Marker } from '@react-google-maps/api';
 import { useLocation } from 'react-router-dom';
 
@@ -50,29 +50,29 @@ const Footer = () => {
     url.pathname !== '/crear-producto' &&
     !url.pathname.startsWith('/editar-producto/') && (
       <Box sx={{ width: '100%', backgroundColor: '#1976d2', color: 'white', mb: 0 }}>
-        <Grid container justifyContent="space-between">
-          <Grid item xs={5}>
+        <Grid container spacing={4} justifyContent={'center'} >
+          <Grid size={5}>
             <LoadScriptNext googleMapsApiKey="AIzaSyDSY2z4DrAMaUtFBEkM9_Mn_DtMAeW9X2A">
               <GoogleMap mapContainerStyle={containerStyle} center={coordinates} zoom={15}>
                 <Marker position={coordinates} />
               </GoogleMap>
             </LoadScriptNext>
           </Grid>
-          <Grid item xs={3} sx={{ textAlign: 'left', pt: 3 }}>
+          <Grid size={2} sx={{ textAlign: 'left', pt: 3 }}>
             <Typography variant="h5" sx={{ textAlign: 'left', pl: 0, ml: 0 }}>
               Ubicación
             </Typography>
             <Typography variant="body2">Avenida mitre 6064, Wilde</Typography>
           </Grid>
-          <Grid item xs={12} sm={4}>
-            <Typography variant="h4" sx={{ mb: 1, mt: 6 }}>
+          <Grid size={2}>
+            <Typography variant="h4" sx={{ mb: 1, pt: 3 }}>
               Contactanos
             </Typography>
             <Typography variant="body2">Tel: (123) 456-7890</Typography>
             <Typography variant="body2">Email: powerFit@gmail.com.ar</Typography>
-            <Typography variant="body2">&copy; 2024 PowerFit. Todos los derechos reservados.</Typography>
           </Grid>
         </Grid>
+        <Typography sx={{mt:1}} variant="body2">&copy; 2024 PowerFit. Todos los derechos reservados.</Typography>
         <Box sx={{ textAlign: 'center', marginTop: 2 }}></Box>
       </Box>
     )
