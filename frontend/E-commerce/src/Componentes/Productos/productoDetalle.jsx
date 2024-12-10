@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useFetch } from '../../Request/fetch';
 import Grid from '@mui/material/Grid2';
 import { CarritoContext } from '../Header/Carrito/carritoContext';
+import Carrito from '../Header/Carrito/carrito';
 
 export default function ProductoDetalle() {
 	const {data : categorias ,loading: laodingCat } = useFetch('/categorias/');
@@ -17,7 +18,7 @@ export default function ProductoDetalle() {
 	const suma = () => cambiarCant(cant + 1);
 	const resta = () => cambiarCant(Math.max(cant -1, 1));
 	const { productosSeleccionados, agregarProducto } = useContext(CarritoContext);
-	
+
 	const handleAgregarProducto = () => {
 		const productoYaSeleccionado = productosSeleccionados.some(
 			(p) => p.id === producto.id
@@ -89,28 +90,6 @@ export default function ProductoDetalle() {
 						<Typography sx={{textAlign: 'left', mb: 3, maxHeight:'80%'}}>
 							{productoActual.stock > 0 ? 'stock : disponible' : 'stock : agotado'}
 						</Typography>
-						<Typography variant="body1" sx={{ mt: 3, color: '#333', textAlign: 'left'}}>
-							Unidades: 
-						</Typography>
-						<Box sx={{ 
-						display: 'flex', 
-						alignItems: 'center', 
-						border: '1px solid #ddd', 
-						padding: 0,
-						maxWidth: '80px',
-						borderRadius: 4 }}>		
-						<Button onClick={resta} sx={{ 
-							height: 40, 
-							fontSize: '20px',
-							color: '#fff', 
-							backgroundColor: 'primary.main', 
-							'&:hover': { backgroundColor: 'primary.dark' } }}>
-        				-</Button>
-      				<Typography sx={{ mx: 2, fontSize: '18px' }}>{cant}</Typography>
-     				<Button onClick={suma} sx={{ width: 40, height: 40, fontSize: '20px', color: '#fff', backgroundColor: 'primary.main', '&:hover': { backgroundColor: 'primary.dark' } }}>
-        				+
-      					</Button>
-    					</Box>
 						<Button variant="contained" color="primary" sx={{width: '75%', mt: 10, ml:8}} onClick={handleAgregarProducto}>
 							Agregar al carrito
 						</Button>						
