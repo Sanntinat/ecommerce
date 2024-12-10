@@ -32,7 +32,7 @@ export default function GestionarVentas({ventas, isLoading, error, ventasDetalle
   }
 
   return (
-    <Box sx={{minWidth:'700px'}}>
+    <Box sx={{ mr:1, ml:1}}>
       {estadoVenta === "Eliminado" && (
         <Alert sx={{ mb: 2 }} severity="error">
           Producto eliminado correctamente

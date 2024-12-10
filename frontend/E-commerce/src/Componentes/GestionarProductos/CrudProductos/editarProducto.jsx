@@ -51,7 +51,7 @@ export default function EditarProducto() {
   }
 
   return (
-    <Box sx={{ mt: 5, p: 4, bgcolor:'#f9fafa', borderRadius:2 }}>
+    <Box sx={{ mt: 2, p: 4, bgcolor:'#f9fafa', borderRadius:2 }}>
       <Typography
         variant="h1"
         sx={{ fontSize: '3rem', fontWeight: '600', color: '#333', textAlign: 'center', mb:3}}>
@@ -59,9 +59,9 @@ export default function EditarProducto() {
       </Typography>
       {errorPut && <Alert sx={{mb:1,}} color="error">No se pudo guardar los cambios</Alert>}
       {editedProduct && (
-        <Grid container spacing={4}>
+        <Grid container spacing={4} justifyContent={'center'}>
           {/* Imagen del Producto */}
-          <Grid xs={12} md={4} sx={{ display: 'flex', justifyContent: 'center' }}>
+          <Grid xs={12}>
             <Box
               component="img"
               src={editedProduct.imagen_url || 'https://via.placeholder.com/150'}

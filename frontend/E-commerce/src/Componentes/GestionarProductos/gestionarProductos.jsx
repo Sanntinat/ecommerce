@@ -8,7 +8,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate, useLocation } from 'react-router-dom';
 import EliminarProducto from './CrudProductos/eliminarProducto';
-
+import { useMediaQuery } from '@mui/material';
 
 export default function GestionarProductos({data, loading, error, searchData, paginacion, setPaginacion, parseData, valorBuscador, setValorBuscador}) {
   const [modalShow, setModalShow] = useState(false);
@@ -50,10 +50,10 @@ export default function GestionarProductos({data, loading, error, searchData, pa
     }
   }, [location.search]);
 
-
+  const isMobile = useMediaQuery('(max-width:600px)');
 
   return (
-    <Box>
+    <Box sx={{mr:1, ml:1}}>
       {showAlertEdit && (
         <Alert sx={{ mb: 2 }} severity="warning">
           Producto editado correctamente
@@ -178,8 +178,8 @@ export default function GestionarProductos({data, loading, error, searchData, pa
           navigate(`/crear-producto`);
         }}
       >
-        <AddIcon sx={{ mr: 1 }} />
-        Agregar producto
+        <AddIcon sx={{ mr: isMobile ? 0 : 1 }} />
+        {!isMobile && 'Agregar producto'}
       </Fab>
       <EliminarProducto
         open={modalShow}

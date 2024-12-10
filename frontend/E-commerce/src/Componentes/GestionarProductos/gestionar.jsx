@@ -4,6 +4,9 @@ import { useState } from 'react';
 import GestionarProductos from './gestionarProductos';
 import GestionarVentas from './gestionarVentas';
 import { useFetchSearch, useFetchDataOnDemand, useFetch }  from '../../Request/fetch';
+import { useMediaQuery } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+
 
 
 export default function Gestionar() {
@@ -16,6 +19,9 @@ export default function Gestionar() {
   const [paginacion2, setPaginacion2] = useState(1);
   const { data: ventas, loading: isLoading, error:errorVenta, fetchData } = useFetchDataOnDemand(`/ventas/?&page=${paginacion2}`);
   const { data: ventasDetalle, loading: isLoadingDetalle, errorDetalle } = useFetch(`/ventadetalles/`);
+  const theme = useTheme();
+  const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
+  
 
   return (
     <Box sx={{ mt: 2}}>

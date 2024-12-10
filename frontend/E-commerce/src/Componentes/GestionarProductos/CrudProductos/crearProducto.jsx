@@ -64,7 +64,7 @@ export default function CrearProducto() {
   };
 
   return (
-    <Box sx={{ mt: 5, p: 4, bgcolor: '#f9fafa', borderRadius: 2 }}>
+    <Box sx={{ mt: 2, p: 4, bgcolor: '#f9fafa', borderRadius: 2 }}>
       <Typography
         variant="h1"
         sx={{
@@ -78,7 +78,7 @@ export default function CrearProducto() {
         Crear producto
       </Typography>
       {errorPost && <Alert sx={{mb:1,}} color="error">No se pudo agregar el producto</Alert>}
-      <Grid container spacing={4}>
+      <Grid container spacing={4} justifyContent={'center'}>
         {/* Imagen a la izquierda */}
         <Grid xs={12} md={6} sx={{ display: 'flex', justifyContent: 'center', position: 'relative' }}>
           <Box
@@ -130,7 +130,7 @@ export default function CrearProducto() {
         </Grid>
 
         {/* Inputs a la derecha */}
-        <Grid xs={12} md={6}>
+        <Grid xs={12}>
           <Box
             component="form"
             sx={{

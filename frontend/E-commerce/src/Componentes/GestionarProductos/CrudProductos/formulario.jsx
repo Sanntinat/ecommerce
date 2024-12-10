@@ -14,10 +14,11 @@ export default function Formulario({editedProduct, setEditedProduct, handleInput
     fullWidth
     sx={{
       backgroundColor: 'white',
+      width: '100%',
     }}
     />
 
-  <Box sx={{ maxWidth: '300px', overflow: 'hidden' }}>
+  <Box sx={{ maxWidth: '350px', overflow: 'hidden' }}>
     <Autocomplete
       multiple
       options={tags?.results || []}
@@ -31,6 +32,7 @@ export default function Formulario({editedProduct, setEditedProduct, handleInput
           label="Tags"
           sx={{
             backgroundColor: 'white',
+            width: '100%',
           }}
         />
       )}
@@ -46,6 +48,7 @@ export default function Formulario({editedProduct, setEditedProduct, handleInput
     fullWidth
     sx={{
       backgroundColor: 'white',
+      width: '100%',
     }}
     />
   <TextField
@@ -56,6 +59,7 @@ export default function Formulario({editedProduct, setEditedProduct, handleInput
     fullWidth
     sx={{
       backgroundColor: 'white',
+      width: '100%',
     }}
   />
   <TextField
@@ -67,6 +71,7 @@ export default function Formulario({editedProduct, setEditedProduct, handleInput
     fullWidth
     sx={{
       backgroundColor: 'white',
+      width: '100%',
     }}
     />
     </>
