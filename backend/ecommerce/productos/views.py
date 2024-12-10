@@ -27,6 +27,14 @@ class ProductosDetailV2(generics.RetrieveAPIView):
     queryset = Productos.objects.all()
     serializer_class = ProductosSerializerV2
 
+    def get_object(self):
+        # Incrementar la popularidad del producto
+        obj = super().get_object()
+        print(obj.id, ' ',obj.popularidad)
+        obj.popularidad += 1
+        obj.save()
+        return super().get_object()
+
 
 class ProductosList(generics.ListCreateAPIView):
     queryset = Productos.objects.all()
@@ -47,7 +55,7 @@ class ProductosList(generics.ListCreateAPIView):
             queryset = queryset.annotate(
                 similarity=TrigramSimilarity('nombre', nombre)
             ).filter(
-                similarity__gt=0.05
+                similarity__gt=0.1
             ).order_by('-similarity')
 
         # Si 'orden' está presente, aplicar el orden por precio
@@ -55,13 +63,16 @@ class ProductosList(generics.ListCreateAPIView):
             queryset = queryset.order_by('precio')
         elif orden == 'desc':
             queryset = queryset.order_by('-precio')
+        else:
+            queryset = queryset.order_by('popularidad')
         
         #Aumentar la popularidad de los productos consultados
-        for producto in queryset:
-            producto.popularidad += 1
-            producto.save()
+        # for producto in queryset[:20]:
+        #     producto.popularidad += 1
+        #     print(producto.id)
+        #     producto.save()
 
-        return queryset
+        return queryset.distinct()
 
 class ProductosDestacados(generics.ListAPIView):
     serializer_class = ProductosSerializer
