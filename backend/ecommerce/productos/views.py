@@ -76,15 +76,9 @@ class CategoriasDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Categorias.objects.all()  
     serializer_class = CategoriasSerializer  
 
-class TagsPagination(PageNumberPagination):
-    page_size = 10
-    page_size_query_param = 'page_size'
-    max_page_size = 100
-
 class TagsList(generics.ListCreateAPIView):
     queryset = Tag.objects.all()
     serializer_class = TagsSerializer
-    pagination_class = TagsPagination
 
 class TagsDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Tag.objects.all()

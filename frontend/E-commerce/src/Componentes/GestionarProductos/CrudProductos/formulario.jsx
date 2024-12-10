@@ -14,16 +14,15 @@ export default function Formulario({editedProduct, setEditedProduct, handleInput
     fullWidth
     sx={{
       backgroundColor: 'white',
-      width: '100%',
     }}
     />
 
-  <Box sx={{ maxWidth: '350px', overflow: 'hidden' }}>
+  <Box sx={{ maxWidth: '300px', overflow: 'hidden' }}>
     <Autocomplete
       multiple
-      options={tags?.results || []}
+      options={tags || []}
       getOptionLabel={(option) => option.nombre}
-      value={tags?.results.filter((tag) => editedProduct?.tags?.includes(tag.id)) || []}
+      value={tags?.filter((tag) => editedProduct?.tags?.includes(tag.id)) || []}
       onChange={(_, value) => handleInputChange('tags', value.map((tag) => tag.id))}
       loading={loadingTags}
       renderInput={(params) => (
@@ -32,7 +31,6 @@ export default function Formulario({editedProduct, setEditedProduct, handleInput
           label="Tags"
           sx={{
             backgroundColor: 'white',
-            width: '100%',
           }}
         />
       )}
@@ -48,7 +46,6 @@ export default function Formulario({editedProduct, setEditedProduct, handleInput
     fullWidth
     sx={{
       backgroundColor: 'white',
-      width: '100%',
     }}
     />
   <TextField
@@ -59,7 +56,6 @@ export default function Formulario({editedProduct, setEditedProduct, handleInput
     fullWidth
     sx={{
       backgroundColor: 'white',
-      width: '100%',
     }}
   />
   <TextField
@@ -71,7 +67,6 @@ export default function Formulario({editedProduct, setEditedProduct, handleInput
     fullWidth
     sx={{
       backgroundColor: 'white',
-      width: '100%',
     }}
     />
     </>
