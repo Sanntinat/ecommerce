@@ -1,7 +1,12 @@
 import React from 'react';
 import { Modal, Box, Typography, Button } from '@mui/material';
+import { useContext } from 'react';
+import { CarritoContext } from './carritoContext';
+
 
 export default function ModalExito({ open, handleClose, navigate }) {
+  const { vaciarCarrito } = useContext(CarritoContext); // Usar correctamente el contexto
+
   return (
     <Modal
       open={open}
@@ -41,6 +46,7 @@ export default function ModalExito({ open, handleClose, navigate }) {
         onClick={() => {
          handleClose(); // Cierra el modal
          navigate('/'); // Redirige a la página principal
+          vaciarCarrito(); // Vacía el carrito
         }}
         >
   Volver al inicio

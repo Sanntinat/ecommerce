@@ -12,7 +12,11 @@ export default function MisCompras() {
   const { data: ventasDetalle, loading: isLoadingDetalle, errorDetalle } = useFetch(`/ventadetalles/`);
 
   return (
+<<<<<<< HEAD
     <Box sx={{ mt: 3}}>
+=======
+    <Box sx={{width: '100vw', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+>>>>>>> 36d0e4fa0d0e76f6276e7697c3cdfed8a0797082
     <Grid 
       container 
       spacing={1} 
