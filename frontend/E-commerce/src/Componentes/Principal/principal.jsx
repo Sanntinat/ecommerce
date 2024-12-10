@@ -23,7 +23,7 @@ export default function Principal() {
         style={{width:"100%",height:"110%", objectFit: 'cover' }} 
       /></Box>
 
-      <Divider sx={{ width: '70%', m: 3 }} />
+      <Divider sx={{ width: '70%', m: 3, mb:6 }} />
 
     <CarruselDestacados />
 
