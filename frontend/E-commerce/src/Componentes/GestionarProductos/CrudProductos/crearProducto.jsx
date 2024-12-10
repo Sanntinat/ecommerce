@@ -4,8 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useFetch } from '../../../Request/fetch';
 import { useState } from 'react';
 import Formulario from './formulario';
-import { usePostData } from '../../../Request/post';
-import { formato } from './formato';
+import { usePostData2 } from '../../../Request/post';
 
 export default function CrearProducto() {
   const navigate = useNavigate();
@@ -21,10 +20,14 @@ export default function CrearProducto() {
       setSelectedImage(imageUrl);
       setCreatedProduct((prev) => ({
         ...prev,
-        imagen_url: imageUrl,
+        imagen: file.name, // Guardar la referencia al archivo directamente aquí
       }));
+      console.log(file);
+    } else {
+      console.log('No se seleccionó ninguna imagen');
     }
   };
+  
 
   const handleInputChange = (field, value) => {
     setCreatedProduct((prev) => ({
@@ -33,13 +36,35 @@ export default function CrearProducto() {
     }));
   };
 
-  const { postData, errorPost, loadingPost } = usePostData();
-  const handleButtonClick = () => {
-    postData(`/productos/`, formato(createdProduct))
-      .then((data) => {
-        navigate(`/admin/?creado=true`);
-      })
+  const { postData, errorPost, loadingPost } = usePostData2();
 
+  const handleButtonClick = async () => {
+    if (!createdProduct?.imagen) {
+      alert('Por favor, selecciona una imagen antes de enviar el formulario');
+      return;
+    }
+  
+    try {
+      const formData = new FormData();
+      
+      formData.append('nombre', createdProduct.nombre);
+      formData.append('descripcion', createdProduct.descripcion);
+      createdProduct.tags?.forEach(tag => formData.append('tags', tag));
+      formData.append('precio', createdProduct?.precio);
+      formData.append('stock', createdProduct?.stock);
+      formData.append('popularidad', 0);
+      formData.append('imagen', createdProduct.imagen);
+  
+      for (let [key, value] of formData.entries()) {
+        console.log(`${key}: ${value}`);
+      }
+  
+      postData('/productos/', formData)
+        .then(() => navigate(`/admin/?creado=true`))
+        .catch(error => console.error('Error en la solicitud POST', error));
+    } catch (error) {
+      console.error('Error al crear el producto', error);
+    }
   };
 
   return (
@@ -59,8 +84,7 @@ export default function CrearProducto() {
       <Grid container spacing={4}>
         {/* Imagen a la izquierda */}
         <Grid xs={12} md={6} sx={{ display: 'flex', justifyContent: 'center', position: 'relative' }}>
-
-        <Box
+          <Box
             component="img"
             src={selectedImage || 'https://via.placeholder.com/500/FFFFFF/FFFFFF'}
             alt="Imagen del producto"
@@ -106,8 +130,6 @@ export default function CrearProducto() {
             style={{ display: 'none' }}
             onChange={handleImageChange}
           />
-  
-
         </Grid>
 
         {/* Inputs a la derecha */}

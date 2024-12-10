@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextField, Autocomplete } from '@mui/material';
+import { TextField, Autocomplete, Box } from '@mui/material';
 import { useFetch } from '../../../Request/fetch';
 
 export default function Formulario({editedProduct, setEditedProduct, handleInputChange}) {
@@ -17,24 +17,27 @@ export default function Formulario({editedProduct, setEditedProduct, handleInput
     }}
     />
 
-  <Autocomplete // Selector de tags
-    multiple
-    options={tags?.results || []}
-    getOptionLabel={(option) => option.nombre}
-    value={tags?.results.filter((tag) => editedProduct?.tags?.includes(tag.id)) || []}
-    onChange={(_, value) => handleInputChange('tags', value.map((tag) => tag.id))}
-    loading={loadingTags}
-    renderInput={(params) => (
-      <TextField
-      {...params}
-      label="Tags"
-      sx={{
-        backgroundColor: 'white',
-      }}
-      />
-    )}
+  <Box sx={{ maxWidth: '300px', overflow: 'hidden' }}>
+    <Autocomplete
+      multiple
+      options={tags?.results || []}
+      getOptionLabel={(option) => option.nombre}
+      value={tags?.results.filter((tag) => editedProduct?.tags?.includes(tag.id)) || []}
+      onChange={(_, value) => handleInputChange('tags', value.map((tag) => tag.id))}
+      loading={loadingTags}
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          label="Tags"
+          sx={{
+            backgroundColor: 'white',
+          }}
+        />
+      )}
     />
-  
+  </Box>
+
+
   <TextField
     label="Precio"
     type="number"
