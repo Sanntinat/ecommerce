@@ -7,8 +7,13 @@ import Carrito from './Carrito/carrito';
 import { AppBar, Box, Toolbar, Typography, Autocomplete, TextField, InputAdornment, Divider, IconButton, CircularProgress } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { useFetchSearch } from '../../Request/fetch';
+import { useTheme } from '@mui/material/styles';
+import { useMediaQuery } from '@mui/material';
 
 export default function Header() {
+  const theme = useTheme();
+  const isMedium = useMediaQuery(theme.breakpoints.down('md'));
+
 
   return (
     <>
@@ -19,14 +24,23 @@ export default function Header() {
               <span id='nombre'>Power</span><span id='nombre2'>Fit</span>
             </Typography>
           </Link>
+
           <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
-            <BuscadorProductos/>
+            {!isMedium && <BuscadorProductos/>}
           </Box>
-          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+
+          <Box>
             <Cuenta />
             <Carrito />
           </Box>
+
         </Toolbar>
+
+        {isMedium && <Toolbar>
+          <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
+            <BuscadorProductos/>
+          </Box>
+        </Toolbar>}
       </AppBar>
     </>
   );
