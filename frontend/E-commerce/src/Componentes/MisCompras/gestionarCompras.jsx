@@ -26,7 +26,8 @@ export default function GestionarCompras({ ventas, isLoading, error, ventasDetal
   }
 
   return (
-    <Box sx={{ width: '1500px' }}>
+    <Box sx={{ mr:1, ml:1 }}>
+      {/* Título Mis Compras */}
       <Typography
         variant="h4"
         align="center"
@@ -39,20 +40,7 @@ export default function GestionarCompras({ ventas, isLoading, error, ventasDetal
       >
         Mis Compras
       </Typography>
-
-      <TableContainer
-        component={Paper}
-        sx={{
-          border: '2px solid #007bff',
-          borderRadius: '8px',
-          boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
-		  overflow: 'hidden',
-			width: '70%',  
-			display: 'flex',
-			justifyContent: 'center',
-			ml:25,
-        }}
-      >
+      <TableContainer component={Paper}>
         <Table aria-label="collapsible table">
           <TableHead>
             <StyledTableRow>
@@ -62,112 +50,88 @@ export default function GestionarCompras({ ventas, isLoading, error, ventasDetal
             </StyledTableRow>
           </TableHead>
           <TableBody>
-  {error && (
-    <StyledTableRow>
-      <StyledTableCell colSpan={3} align="center">
-        <Alert severity="error" sx={{ width: '100%' }}>Error al cargar los productos</Alert>
-      </StyledTableCell>
-    </StyledTableRow>
-  )}
+            {isLoading && !error && (
+              <StyledTableRow>
+                <StyledTableCell colSpan={3} align="center">
+                  <Alert severity="info" sx={{ width: '95%' }}>Cargando...</Alert>
+                </StyledTableCell>
+              </StyledTableRow>
+            )}
+            {ventas?.results?.map((venta) => (
+              <React.Fragment key={venta.id}>
+                <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
+                  <StyledTableCell>
+                    <IconButton
+                      aria-label="expand row"
+                      size="small"
+                      onClick={() => toggleRow(venta.fecha)}
+                    >
+                      {openRow === venta.fecha ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                    </IconButton>
+                  </StyledTableCell>
+                  <StyledTableCell align='center'>{venta.fecha}</StyledTableCell>
+                  <StyledTableCell align='center'>{venta.total}</StyledTableCell>
+                </TableRow>
+                <TableRow>
+                  <StyledTableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+                    <Collapse in={openRow === venta.fecha} timeout="auto" unmountOnExit>
+                      <Box sx={{ margin: 1 }}>
+                        <Table size="small" aria-label="purchases">
+                          <TableHead>
+                            <TableRow>
+                              <StyledTableCell align='center'>Producto</StyledTableCell>
+                              <StyledTableCell align='center'>Cantidad</StyledTableCell>
+                              <StyledTableCell align='center'>Subtotal</StyledTableCell>
+                            </TableRow>
+                          </TableHead>
+                          <TableBody>
+                            {isLoadingDetalle && (
+                              <StyledTableRow>
+                                <StyledTableCell colSpan={5} align="center">
+                                  <Alert severity="info" sx={{ width: '95%' }}>Cargando...</Alert>
+                                </StyledTableCell>
+                              </StyledTableRow>
+                            )}
+                            {errorDetalle && (
+                              <StyledTableRow>
+                                <StyledTableCell colSpan={5} align="center">
+                                  <Alert severity="error" sx={{ width: '100%' }}>Error al cargar los productos</Alert>
+                                </StyledTableCell>
+                              </StyledTableRow>
+                            )}
+                            {venta?.detalles?.map((ventaDetalle) => {
+                              const detallesAsociados = ventasDetalle?.filter((detalle) => detalle.id === ventaDetalle.id);
 
-  {isLoading && !error && (
-    <StyledTableRow>
-      <StyledTableCell colSpan={3} align="center">
-        <Alert severity="info" sx={{ width: '95%' }}>Cargando...</Alert>
-      </StyledTableCell>
-    </StyledTableRow>
-  )}
-
-  {!isLoading && !error && (!ventas?.results || ventas.results.length === 0) && (
-    <StyledTableRow>
-      <StyledTableCell colSpan={3} align="center">
-        <Alert severity="info" sx={{ width: '100%' }}>No tienes compras</Alert>
-      </StyledTableCell>
-    </StyledTableRow>
-  )}
-
-  {ventas?.results?.map((venta) => (
-    <React.Fragment key={venta.id}>
-      <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
-        <StyledTableCell>
-          <IconButton
-            aria-label="expand row"
-            size="small"
-            onClick={() => toggleRow(venta.fecha)}
-          >
-            {openRow === venta.fecha ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-          </IconButton>
-        </StyledTableCell>
-        <StyledTableCell align='center' component="th" scope="row">
-          {new Date(venta.fecha).toISOString().split('T')[0]}
-        </StyledTableCell>
-        <StyledTableCell align='center'>{venta.total}</StyledTableCell>
-      </TableRow>
-      <TableRow>
-        <StyledTableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={3}>
-          <Collapse in={openRow === venta.fecha} timeout="auto" unmountOnExit>
-            <Box sx={{ margin: 1 }}>
-              <Table size="small" aria-label="purchases">
-                <TableHead>
-                  <TableRow>
-                    <StyledTableCell align='center'>Producto</StyledTableCell>
-                    <StyledTableCell align='center'>Cantidad</StyledTableCell>
-                    <StyledTableCell align='center'>Subtotal</StyledTableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {isLoadingDetalle && (
-                    <StyledTableRow>
-                      <StyledTableCell colSpan={3} align="center">
-                        <Alert severity="info" sx={{ width: '95%' }}>Cargando...</Alert>
-                      </StyledTableCell>
-                    </StyledTableRow>
-                  )}
-                  {errorDetalle && (
-                    <StyledTableRow>
-                      <StyledTableCell colSpan={3} align="center">
-                        <Alert severity="error" sx={{ width: '100%' }}>Error al cargar las compras</Alert>
-                      </StyledTableCell>
-                    </StyledTableRow>
-                  )}
-                  {venta?.detalles?.map((ventaDetalle) => {
-                            const detallesAsociados = ventasDetalle?.filter((detalle) => detalle.id === ventaDetalle.id);
-                          
-                            return detallesAsociados?.map((detalle, detalleIndex) => (
-                              <TableRow key={`${detalle.id}-${detalleIndex}`}>
-                                <StyledTableCell>
-                                  <Box
-                                    sx={{
-                                      display: 'flex',
-                                      alignItems: 'center',
-                                    }}
-                        >  
-                          <img
-                            src={detalle.producto.imagen_url}
-                            alt={detalle.producto.nombre}
-                            style={{ width: '30px', height: '30px', objectFit: 'cover', marginRight: '8px' }}
-                          />
-                          <span>{detalle.producto.nombre}</span>
-                          </Box>
-                        </StyledTableCell>
-                        <StyledTableCell align='center'>{detalle.cantidad}</StyledTableCell>
-                        <StyledTableCell align='center'>{detalle.subtotal}</StyledTableCell>
-                      </TableRow>
-                    ));
-                  })}
-                </TableBody>
-              </Table>
-            </Box>
-          </Collapse>
-        </StyledTableCell>
-      </TableRow>
-    </React.Fragment>
-  ))}
-</TableBody>
-
+                              return detallesAsociados?.map((detalle, detalleIndex) => (
+                                <TableRow key={`${detalle.id}-${detalleIndex}`}>
+                                  <StyledTableCell>
+                                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                      <img
+                                        src={detalle.producto.imagen_url}
+                                        alt={detalle.producto.nombre}
+                                        style={{ width: '30px', height: '30px', objectFit: 'cover', marginRight: '8px' }}
+                                      />
+                                      <span>{detalle.producto.nombre}</span>
+                                    </Box>
+                                  </StyledTableCell>
+                                  <StyledTableCell align="center">{detalle.cantidad}</StyledTableCell>
+                                  <StyledTableCell align="center">{detalle.subtotal}</StyledTableCell>
+                                </TableRow>
+                              ));
+                            })}
+                          </TableBody>
+                        </Table>
+                      </Box>
+                    </Collapse>
+                  </StyledTableCell>
+                </TableRow>
+              </React.Fragment>
+            ))}
+          </TableBody>
         </Table>
       </TableContainer>
 
+      {/* Paginación */}
       {!isLoading && !error && (
         <Paginacion
           setPaginacion={setPaginacion}
@@ -176,12 +140,9 @@ export default function GestionarCompras({ ventas, isLoading, error, ventasDetal
         />
       )}
 
-      <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '20px', marginBottom: '20px' }}>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => navigate('/')}
-        >
+      {/* Botón Volver */}
+      <Box sx={{ marginTop: 2, marginBottom: 2, textAlign: 'center' }}>
+        <Button variant="contained" color="primary" onClick={() => navigate('/')}>
           Volver
         </Button>
       </Box>
