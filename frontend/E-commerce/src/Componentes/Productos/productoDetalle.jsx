@@ -56,13 +56,13 @@ export default function ProductoDetalle() {
 		return <Typography color="error"> Error al encontrar el producto</Typography>;
 	}
 	return (
-		<Box sx={{ p:4, bgcolor:'#f9fafa', borderRadius:2, width: '100vw'}}>
+		<Box sx={{ p:4, bgcolor:'#f9fafa', borderRadius:2, display: 'flex', flexDirection: 'column', alignItems: 'center', overflowX: 'hidden'}}>
 			{productoActual && (
 				<>				
-				<Typography variant="h3" sx={{ mb: 3,  fontSize: '3rem', fontWeight: '600', color: '#333', textAlign: 'center'}}>
+				<Typography variant="h3" sx={{ mb: 3,  fontSize:{ xs: '1rem', sm: '1.5rem', md: '2rem', lg: '2.5rem'}, fontWeight: '600', color: '#333', textAlign: 'center'}}>
 					{productoActual.nombre}
 				</Typography>
-				<Grid container spacing={4} justifyContent={'center'}>
+				<Grid container spacing={4} justifyContent={'center'} sx={{width: '100%'}}>
 					<Grid item xs={12} md={6}>
 					<Box 
 						component="img"

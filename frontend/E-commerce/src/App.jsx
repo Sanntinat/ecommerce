@@ -61,8 +61,10 @@ function App() {
         </ProtectedRoute>} />
         <Route path="*" element={<Navigate to="/" />} />
 	    </Routes>
-    </Box>
-	  {!loginRoutes.includes(location.pathname) && <Footer />}  
+	</Box>
+	  <Box sx={{width:'100vw'}}>
+		  {!loginRoutes.includes(location.pathname) && <Footer />} 
+	  </Box>
     </>
   );
 }
