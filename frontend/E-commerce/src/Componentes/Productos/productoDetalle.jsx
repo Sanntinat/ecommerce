@@ -73,7 +73,6 @@ export default function ProductoDetalle() {
 					<Grid item xs={12} md={6} >
 						<Typography variant="body1" sx= {{ whiteSpace: 'normal', wordWrap: 'break-word', overflow: 'hidden' }}>
 							{productoActual.descripcion}
-							aca va la descripcion pero ningun producto tiene entonces meto texto de prueba
 						</Typography>
 						{productoActual && categoriass && (
 							<Box sx={{mt:5}}>
