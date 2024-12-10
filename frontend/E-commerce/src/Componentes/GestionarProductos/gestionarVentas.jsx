@@ -66,21 +66,27 @@ export default function GestionarVentas({ventas, isLoading, error, ventasDetalle
                 </StyledTableCell>
               </StyledTableRow>
             )}
-          {ventas?.results?.map((venta) => (
-            <React.Fragment key={venta.id}>
-              <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
-                <StyledTableCell>
-                  <IconButton
-                    aria-label="expand row"
-                    size="small"
-                    onClick={() => toggleRow(venta.fecha)}
-                  >
-                    {openRow === venta.fecha ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                  </IconButton>
-                </StyledTableCell>
-                <StyledTableCell align='center' component="th" scope="row">
-                  {venta.fecha}
-                </StyledTableCell>
+          {ventas?.results?.map((venta) => {
+              const fechaCompleta = new Date(venta.fecha);
+              const anio = fechaCompleta.getFullYear();
+              const mes = String(fechaCompleta.getMonth() + 1).padStart(2, "0");
+              const dia = String(fechaCompleta.getDate()).padStart(2, "0");
+              const fechaFormateada = `${anio}-${mes}-${dia}`;
+              return (
+                <React.Fragment key={venta.id}>
+                  <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
+                    <StyledTableCell>
+                      <IconButton
+                        aria-label="expand row"
+                        size="small"
+                        onClick={() => toggleRow(venta.fecha)}
+                      >
+                        {openRow === venta.fecha ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                      </IconButton>
+                    </StyledTableCell>
+                    <StyledTableCell align="center" component="th" scope="row">
+                      {fechaFormateada} {/* Mostrar la fecha formateada */}
+                    </StyledTableCell>
                 <StyledTableCell align='center'>{venta.usuario_email}</StyledTableCell>
                 <StyledTableCell align='center'>{venta.total}</StyledTableCell>
                 <StyledTableCell align='center'>
@@ -151,7 +157,7 @@ export default function GestionarVentas({ventas, isLoading, error, ventasDetalle
                 </StyledTableCell>
               </TableRow>
             </React.Fragment>
-          ))}
+          )})}
         </TableBody>
       </Table>
     </TableContainer>
