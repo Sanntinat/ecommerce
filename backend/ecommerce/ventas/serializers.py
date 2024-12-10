@@ -31,6 +31,17 @@ class VentaCreateSerializer(serializers.ModelSerializer):
         venta = Venta.objects.create(**validated_data, total=0)
         # print('venta', venta)
         total = 0
+        productos_sin_stock = []
+        for detalle_data in detalles_data:
+            producto_id = detalle_data['producto']
+            producto = Productos.objects.get(id=producto_id)
+            if producto.stock < detalle_data['cantidad']:
+                productos_sin_stock.append(producto.nombre)
+        
+        if productos_sin_stock:
+            venta.delete()
+            raise serializers.ValidationError({'productos_sin_stock': productos_sin_stock})
+
         for detalle_data in detalles_data:
             producto_id = detalle_data.pop('producto')
             venta_detalle = VentaDetalle.objects.create(
@@ -38,6 +49,8 @@ class VentaCreateSerializer(serializers.ModelSerializer):
                 producto=Productos.objects.get(id=producto_id),
                 **detalle_data
             )
+            venta_detalle.producto.stock -= venta_detalle.cantidad
+            venta_detalle.producto.save()
             total += venta_detalle.subtotal
             # print('detalle_data', detalle_data)
         # print('total', total)
