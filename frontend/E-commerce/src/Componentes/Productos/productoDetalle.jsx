@@ -5,6 +5,8 @@ import { useFetch } from '../../Request/fetch';
 import Grid from '@mui/material/Grid2';
 import { CarritoContext } from '../Header/Carrito/carritoContext';
 import Carrito from '../Header/Carrito/carrito';
+import { useMediaQuery } from '@mui/material';
+
 
 export default function ProductoDetalle() {
 	const {data : categorias ,loading: laodingCat } = useFetch('/categorias/');
@@ -18,6 +20,7 @@ export default function ProductoDetalle() {
 	const suma = () => cambiarCant(cant + 1);
 	const resta = () => cambiarCant(Math.max(cant -1, 1));
 	const { productosSeleccionados, agregarProducto } = useContext(CarritoContext);
+  const isMobile = useMediaQuery('(max-width:600px)');
 
 	const handleAgregarProducto = () => {
 		const productoYaSeleccionado = productosSeleccionados.some(
@@ -53,28 +56,30 @@ export default function ProductoDetalle() {
 		return <Typography color="error"> Error al encontrar el producto</Typography>;
 	}
 	return (
-		<Box sx={{ mt: 5, p:4, bgcolor:'#f9fafa', borderRadius:2, width:'100vw'}}>
+		<Box sx={{ mt: 5, p:4, bgcolor:'#f9fafa', borderRadius:2}}>
 			{productoActual && (
 				<>
-				<Typography variant="h3" sx={{ mt: 3,ml: 10,mb:5,  fontSize: '3rem', fontWeight: '600', color: '#333', textAlign: 'center'}}>
+				<Typography variant="h3" sx={{ mt: 3,mb:3,  fontSize: '3rem', fontWeight: '600', color: '#333', textAlign: 'center'}}>
 					{productoActual.nombre}
 				</Typography>
-				<Grid container spacing={4} >
+				<Grid container spacing={4} justifyContent={'center'}>
 						<Grid item xs={12} md={7} sx={{ display: 'flex', justifyContent: 'center' }}>
 						<Box 
 							component="img"
 							src={productoActual.imagen_url || 'https://via.placeholder.com/150'}
 							alt={productoActual.nombre}
-						sx={{ maxWidth: 600, borderRadius:2, boxShadow: 3, objectFit: 'cover' }}/>
+						sx={{ maxWidth: 500, borderRadius:2, boxShadow: 3, objectFit: 'cover', width:'100%' }}/>
 					</Grid>
-					<Grid item xs={12} md={5} sx={{ display: 'flex',alignItems: 'flex-start', justifyContent: 'flex-start',flexDirection: 'column',border: '1px solid #ccc', borderRadius: '8px', p: 3 }}>
-						<Typography variant="body1" sx= {{ maxWidth: 600, whiteSpace: 'normal', wordWrap: 'break-word', overflow: 'hidden' }}>
+					<Grid item xs={12} md={5} >
+						<Typography variant="body1" sx= {{ whiteSpace: 'normal', wordWrap: 'break-word', overflow: 'hidden' }}>
 							{productoActual.descripcion}
 							aca va la descripcion pero ningun producto tiene entonces meto texto de prueba
 						</Typography>
 						{productoActual && categoriass && (
 							<Box sx={{mt:5}}>
-								<Stack direction="row" spacing={1}>
+								<Stack 
+                direction={isMobile ? 'column' : 'row'}
+                spacing={1}>
 									{productoActual?.tags?.map((tag) => {
 										return (
 											<Chip key={tag.id} color='primary' label={tag.idCategoria.nombre+ ' >> ' + tag.nombre}/>
@@ -90,7 +95,7 @@ export default function ProductoDetalle() {
 						<Typography sx={{textAlign: 'left', mb: 3, maxHeight:'80%'}}>
 							{productoActual.stock > 0 ? 'stock : disponible' : 'stock : agotado'}
 						</Typography>
-						<Button variant="contained" color="primary" sx={{width: '75%', mt: 10, ml:8}} onClick={handleAgregarProducto}>
+						<Button variant="contained" color="primary" sx={{width: '75%', mt: 10}} onClick={handleAgregarProducto}>
 							Agregar al carrito
 						</Button>						
 
