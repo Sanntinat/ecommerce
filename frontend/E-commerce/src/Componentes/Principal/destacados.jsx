@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import SwipeableViews from 'react-swipeable-views';
 import { autoPlay } from 'react-swipeable-views-utils';
-import { Box, Typography, Button, Link } from '@mui/material';
+import { Box, Typography, Button, Link, useTheme, useMediaQuery, Card } from '@mui/material';
 import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material';
 import { useFetch } from '../../Request/fetch.js'
 import { useNavigate } from 'react-router-dom';
@@ -14,14 +14,14 @@ const CarruselDestacados = () => {
 	const [productos, cambiarProductos] = useState([]);
 	const navigate = useNavigate();
 
- 	const handleStepChange = (step) => {
-    	setIndiceActivo(step);
+	const handleStepChange = (step) => {
+		setIndiceActivo(step);
 	};
 	const handleNext = () => {
-    	setIndiceActivo((prev) => (prev + 1) % grupos.length);
-  	};
+		setIndiceActivo((prev) => (prev + 1) % grupos.length);
+	};
 	const handleBack = () => {
-    	setIndiceActivo((prev) => (prev - 1 + grupos.length) % grupos.length);
+		setIndiceActivo((prev) => (prev - 1 + grupos.length) % grupos.length);
 	};
 
 	useEffect(() => {
@@ -30,7 +30,21 @@ const CarruselDestacados = () => {
 		}
 	}, [data]);
 
-	const mostrar = 5;
+	const theme = useTheme();
+	const tamaños = {
+		sm: useMediaQuery(theme.breakpoints.up('sm')),
+		md: useMediaQuery(theme.breakpoints.up('md')),
+		lg: useMediaQuery(theme.breakpoints.up('lg')),
+	}
+	const cantidad = () => {
+		if(tamaños.lg) return 5;
+		if(tamaños.md) return 4;
+		if(tamaños.sm) return 3;
+		return 1;
+	}
+	const mostrar = cantidad();
+	const maxWidth = `${100 / mostrar}%`;
+
 	const grupos = productos.reduce((result, producto, index) => {
 		const grupoIndex = Math.floor(index / mostrar);
 		if (!result[grupoIndex]) result[grupoIndex] = [];
@@ -43,44 +57,43 @@ const CarruselDestacados = () => {
 	};
 
 	return (
-		<Box sx={{display:'flex', flexDirection:'column', margin:'auto'}}>
-			<Typography variant="h1" sx={{ fontSize: '3rem', fontWeight: '600', color: '#333', textAlign: 'center' }}>
-        		Productos destacados
-     	 	</Typography>
-			<Box sx={{ position: 'relative', overflow: 'hidden', maxWidth: '1150px', border: '1px solid #ccc', borderRadius: '8px', p:2, boxShadow:3 , mt : 3, backgroundColor: 'white' }}>
-				<Button 
-       	 		onClick={handleBack}
-        		sx={{
-          			position: 'absolute',
-          			top: '50%',
-					left: 16,
-          			zIndex: 1,
-          			transform: 'translateY(-155%)',
-          			backgroundColor: 'rgba(0,0,0,0.5)',
-          			color: 'white',
-          			'&:hover': { backgroundColor: 'rgba(0,0,0,0.7)' },
-        			}}
-      				>
-        			<ArrowBackIos />
-      			</Button>
-		    	<AutoPlaySwipeableViews
-		        axis={'x'}
-    		    index={indiceActivo}
-     		   	onChangeIndex={handleStepChange}
-		        enableMouseEvents
-    			>
+		<Box px={2}>
+			<Typography variant="h1" sx={{ 
+				fontSize: '3rem',
+				fontWeight: '600',
+				color: '#333',
+				textAlign: 'center' 
+			}}> Productos destacados </Typography>
+			<Box sx={{
+				display: 'flex',
+				flexDirection: 'row',
+				m: 2,
+			}}>
+			<Boton onClick={handleBack} left><ArrowBackIos/></Boton>
+			<AutoPlaySwipeableViews
+				axis={'x'}
+				index={indiceActivo}
+				// onChangeIndex={handleStepChange}
+				enableMouseEvents
+			>
         			{grupos.map((grupo, index) => (
-						<Box key={index} sx={{ display: 'flex', justifyContent: 'space-between', gap : 2, padding: 2 }}>
+						<Box key={index} m={1}
+							sx={{display:'flex', flexDirection: 'row', justifyContent: 'space-around', gap: 2}}
+						>
 							{grupo.map((producto) => (
-								<Link key={producto.id} onClick={()=> linkProductoDetalle(producto.id)} sx={{ 
-									cursor: 'pointer', 
-									textAlign: 'center', 
-									flex: '1 1 calc(20% - 16px)', 
-									maxWidth: '20%',
-									textDecoration: 'none',
-									color: 'inherit',
-								}}>
-            				    	<img src={producto.imagen_url} alt={producto.nombre} style={{ 
+								<Card key={producto.id} elevation={3} sx={{display: 'flex', flexDirection: 'column', gap: 1, flexBasis: maxWidth}}
+								>
+								<Link onClick={()=> linkProductoDetalle(producto.id)}
+									sx={{
+										cursor: 'pointer', 
+										textAlign: 'center', 
+										flex: '1 1 calc(20% - 16px)', 
+										textDecoration: 'none',
+										color: 'inherit',
+									}}
+									
+								>
+									<img src={producto.imagen_url} alt={producto.nombre} style={{ 
 										width: '100%', height: '200px', objectFit: 'cover', borderRadius: '8px' }} />
 									<Typography	variant="body1" sx={{
 										color: '#555',
@@ -104,25 +117,12 @@ const CarruselDestacados = () => {
 									</Typography>
 
 	              				</Link>
+								</Card>
 							))}
 						</Box>
 					))}
-				 </AutoPlaySwipeableViews>
-				 <Button
-			        onClick={handleNext}
-			        sx={{
-			        position: 'absolute',
-			        top: '50%',
-			        right: 20,
-          			zIndex: 18,
-			        transform: 'translateY(-155%)',
-          			backgroundColor: 'rgba(0,0,0,0.5)',
-          			color: 'white',
-          			'&:hover': { backgroundColor: 'rgba(0,0,0,0.7)' },
-        			}}
-      				>
-       				 <ArrowForwardIos />
-      			</Button>
+				</AutoPlaySwipeableViews>
+				<Boton onClick={handleNext} right><ArrowForwardIos/></Boton>
 			</Box>
 		</Box>
   );
@@ -130,3 +130,28 @@ const CarruselDestacados = () => {
 
 export default CarruselDestacados;
 
+function Boton({ children, onClick, left=false, right=false, sx={} }) {
+	
+
+  return (
+	<Button
+		onClick={onClick}
+		sx={{
+			position: 'absolute',
+			transform: 'translateY(100px)',
+			backgroundColor: 'rgba(0,0,0,0.5)',
+			color: 'white',
+			'&:hover': { backgroundColor: 'rgba(0,0,0,0.7)' },
+			padding: '10px 20px',
+			borderRadius: '5px',
+			cursor: 'pointer',
+			zIndex: 1,
+			...(left && { left: 15 }),
+			...(right && { right: 15 }),
+			...sx,
+		}}>
+		{children}
+	</Button>
+
+	);
+}

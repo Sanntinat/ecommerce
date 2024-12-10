@@ -20,9 +20,14 @@ export const Main = styled("main", {
   },
 }));
 
-export const CustomDrawer = ({ children, open }) => {
+export const CustomDrawer = ({ children, open, setOpen }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery("(max-width:750px)");
+  const handleOnClose = () => {
+    if (isMobile) {
+      setOpen(false );
+    }
+  }
 
   return (
     <Drawer
@@ -42,6 +47,7 @@ export const CustomDrawer = ({ children, open }) => {
       variant={isMobile ? "temporary" : "persistent"}
       anchor="left"
       open={open}
+      onClose={() => {handleOnClose()}}
     >
       {children}
     </Drawer>
