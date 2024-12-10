@@ -22,7 +22,7 @@ export const Main = styled("main", {
 
 export const CustomDrawer = ({ children, open, setOpen }) => {
   const theme = useTheme();
-  const isMobile = useMediaQuery("(max-width:750px)");
+  const isMobile = useMediaQuery("(max-width:650px)");
   const handleOnClose = () => {
     if (isMobile) {
       setOpen(false );
