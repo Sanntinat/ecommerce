@@ -72,22 +72,7 @@ export function CartaProducto({ producto }) {
         >
           {producto.nombre}
         </Typography>
-          <Typography 
-            variant="body2" 
-            color="text.secondary" 
-            sx={{ 
-              marginBottom: '1rem',
-              height: '48px',
-              overflow: 'hidden', 
-              textOverflow: 'ellipsis', 
-              display: '-webkit-box', 
-              WebkitLineClamp: 2, 
-              WebkitBoxOrient: 'vertical' 
-            }}
-          >
-            {producto.descripcion}
-          </Typography>
-          <Typography 
+        <Typography 
             variant="h6" 
             component="div" 
             sx={{ fontWeight: '600', color: '#2e7d32', marginTop: 'auto' }}

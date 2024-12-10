@@ -35,12 +35,11 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
   border: '1px solid black',
   borderRadius: '16px',
   width: '100%',
-  marginTop: 12,
   maxWidth: '550px',
   padding: theme.spacing(6),
   background: '#fff9',
-  minHeight: '540px',
-  maxHeight: '580px',
+  minHeight: '520px',
+  maxHeight: '765px',
   '&::before': {
     backgroundImage: `url(${fondologin})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat',
     backgroundAttachment: 'fixed',
@@ -50,7 +49,12 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
     zIndex: -1,
     inset: 0,
   },
+  // Media query para pantallas más grandes (PC)
+  [theme.breakpoints.up('sm')]: {
+    marginTop: '65px', // Solo para pantallas más grandes
+  },
 }));
+
 
 export default function SignUp(props: { disableCustomTheme?: boolean }) {
   const navigate = useNavigate();
@@ -166,11 +170,11 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
     <ThemeProvider theme={theme}>
       <CssBaseline enableColorScheme />
       <SignInContainer direction="column" justifyContent="space-between">
-        <Typography component="h1" variant="h4" sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)', marginBottom: '20px' }}>
+        <Typography  variant="h4" sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}>
           Registrarse
         </Typography>
         {errorMessage && (
-          <Typography color="error" variant="body1" sx={{ marginBottom: 2 }}>
+          <Typography color="error" variant="body1" >
             {errorMessage}
           </Typography>
         )}
@@ -291,7 +295,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
 
             <Grid item xs={12} sm={6}>
               <FormControl fullWidth>
-                <Typography htmlFor="rpassword" sx={{ textAlign: 'left' }}>Repetir Contraseña</Typography>
+                <Typography htmlFor="rpassword" sx={{ textAlign: 'left'}}>Repetir Contraseña</Typography>
                 <TextField
                   error={repeatPasswordError}
                   helperText={repeatPasswordErrorMessage}
@@ -323,7 +327,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
             color="primary"
             sx={{
               marginTop: 3,
-              marginBottom: 1,
+              marginBottom: 2,
             }}
           >
             Registrarse
@@ -333,7 +337,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
             <Grid item>
               <Typography variant="body2" color="textSecondary">
                 ¿Ya tienes una cuenta?{' '}
-                <Link to="/login" style={{ color: '#0092d6' }}>
+                <Link to="/login" style={{ color: '#0092d6'}}>
                   Iniciar sesión
                 </Link>
               </Typography>

@@ -9,6 +9,7 @@ import Ordenar from './ordenar';
 import { CustomDrawer, Main } from './mainConDrawer';
 
 import { useFetchProductos } from '../../Request/v2/fetchProductos';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 
 export default function Productos() {
@@ -189,9 +190,10 @@ function ChipsFiltros({
   const maximo = precios.max;
   const setMinimo = (value) => setPrecios({min: value, max: maximo});
   const setMaximo = (value) => setPrecios({min: minimo, max: value});
+  const isMobile = useMediaQuery('(max-width:600px)');
 
   return (
-    <Stack direction="row" spacing={1}>
+    <Stack direction={isMobile ? 'column' : 'row'} spacing={1}>
       {!isEmpty(nombre) && <Chip color='primary' label={nombre} onDelete={() => setNombre('')} />}
       {!isEmpty(minimo) && <Chip label={'Desde $'+minimo} onDelete={() => setMinimo(0)} />}
       {!isEmpty(maximo) && <Chip label={'Hasta $'+maximo} onDelete={() => setMaximo(0)} />}
