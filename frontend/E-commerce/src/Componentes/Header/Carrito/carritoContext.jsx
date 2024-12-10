@@ -19,13 +19,18 @@ export const CarritoProvider = ({ children }) => {
     setProductosSeleccionados((prev) => prev.filter((producto) => producto.id !== idProducto));
   };
 
+  // Función para vaciar el carrito
+  const vaciarCarrito = () => {
+    setProductosSeleccionados([]); // Vacía el carrito
+  };
+
   useEffect(() => {
     // Actualizar el localStorage con los productos actuales
     localStorage.setItem('productosSeleccionados', JSON.stringify(productosSeleccionados));
   }, [productosSeleccionados]);
 
   return (
-    <CarritoContext.Provider value={{ productosSeleccionados, agregarProducto, eliminarProducto }}>
+    <CarritoContext.Provider value={{ productosSeleccionados, agregarProducto, eliminarProducto, vaciarCarrito }}>
       {children}
     </CarritoContext.Provider>
   );
