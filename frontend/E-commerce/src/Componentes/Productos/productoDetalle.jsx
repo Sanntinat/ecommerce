@@ -59,19 +59,25 @@ export default function ProductoDetalle() {
 		<Box sx={{ p:4, bgcolor:'#f9fafa', borderRadius:2, display: 'flex', flexDirection: 'column', alignItems: 'center', overflowX: 'hidden'}}>
 			{productoActual && (
 				<>				
-				<Typography variant="h3" sx={{ mb: 3,  fontSize:{ xs: '1rem', sm: '1.5rem', md: '2rem', lg: '2.5rem'}, fontWeight: '600', color: '#333', textAlign: 'center'}}>
+				<Typography variant="h3" sx={{ 
+					mb: 3, 
+					fontSize:{ xs: '1rem', sm: '1.5rem', md: '2rem', lg: '2.5rem'}, 
+					fontWeight: '600', 
+					color: '#333', 
+					textAlign: 'center'
+				}}>
 					{productoActual.nombre}
 				</Typography>
 				<Grid container spacing={4} justifyContent={'center'} sx={{width: '100%'}}>
-					<Grid item xs={12} md={6}>
+					<Grid item size={{sm:12,md:6}}>
 					<Box 
 						component="img"
 						src={productoActual.imagen_url || 'https://via.placeholder.com/150'}
 						alt={productoActual.nombre}
-						sx={{ maxWidth: 500, borderRadius:2, boxShadow: 3, objectFit: 'cover', width:'100%' }}/>
+						sx={{  borderRadius:2, boxShadow: 3, objectFit: 'cover', width:'100%' }}/>
 					</Grid>
-					<Grid item xs={12} md={6} >
-						<Typography variant="body1" sx= {{ display: '-webkit-box', whiteSpace: 'normal', wordWrap: 'break-word', overflow: 'hidden',textOverflow: 'ellipsis', maxWidth: 500, WebkitLineClamp: 3,WebkitBoxOrient: 'vertical' }}>
+					<Grid item size={{sm:12,md:6}}>
+						<Typography variant="body1" sx= {{ display: '-webkit-box', whiteSpace: 'normal', wordWrap: 'break-word', overflow: 'hidden',textOverflow: 'ellipsis',  WebkitLineClamp: 3,WebkitBoxOrient: 'vertical' }}>
 							{productoActual.descripcion}
 						</Typography>
 						{productoActual && categoriass && (
@@ -88,7 +94,7 @@ export default function ProductoDetalle() {
 						</Box>
 						)}
 					
-						<Typography variant="body1" sx= {{ p: 2, color: 'green', textAlign: 'left', maxWidth: 600,fontSize: '40px',  whiteSpace: 'normal', wordWrap: 'break-word', overflow: 'hidden' }}>
+						<Typography variant="body1" sx= {{ p: 2, color: 'green', textAlign: 'left', fontSize: '40px',  whiteSpace: 'normal', wordWrap: 'break-word', overflow: 'hidden' }}>
 							$ {productoActual.precio}
 						</Typography>
 						<Typography sx={{textAlign: 'left', mb: 3, maxHeight:'80%'}}>
