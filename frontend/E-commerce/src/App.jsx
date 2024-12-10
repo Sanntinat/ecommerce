@@ -62,9 +62,7 @@ function App() {
         <Route path="*" element={<Navigate to="/" />} />
 	    </Routes>
 	</Box>
-	  <Box sx={{width:'100vw'}}>
-		  {!loginRoutes.includes(location.pathname) && <Footer />} 
-	  </Box>
+		{!loginRoutes.includes(location.pathname) && <Footer />} 
     </>
   );
 }

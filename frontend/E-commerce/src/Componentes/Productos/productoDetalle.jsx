@@ -71,7 +71,7 @@ export default function ProductoDetalle() {
 						sx={{ maxWidth: 500, borderRadius:2, boxShadow: 3, objectFit: 'cover', width:'100%' }}/>
 					</Grid>
 					<Grid item xs={12} md={6} >
-						<Typography variant="body1" sx= {{ whiteSpace: 'normal', wordWrap: 'break-word', overflow: 'hidden' }}>
+						<Typography variant="body1" sx= {{ whiteSpace: 'normal', wordWrap: 'break-word', overflow: 'hidden',textOverflow: 'ellipsis', maxWidth: 500 }}>
 							{productoActual.descripcion}
 						</Typography>
 						{productoActual && categoriass && (
