@@ -43,7 +43,7 @@ const CarruselDestacados = () => {
 	};
 
 	return (
-		<>
+		<Box sx={{display:'flex', flexDirection:'column', margin:'auto'}}>
 			<Typography variant="h1" sx={{ fontSize: '3rem', fontWeight: '600', color: '#333', textAlign: 'center' }}>
         		Productos destacados
      	 	</Typography>
@@ -124,7 +124,7 @@ const CarruselDestacados = () => {
        				 <ArrowForwardIos />
       			</Button>
 			</Box>
-		</>
+		</Box>
   );
 };
 
