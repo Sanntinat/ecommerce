@@ -163,7 +163,11 @@ export default function CartaProductoCarrito({ producto, setCantidadTotal}) {
         <Typography
           variant="h6"
           component="div"
-          sx={{ color: '#333', marginBottom: '4px', fontSize: '0.7rem' }}
+          sx={{
+            color: '#333',
+            marginBottom: '4px',
+            fontSize: producto.nombre.length > 35 ? '0.5rem' : '0.7rem', // Reducir el tamaño si el nombre es largo
+          }}
         >
           {producto.nombre}
         </Typography>
