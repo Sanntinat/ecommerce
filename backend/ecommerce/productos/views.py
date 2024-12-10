@@ -55,7 +55,7 @@ class ProductosList(generics.ListCreateAPIView):
             queryset = queryset.annotate(
                 similarity=TrigramSimilarity('nombre', nombre)
             ).filter(
-                similarity__gt=0.1
+                similarity__gt=0.05
             ).order_by('-similarity')
 
         # Si 'orden' está presente, aplicar el orden por precio
@@ -63,8 +63,6 @@ class ProductosList(generics.ListCreateAPIView):
             queryset = queryset.order_by('precio')
         elif orden == 'desc':
             queryset = queryset.order_by('-precio')
-        else:
-            queryset = queryset.order_by('popularidad')
         
         #Aumentar la popularidad de los productos consultados
         # for producto in queryset[:20]:
