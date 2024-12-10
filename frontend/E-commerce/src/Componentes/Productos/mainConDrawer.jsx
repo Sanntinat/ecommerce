@@ -41,6 +41,7 @@ export const CustomDrawer = ({ children, open }) => {
               overflowY: 'auto',
               border: 'none',
               ml: 5,
+              height: 'auto',
             },
           }}
           variant="persistent"
