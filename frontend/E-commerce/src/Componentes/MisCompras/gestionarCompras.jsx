@@ -26,7 +26,7 @@ export default function GestionarCompras({ ventas, isLoading, error, ventasDetal
   }
 
   return (
-    <Box sx={{ minWidth: '700px', padding: '20px' }}>
+    <Box sx={{ width: '100vw', padding: '20px' }}>
       <Typography
         variant="h4"
         align="center"
@@ -46,7 +46,11 @@ export default function GestionarCompras({ ventas, isLoading, error, ventasDetal
           border: '2px solid #007bff',
           borderRadius: '8px',
           boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
-          overflow: 'hidden'
+		  overflow: 'hidden',
+			width: '70%',  
+			display: 'flex',
+			justifyContent: 'center',
+			ml:25,
         }}
       >
         <Table aria-label="collapsible table">

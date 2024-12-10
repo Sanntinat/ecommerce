@@ -23,7 +23,9 @@ const Footer = () => {
 	};
 
 	return (
-		url.pathname !== '/admin' && (
+		url.pathname !== '/admin' &&
+		url.pathname !== '/crear-producto' &&
+		!url.pathname.startsWith('/editar-producto/') && (
 	    	<Box sx={{ width: '100%', backgroundColor: '#1976d2', color: 'white', mb: 0}}>
       		<Grid container justifyContent="space-between">
         	<Grid item xs={5}>

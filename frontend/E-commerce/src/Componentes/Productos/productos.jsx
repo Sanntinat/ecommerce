@@ -81,15 +81,21 @@ export default function Productos() {
 			display: 'flex',
 			justifyContent:'center',
 			height: '100vh',
-			width: '100%',
+			width: '100vw',
 			mt: 10,
 			}}>
 		  <CircularProgress/>
 		</Box>
 	  ) : error ? (
 		  <Typography variant="h6" sx={{ mt: 10 }}>Error</Typography>
-		 ) : productos?.results?.length === 0 ? (
-			 <Typography variant="h6" sx={{ mt: 10 }}>No se encontraron productos</Typography>
+		 ) : productos?.results?.length === 0 ? (<Box sx={{
+			display: 'flex',
+			justifyContent:'center',
+			height: '100vh',
+			width: '100vw',
+			mt: 10,
+			}}>
+		 <Typography variant="h6" sx={{ mt: 10 }}>No se encontraron productos</Typography></Box>
 			) : (
         <>
 
