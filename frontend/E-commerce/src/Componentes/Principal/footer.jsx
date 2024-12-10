@@ -49,22 +49,26 @@ const Footer = () => {
     url.pathname !== '/admin' &&
     url.pathname !== '/crear-producto' &&
     !url.pathname.startsWith('/editar-producto/') && (
-      <Box sx={{ width: '100%', backgroundColor: '#1976d2', color: 'white', mb: 0 }}>
+      <Box sx={{ width: '100%', bgcolor:'primary.main', color: 'white', mb: 0,
+        display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap'
+       }}>
         <Grid container spacing={4} justifyContent={'center'} >
-          <Grid size={5}>
+          <Grid width={'100%'} minWidth={'300px'} margin={'auto'}>
             <LoadScriptNext googleMapsApiKey="AIzaSyDSY2z4DrAMaUtFBEkM9_Mn_DtMAeW9X2A">
               <GoogleMap mapContainerStyle={containerStyle} center={coordinates} zoom={15}>
                 <Marker position={coordinates} />
               </GoogleMap>
             </LoadScriptNext>
           </Grid>
-          <Grid size={2} sx={{ textAlign: 'left', pt: 3 }}>
+          <Grid sx={{ textAlign: 'left', pt: 3,
+            display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'
+          }}>
             <Typography variant="h5" sx={{ textAlign: 'left', pl: 0, ml: 0 }}>
               Ubicación
             </Typography>
             <Typography variant="body2">Avenida mitre 6064, Wilde</Typography>
           </Grid>
-          <Grid size={2}>
+          <Grid>
             <Typography variant="h4" sx={{ mb: 1, pt: 3 }}>
               Contactanos
             </Typography>

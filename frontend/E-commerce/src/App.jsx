@@ -36,7 +36,7 @@ function App() {
     <>
     {loginRoutes.includes(location.pathname) ? <HeaderLogin /> : <Header />}
 
-    <Box width='100%' sx={{mt:{md:8,sm:16}}}>
+    <Box width='100%' sx={{mt:{xs:16,sm:16,md:8}}}>
       <Routes>
         <Route path="/" element={<Principal />} />
         <Route path="/login" element={<Signin />} />
