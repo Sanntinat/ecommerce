@@ -57,7 +57,7 @@ export default function CarritoProductos({ productosSeleccionados, setProductosS
         alignItems: 'center',
         height: '100vh',
         mt: 3,
-        maxWidth: '20vw',
+        width: '100%',
       }}
     >
       <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', flexGrow: 1 }}>
@@ -78,7 +78,9 @@ export default function CarritoProductos({ productosSeleccionados, setProductosS
             <Typography sx={{ fontSize: '1.5rem', fontWeight: '600', color: '#333', p: 2 }}>Total</Typography>
           </Grid>
           <Grid item>
-            <Typography sx={{ fontSize: '1.5rem', fontWeight: '600', color: '#333', p: 2 }}>${cantidadTotal}</Typography>
+            <Typography sx={{ fontSize: '1.5rem', fontWeight: '600', color: '#333', p: 2 }}>
+              ${cantidadTotal.toFixed(2)}
+            </Typography>
           </Grid>
         </Grid>
         <Button
