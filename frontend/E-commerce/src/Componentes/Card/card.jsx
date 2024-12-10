@@ -108,16 +108,15 @@ export function CartaProducto({ producto }) {
   );
 }
 
-export default function CartaProductoCarrito({ producto, setCantidadTotal}) {
+export default function CartaProductoCarrito({ producto, setCantidadTotal, actualizarCantidad }) {
   const [cantidad, setCantidad] = useState(1);
   const { eliminarProducto } = useContext(CarritoContext);
-  // Este efecto se ejecuta cuando `cantidad` cambia
+
   useEffect(() => {
-    // Actualizar el total solo si `cantidad` ha cambiado
     const nuevoTotal = producto.precio * cantidad;
     setCantidadTotal((prev) => prev + nuevoTotal);
 
-    // Limpiar el efecto cuando se desmonte o cambie la cantidad
+    // Cuando se desmonte o cambie la cantidad, restamos el valor anterior
     return () => {
       setCantidadTotal((prev) => prev - nuevoTotal);
     };
@@ -125,10 +124,14 @@ export default function CartaProductoCarrito({ producto, setCantidadTotal}) {
 
   const aumentarCantidad = () => {
     setCantidad((prev) => prev + 1);
+    actualizarCantidad(producto.id, cantidad + 1); // Actualizamos la cantidad
   };
 
   const disminuirCantidad = () => {
-    setCantidad((prev) => (prev > 1 ? prev - 1 : 1));
+    if (cantidad > 1) {
+      setCantidad((prev) => prev - 1);
+      actualizarCantidad(producto.id, cantidad - 1); // Actualizamos la cantidad
+    }
   };
 
   const handleEliminar = () => {
@@ -136,35 +139,15 @@ export default function CartaProductoCarrito({ producto, setCantidadTotal}) {
   };
 
   return (
-    <Card
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        borderRadius: '8px',
-        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-        width: '15vw',
-        height: '80px',
-        padding: '8px',
-        marginBottom: '10px',
-      }}
-    >
+    <Card sx={{ display: 'flex', alignItems: 'center', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)', width: '15vw', height: '80px', padding: '8px', marginBottom: '10px' }}>
       <CardMedia
         component="img"
         image={producto.imagen_url}
         alt={producto.nombre}
-        sx={{
-          width: '60px',
-          height: '60px',
-          objectFit: 'cover',
-          borderRadius: '4px',
-        }}
+        sx={{ width: '60px', height: '60px', objectFit: 'cover', borderRadius: '4px' }}
       />
       <CardContent sx={{ flex: '1', display: 'flex', flexDirection: 'column', paddingLeft: '8px' }}>
-        <Typography
-          variant="h6"
-          component="div"
-          sx={{ color: '#333', marginBottom: '4px', fontSize: '0.7rem' }}
-        >
+        <Typography variant="h6" component="div" sx={{ color: '#333', marginBottom: '4px', fontSize: '0.7rem' }}>
           {producto.nombre}
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '4px' }}>
@@ -183,14 +166,13 @@ export default function CartaProductoCarrito({ producto, setCantidadTotal}) {
         <IconButton size="small" onClick={handleEliminar}>
           <DeleteIcon fontSize="small" color='error' />
         </IconButton>
-        <Typography
-          variant="body2"
-          component="div"
-          sx={{ fontWeight: '600', color: '#2e7d32', fontSize: '0.9rem', mt: '8px' }}
-        >
+        <Typography variant="body2" component="div" sx={{ fontWeight: '600', color: '#2e7d32', fontSize: '0.9rem', mt: '8px' }}>
           ${(producto.precio * cantidad).toFixed(2)}
         </Typography>
       </Box>
     </Card>
   );
 }
+
+
+
