@@ -10,4 +10,5 @@ urlpatterns = [
     path('categorias/<str:cat>/tags/', views.TagsDeCategoria.as_view()),
     path('tags/', views.TagsList.as_view()),
     path('tags/<int:pk>', views.TagsDetail.as_view()),
+    path('productos/<int:pk>/v2/', views.ProductosDetailV2.as_view()),
 ]

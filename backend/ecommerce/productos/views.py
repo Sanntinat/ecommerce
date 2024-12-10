@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from rest_framework import generics
 from .serializers import ProductosSerializer
+from .serializers import ProductosSerializerV2
 from .models import Productos
 from .filters import ProductosFilter
 from django_filters.rest_framework import DjangoFilterBackend
@@ -21,6 +22,11 @@ class ProductosPagination(PageNumberPagination):
 class ProductosDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Productos.objects.all()
     serializer_class = ProductosSerializer
+
+class ProductosDetailV2(generics.RetrieveAPIView):
+    queryset = Productos.objects.all()
+    serializer_class = ProductosSerializerV2
+
 
 class ProductosList(generics.ListCreateAPIView):
     queryset = Productos.objects.all()

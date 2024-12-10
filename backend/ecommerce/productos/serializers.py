@@ -41,6 +41,7 @@ class ProductosSerializer(serializers.ModelSerializer):
         # Manejar la imagen y actualizar imagen_url si es necesario
         self.handle_image(instance, imagen)
         return instance
+    
 
 class CategoriasSerializer(serializers.ModelSerializer):
     class Meta:
@@ -52,3 +53,17 @@ class TagsSerializer(serializers.ModelSerializer):
         model = Tag
         fields = '__all__'
 
+class ProductosSerializerV2(serializers.ModelSerializer):
+    class TagsSerializer(serializers.ModelSerializer):
+        idCategoria = CategoriasSerializer()
+        class Meta:
+            model = Tag
+            fields = '__all__'
+    tags = TagsSerializer(many=True)
+    class Meta:
+        model = Productos
+        fields = '__all__'
+        extra_kwargs = {
+            'imagen': {'write_only': True},
+            'imagen_url': {'read_only': True},
+        }
