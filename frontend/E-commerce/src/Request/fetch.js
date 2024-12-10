@@ -26,26 +26,32 @@ export const useFetch = (url) => {
   const [data, setData] = useState(null);
   const [loading, setloading] = useState(false);
   const [error, setError] = useState(null);
+
   useEffect(() => {
+    if (!url) return; // No hace nada si la URL es null o undefined
+
     const fetchData = async () => {
       setloading(true);
       try {
         const response = await _fetchWithHeaders(url);
-        console.log(`fetching ${url}`);
+        console.log(`Fetching ${url}`);
         if (!response.ok) throw new Error(response.statusText);
         const json = await response.json();
         setloading(false);
         setData(json);
         setError(null);
       } catch (error) {
-        setError(`${error} Could not Fetch Data `);
+        setError(`${error.message} Could not Fetch Data`);
         setloading(false);
       }
     };
+
     fetchData();
   }, [url]);
+
   return { data, loading, error };
 };
+
 
 export const useFetchDataOnDemand = (url) => {
   const [data, setData] = useState([]);

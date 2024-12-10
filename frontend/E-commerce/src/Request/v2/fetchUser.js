@@ -3,15 +3,16 @@ import { useFetch } from '../fetch';
 const apiUrl = '/user/me/';
 
 export const useFetchUser = (isAuthenticated) => {
-  // Realiza siempre el fetch, pero devuelve valores predeterminados si no está autenticado
-  const { data = {}, loading, error } = useFetch(apiUrl);
+  // Solo realiza la solicitud si estás autenticado
+  const { data = {}, loading, error } = useFetch(isAuthenticated ? apiUrl : null); 
 
-  const id = isAuthenticated ? data?.id || '' : '';
-  const nombre = isAuthenticated ? data?.nombre || '' : '';
-  const apellido = isAuthenticated ? data?.apellido || '' : '';
-  const admin = isAuthenticated ? data?.is_staff || false : false;
-  const email = isAuthenticated ? data?.email || '' : '';
-  const dni = isAuthenticated ? data?.dni || '' : '';
+  const id = data?.id || '';
+  const nombre = data?.nombre || '';
+  const apellido = data?.apellido || '';
+  const admin = data?.is_staff || false;
+  const email = data?.email || '';
+  const dni = data?.dni || '';
 
   return { id, nombre, apellido, admin, email, dni, loading, error };
 };
+
