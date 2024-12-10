@@ -7,6 +7,13 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.permissions import BasePermission
+
+class IsAdminOrReadOnly(BasePermission):
+    def has_permission(self, request, view):
+        if request.method == 'GET':
+            return True
+        return request.user is not None
 
 class VentasPagination(PageNumberPagination):
     page_size = 20
@@ -18,6 +25,7 @@ class ListarVentas(generics.ListCreateAPIView):
     queryset = Venta.objects.all().order_by('-fecha')
     serializer_class = VentaSerializer
     pagination_class = VentasPagination
+    permission_classes = [IsAdminOrReadOnly]
     def get_serializer_class(self):
         if self.request.method == 'POST':
             return VentaCreateSerializer
@@ -36,11 +44,13 @@ class ListarVentas(generics.ListCreateAPIView):
 class VerVenta(generics.RetrieveUpdateDestroyAPIView):
     queryset = Venta.objects.all()
     serializer_class = VentaSerializer
+    permission_classes = [IsAdminOrReadOnly]
 
 
 class ListarVentaDetalles(generics.ListCreateAPIView):
     queryset = VentaDetalle.objects.all()
     serializer_class = VentaDetalleSerializer
+    permission_classes = [IsAdminOrReadOnly]
 
     def get_queryset(self):
         if 'pk' in self.kwargs:
@@ -52,5 +62,6 @@ class ListarVentaDetalles(generics.ListCreateAPIView):
 class MisCompras(generics.ListAPIView):
     serializer_class = VentaSerializer
     pagination_class = VentasPagination
+    permission_classes = [IsAdminOrReadOnly]
     def get_queryset(self):
         return Venta.objects.filter(usuario=self.request.user).order_by('-fecha')

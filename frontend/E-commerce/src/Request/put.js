@@ -7,7 +7,7 @@ export function usePutData() {
   const [loading, setLoading] = useState(false);
 
   const putData = async (url, data) => {
-    // const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token');
     setLoading(true);
     setErrorPut(null);
 
@@ -16,7 +16,7 @@ export function usePutData() {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          // 'Authorization': `token ${token}`,
+          'Authorization': `token ${token}`,
         },
         body: JSON.stringify(data),
       });

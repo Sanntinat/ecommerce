@@ -12,6 +12,14 @@ from .models import Categorias
 from .models import Tag
 from .serializers import TagsSerializer 
 from django import http
+from rest_framework.permissions import BasePermission
+
+class IsAdminOrReadOnly(BasePermission):
+    def has_permission(self, request, view):
+        if request.method == 'GET':
+            return True
+        return request.user and request.user.is_staff
+
 
 class ProductosPagination(PageNumberPagination):
     page_size = 20
@@ -22,10 +30,12 @@ class ProductosPagination(PageNumberPagination):
 class ProductosDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Productos.objects.all()
     serializer_class = ProductosSerializer
+    permission_classes = [IsAdminOrReadOnly]
 
 class ProductosDetailV2(generics.RetrieveAPIView):
     queryset = Productos.objects.all()
     serializer_class = ProductosSerializerV2
+    permission_classes = [IsAdminOrReadOnly]
 
     def get_object(self):
         # Incrementar la popularidad del producto
@@ -42,6 +52,7 @@ class ProductosList(generics.ListCreateAPIView):
     pagination_class = ProductosPagination
     filter_backends = (DjangoFilterBackend,)
     filterset_class = ProductosFilter
+    permission_classes = [IsAdminOrReadOnly]
 
     def get_queryset(self):
         # Obtener los parámetros de la URL o de los query params (si existen)
@@ -79,19 +90,23 @@ class ProductosDestacados(generics.ListAPIView):
 
 class CategoriasList(generics.ListCreateAPIView):
     queryset = Categorias.objects.all() 
-    serializer_class = CategoriasSerializer    
+    serializer_class = CategoriasSerializer 
+    permission_classes = [IsAdminOrReadOnly]
 
 class CategoriasDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Categorias.objects.all()  
-    serializer_class = CategoriasSerializer  
+    serializer_class = CategoriasSerializer
+    permission_classes = [IsAdminOrReadOnly]
 
 class TagsList(generics.ListCreateAPIView):
     queryset = Tag.objects.all()
     serializer_class = TagsSerializer
+    permission_classes = [IsAdminOrReadOnly]
 
 class TagsDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Tag.objects.all()
     serializer_class = TagsSerializer
+    permission_classes = [IsAdminOrReadOnly]
 
 class TagsDeCategoria(generics.ListAPIView):
     serializer_class = TagsSerializer

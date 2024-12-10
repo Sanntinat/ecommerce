@@ -1,4 +1,4 @@
-// import { token } from './fetch.js';
+import { token } from './fetch.js';
 const apiUrl = import.meta.env.VITE_BASE_URL;
 
 export function deleteData(url) {
@@ -7,7 +7,7 @@ export function deleteData(url) {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
-            // 'Authorization': `token ${token}`,
+            'Authorization': `token ${token}`,
         },
         })
   )

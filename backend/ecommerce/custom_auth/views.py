@@ -4,13 +4,19 @@ from .serializers import UserSerializer, UserDetailSerializer, UserIdSerializer,
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
+#quiero ponerle a las clases permisos para consumir su endpoint
+#para eso debo importar la clase IsAuthenticated de rest_framework.permissions
+#y agregarle el atributo permission_classes = [IsAuthenticated] a la clase
+
 class UserList(generics.ListCreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
 
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserDetailSerializer
+    permission_classes = [IsAuthenticated]
 
 class UserData(generics.RetrieveAPIView):
     queryset = User.objects.all()
