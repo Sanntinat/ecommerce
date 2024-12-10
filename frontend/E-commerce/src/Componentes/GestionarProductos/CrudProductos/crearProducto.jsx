@@ -1,11 +1,10 @@
-import { Box, Typography, Button, TextField, Autocomplete } from '@mui/material';
+import { Box, Typography, Button, Alert } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import { useNavigate } from 'react-router-dom';
 import { useFetch } from '../../../Request/fetch';
 import { useState } from 'react';
 import Formulario from './formulario';
-import { usePostData } from '../../../Request/post';
-import { formato } from './formato';
+import { usePostData2 } from '../../../Request/post';
 
 export default function CrearProducto() {
   const navigate = useNavigate();
@@ -21,10 +20,14 @@ export default function CrearProducto() {
       setSelectedImage(imageUrl);
       setCreatedProduct((prev) => ({
         ...prev,
-        imagen_url: imageUrl,
+        imagen: file, // Guardar la referencia al archivo directamente aquí
       }));
+      console.log(file);
+    } else {
+      console.log('No se seleccionó ninguna imagen');
     }
   };
+  
 
   const handleInputChange = (field, value) => {
     setCreatedProduct((prev) => ({
@@ -33,13 +36,31 @@ export default function CrearProducto() {
     }));
   };
 
-  const { postData, errorPost, loadingPost } = usePostData();
-  const handleButtonClick = () => {
-    postData(`/productos/`, formato(createdProduct))
-      .then((data) => {
-        navigate(`/admin/?creado=true`);
-      })
+  const { postData, errorPost, loadingPost } = usePostData2();
 
+  const handleButtonClick = async () => {
+
+  
+    try {
+      const formData = new FormData();
+      
+      formData.append('nombre', createdProduct.nombre);
+      formData.append('descripcion', createdProduct.descripcion);
+      createdProduct.tags?.forEach(tag => formData.append('tags', tag));
+      formData.append('precio', createdProduct?.precio);
+      formData.append('stock', createdProduct?.stock);
+      formData.append('popularidad', 0);
+      formData.append('imagen', createdProduct.imagen);
+  
+      for (let [key, value] of formData.entries()) {
+        console.log(`${key}: ${value}`);
+      }
+  
+      postData('/productos/', formData)
+        .then(() => navigate(`/admin/?creado=true`))
+    } catch (error) {
+      console.error('Error al crear el producto', error);
+    }
   };
 
   return (
@@ -56,11 +77,11 @@ export default function CrearProducto() {
       >
         Crear producto
       </Typography>
+      {errorPost && <Alert sx={{mb:1,}} color="error">No se pudo agregar el producto</Alert>}
       <Grid container spacing={4}>
         {/* Imagen a la izquierda */}
         <Grid xs={12} md={6} sx={{ display: 'flex', justifyContent: 'center', position: 'relative' }}>
-
-        <Box
+          <Box
             component="img"
             src={selectedImage || 'https://via.placeholder.com/500/FFFFFF/FFFFFF'}
             alt="Imagen del producto"
@@ -106,8 +127,6 @@ export default function CrearProducto() {
             style={{ display: 'none' }}
             onChange={handleImageChange}
           />
-  
-
         </Grid>
 
         {/* Inputs a la derecha */}
@@ -126,7 +145,7 @@ export default function CrearProducto() {
           {/* Botones debajo de los inputs */}
           <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, mt: 4 }}>
             <Button variant="contained" color="primary" onClick={handleButtonClick}>
-              Guardar Cambios
+              agregar producto
             </Button>
             <Button variant="contained" color="error" onClick={() => navigate(`/admin/`)}>
               Cancelar

@@ -34,63 +34,54 @@ export default function Header() {
 
 function BuscadorProductos() {
   const navigate = useNavigate();
-  const handleSearchClick = () => {
-    navigate(`/productos?nombre=${valorBuscador}`);
+  const [valorBuscador, setValorBuscador] = useState('');
+
+  const handleSearch = () => {
+    if (valorBuscador.trim() !== '') {
+      navigate(`/productos?nombre=${valorBuscador}`);
+    }
   };
 
-  
-  const parseData = (data) => data.results;
-  const [data, loading, /* */, searchData] = useFetchSearch('/productos/?nombre=', 300, parseData);
-  
-  const [valorBuscador, setValorBuscador] = useState('');
-  const handleChange = (event, newValue) => {
-    setValorBuscador(newValue);
-    if (valorBuscador) {
-      searchData(valorBuscador);
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      handleSearch();
     }
-  }
+  };
 
   return (
-    <Autocomplete
-    inputValue={valorBuscador}
-    onInputChange={handleChange}
-    options={data}
-    getOptionLabel={(option) => option.nombre || ''}
-    noOptionsText={loading ? <CircularProgress size={25} /> : (!valorBuscador ? '' : 'Sin resultados')}
-    renderInput={(params) => (
-      <TextField
-        sx={{
-          '& .MuiInputBase-root': {
-            paddingTop: '3px',
-            paddingBottom: '3px',
-            paddingLeft: '1',
-            paddingRight: '0px !important',
-          },
-        }}
-        {...params}
-        placeholder="Buscar..."
-        slotProps={{
-          input: {
-            ...params.InputProps,
-            type: 'search',
-            endAdornment: (
-              <InputAdornment position="end">
-                <Divider orientation="vertical" flexItem sx={{ height: 30 }} />
-                <IconButton onClick={handleSearchClick}>
-                  <SearchIcon />
-                </IconButton>
-              </InputAdornment>
-            ),
-          },
-        }}
-      />
-    )}
-    
+    <TextField
+    value={valorBuscador}
+    onChange={(e) => setValorBuscador(e.target.value)}
+    onKeyDown={handleKeyDown}
+    placeholder="Buscar..."
+    variant="outlined"
+    InputProps={{
+      endAdornment: (
+        <InputAdornment position="end">
+          <Divider orientation="vertical" flexItem sx={{ height: 30 }} />
+          <IconButton onClick={handleSearch}>
+            <SearchIcon />
+          </IconButton>
+        </InputAdornment>
+      ),
+    }}
     sx={{
+      '& .MuiInputBase-root': {
+        paddingTop: '3px',
+        paddingBottom: '3px',
+        paddingLeft: '1',
+        paddingRight: '0px !important',
+      },
       width: '60%',
       backgroundColor: 'white',
       borderRadius: '5px',
+      '& .MuiOutlinedInput-root': {
+        height: 45,
+      },
     }}
+
   />
-  )
+  
+  );
 }
+

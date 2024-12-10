@@ -73,7 +73,7 @@ export function ModalCambiarContraseña({ open, onClose }) {
 
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogContent sx={{ backgroundColor: 'rgba(0, 0, 0, 0.9)', padding: 3 }}>
+      <DialogContent sx={{  padding: 3 }}>
         <Container maxWidth="sm">
           {/* Success and Error Messages */}
           {successMessage && (

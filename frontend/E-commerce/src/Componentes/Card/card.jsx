@@ -147,7 +147,19 @@ export default function CartaProductoCarrito({ producto, setCantidadTotal, actua
         sx={{ width: '60px', height: '60px', objectFit: 'cover', borderRadius: '4px' }}
       />
       <CardContent sx={{ flex: '1', display: 'flex', flexDirection: 'column', paddingLeft: '8px' }}>
+<<<<<<< HEAD
         <Typography variant="h6" component="div" sx={{ color: '#333', marginBottom: '4px', fontSize: '0.7rem' }}>
+=======
+        <Typography
+          variant="h6"
+          component="div"
+          sx={{
+            color: '#333',
+            marginBottom: '4px',
+            fontSize: producto.nombre.length > 35 ? '0.5rem' : '0.7rem', // Reducir el tamaño si el nombre es largo
+          }}
+        >
+>>>>>>> 3609f71192d8c2dd7070bb4d5d2a522b51f8e697
           {producto.nombre}
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '4px' }}>

@@ -21,25 +21,8 @@ export default function Principal() {
   return (
 	  <>
 	  <img src={banner} alt="Banner" style={{width:"100%",height:"110%", objectFit: 'cover' }} />		      
-	  <Divider sx={{ width: '70%', m: 5 }} />
+	  <Divider sx={{ width: '70%', m: 3 }} />
 	  <CarruselDestacados /> 
-      <Typography
-        variant="h1"
-        sx={{ fontSize: '3rem', fontWeight: '600', color: '#333', textAlign: 'center' }}>
-        Categorias
-      </Typography>
-
-      <Grid container spacing={12}>
-        <Grid xs={4}>
-          <CartaCategoria suplementos={suplementos} titulo="Suplementos" />
-        </Grid>
-        <Grid xs={4}>
-          <CartaCategoria suplementos={kinesiologia} titulo="Kinesiologia" />
-        </Grid>
-        <Grid xs={4}>
-          <CartaCategoria suplementos={gimnasio} titulo="Gimnasio" />
-        </Grid>
-      </Grid>
       <Divider sx={{ width: '70%', m: 3 }} />
 
       <Box sx={{ width: '100%' }}> 
@@ -51,7 +34,7 @@ export default function Principal() {
             <Box
               flex={1}
               padding={1}
-              sx={{ bgcolor: '#f5f5f5', borderRadius: '8px', height: '100%' }}
+              sx={{ bgcolor: '#f5f5f5', height: '97%' }}
             >
               <Typography
                 variant="h3"
@@ -90,6 +73,26 @@ export default function Principal() {
             </Box>
           </Grid>
         </Grid>
+        <Box>
+          <Divider sx={{ width: '70%', m: '0 auto', mt: 3 }} />
+          <Typography
+            variant="h1"
+            sx={{ fontSize: '3rem', fontWeight: '600', color: '#333', textAlign: 'center', mt: 2 }}
+          >
+            Categorias
+          </Typography>
+          <Grid container spacing={12} justifyContent={'center'}>
+            <Grid xs={4}>
+              <CartaCategoria suplementos={suplementos} titulo="Suplementos" />
+            </Grid>
+            <Grid xs={4}>
+              <CartaCategoria suplementos={kinesiologia} titulo="Kinesiologia" />
+            </Grid>
+            <Grid xs={4}>
+              <CartaCategoria suplementos={gimnasio} titulo="Gimnasio" />
+            </Grid>
+          </Grid>
+        </Box>
       </Box>
 	  <Divider sx={{ width: '70%', m: 3 }} />
     </>
