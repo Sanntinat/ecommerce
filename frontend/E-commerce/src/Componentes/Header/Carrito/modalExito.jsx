@@ -30,7 +30,9 @@ export default function ModalExito({ open, handleClose, navigate }) {
         <Typography id="modal-description" sx={{ color: '#555', mb: 3 }}>
             Tu compra ha sido procesada correctamente. Pronto recibirás una confirmación por correo.
             <br />
-            Recuerda que deberás retirar tu pedido en Calle Falsa 123, Quilmes.
+            Recuerda que deberás retirar tu pedido en
+            <br />
+            Avenida mitre 6064, Wilde.
         </Typography>
 
         <Button
