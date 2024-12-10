@@ -6,13 +6,16 @@ import { useAuth } from '../../Login/authContext';
 import { useNavigate } from 'react-router-dom';
 import { useFinalizarCompras } from '../../../Request/v2/fetchFinalizarCompras';
 import ModalExito from './modalExito';
+import ModalErrorStock from './modalError'
 
 export default function CarritoProductos({ productosSeleccionados, setProductosSeleccionados }) {
   const [modalOpen, setModalOpen] = useState(false);
   const handleCloseModal = () => setModalOpen(false);
   const [cantidadTotal, setCantidadTotal] = useState(0);
   const [cantidades, setCantidades] = useState({});
-  const [error, setError] = useState(false); // Estado para controlar el mensaje de error
+  const [error, setError] = useState(false);
+  const [errorStockOpen, setErrorStockOpen] = useState(false);
+  const [productosSinStock, setProductosSinStock] = useState([]);
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const { finalizarCompras } = useFinalizarCompras();
@@ -34,20 +37,25 @@ export default function CarritoProductos({ productosSeleccionados, setProductosS
       try {
         const response = await finalizarCompras(detalles);
         console.log('Compra finalizada con éxito:', response);
-  
-        setModalOpen(true); // Abre el modal inmediatamente
-  
+        setModalOpen(true);
       } catch (error) {
-        console.error('Error al finalizar la compra:', error);
-        setError(true);
+        if (error.response && error.response.productos_sin_stock) {
+          // Ahora podemos acceder a los productos sin stock desde error.response
+          setProductosSinStock(error.response.productos_sin_stock);
+          setErrorStockOpen(true); // Abrimos el modal de error de stock
+        } else {
+          console.error('Error al finalizar la compra:', error);
+          setError(true);
+        }
       }
     } else {
       navigate('/login');
     }
   };
+  
 
   const handleCloseError = () => {
-    setError(false); // Cierra el mensaje de error
+    setError(false);
   };
 
   return (
@@ -100,7 +108,7 @@ export default function CarritoProductos({ productosSeleccionados, setProductosS
       {/* Snackbar de error */}
       <Snackbar
         open={error}
-        autoHideDuration={4000} // El mensaje se oculta automáticamente después de 4 segundos
+        autoHideDuration={4000}
         onClose={handleCloseError}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       >
@@ -108,6 +116,9 @@ export default function CarritoProductos({ productosSeleccionados, setProductosS
           Ha ocurrido un error al procesar tu compra. Por favor, inténtalo nuevamente.
         </Alert>
       </Snackbar>
+
+      {/* Modal de productos sin stock */}
+      <ModalErrorStock open={errorStockOpen} handleClose={() => setErrorStockOpen(false)} productosSinStock={productosSinStock} />
     </Box>
   );
 }

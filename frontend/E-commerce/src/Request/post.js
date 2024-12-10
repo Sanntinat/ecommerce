@@ -8,7 +8,7 @@ export function usePostData() {
   const postData = async (url, data) => {
     const token = localStorage.getItem("token");
     setLoading(true);
-
+  
     if (url) {
       console.log("post url:", apiUrl + url);
       console.log("post data", data);
@@ -21,16 +21,19 @@ export function usePostData() {
           },
           body: JSON.stringify(data),
         });
-
+  
         if (!response.ok) {
+          // Aquí se lanza el error con la respuesta completa
           const errorData = await response.json();
-          throw new Error(errorData.message || "Error en la solicitud");
+          const error = new Error(errorData.message || "Error en la solicitud");
+          error.response = errorData;  // Guardamos la respuesta completa en el error
+          throw error;
         }
         return await response.json();
       } catch (error) {
         setErrorPost(error.message);
         console.error("error en la solicitud:", error);
-        throw error;
+        throw error;  // Lanzamos el error para que lo pueda manejar el componente
       } finally {
         setLoading(false);
       }
