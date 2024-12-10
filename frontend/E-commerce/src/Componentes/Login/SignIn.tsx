@@ -35,7 +35,7 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
   width: '100%',
   maxWidth: '450px',
   padding: theme.spacing(6),
-  marginTop: '155px',
+  marginTop: '70px',
   background: '#fff9',
   minHeight: '450px',
   '&::before': {

@@ -35,9 +35,9 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
   border: '1px solid black',
   borderRadius: '16px',
   width: '100%',
+  marginTop: 12,
   maxWidth: '550px',
   padding: theme.spacing(6),
-  marginTop: '130px',
   background: '#fff9',
   minHeight: '540px',
   maxHeight: '580px',
@@ -182,7 +182,6 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
             display: 'flex',
             flexDirection: 'column',
             width: '100%',
-            gap: 2,
           }}
         >
           <Grid container spacing={2}>
