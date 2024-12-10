@@ -47,7 +47,7 @@ const CarruselDestacados = () => {
 			<Typography variant="h1" sx={{ fontSize: '3rem', fontWeight: '600', color: '#333', textAlign: 'center' }}>
         		Productos destacados
      	 	</Typography>
-			<Box sx={{ position: 'relative', overflow: 'hidden', maxWidth: '1150px', border: '1px solid #ccc', borderRadius: '8px', p:2, boxShadow:3 , m : 3, backgroundColor: 'white' }}>
+			<Box sx={{ position: 'relative', overflow: 'hidden', maxWidth: '1150px', border: '1px solid #ccc', borderRadius: '8px', p:2, boxShadow:3 , mt : 3, backgroundColor: 'white' }}>
 				<Button 
        	 		onClick={handleBack}
         		sx={{

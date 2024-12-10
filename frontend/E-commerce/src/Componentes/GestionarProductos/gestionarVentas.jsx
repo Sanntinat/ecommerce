@@ -122,9 +122,22 @@ export default function GestionarVentas({ventas, isLoading, error, ventasDetalle
                         {venta?.detalles.map((ventaDetalleId, index) => {
                           const detalle = ventasDetalle?.find((detalle) => detalle.venta === venta.id);
                           return detalle ? (
-                            <TableRow key={`${detalle.id}-${index}`}>
+                            <TableRow key={`${detalle.id}-${index}`}>            
                               <StyledTableCell align='center'>
-                                {detalle.producto.nombre}
+                              <Box
+                                sx={{
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                }}
+                              >  
+                                <img
+                                  src={detalle.producto.imagen_url}
+                                  alt={detalle.producto.nombre}
+                                  style={{ width: '30px', height: '30px', objectFit: 'cover', marginRight: '8px' }}
+                                />
+                                <span>{detalle.producto.nombre}</span>
+                                </Box>
                               </StyledTableCell>
                               <StyledTableCell align='center'>{detalle.cantidad}</StyledTableCell>
                               <StyledTableCell align='center'>{detalle.subtotal}</StyledTableCell>

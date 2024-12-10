@@ -53,7 +53,8 @@ export default function Carrito() {
         </Box>
         <Divider />
         {productosSeleccionados.length > 0 ? 
-          <CarritoProductos productosSeleccionados={productosSeleccionados} setProductosSeleccionados={setProductosSeleccionados}/> : 
+          <CarritoProductos productosSeleccionados={productosSeleccionados} setProductosSeleccionados={setProductosSeleccionados} />
+          : 
           <CarritoVacio drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen}/>
         }
       </Drawer>
