@@ -1,4 +1,4 @@
-import { Box, Typography, Button, TextField, Autocomplete } from '@mui/material';
+import { Box, Typography, Button, Alert } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import { useNavigate } from 'react-router-dom';
 import { useFetch } from '../../../Request/fetch';
@@ -20,7 +20,7 @@ export default function CrearProducto() {
       setSelectedImage(imageUrl);
       setCreatedProduct((prev) => ({
         ...prev,
-        imagen: file.name, // Guardar la referencia al archivo directamente aquí
+        imagen: file, // Guardar la referencia al archivo directamente aquí
       }));
       console.log(file);
     } else {
@@ -39,10 +39,7 @@ export default function CrearProducto() {
   const { postData, errorPost, loadingPost } = usePostData2();
 
   const handleButtonClick = async () => {
-    if (!createdProduct?.imagen) {
-      alert('Por favor, selecciona una imagen antes de enviar el formulario');
-      return;
-    }
+
   
     try {
       const formData = new FormData();
@@ -61,7 +58,6 @@ export default function CrearProducto() {
   
       postData('/productos/', formData)
         .then(() => navigate(`/admin/?creado=true`))
-        .catch(error => console.error('Error en la solicitud POST', error));
     } catch (error) {
       console.error('Error al crear el producto', error);
     }
@@ -81,6 +77,7 @@ export default function CrearProducto() {
       >
         Crear producto
       </Typography>
+      {errorPost && <Alert sx={{mb:1,}} color="error">No se pudo agregar el producto</Alert>}
       <Grid container spacing={4}>
         {/* Imagen a la izquierda */}
         <Grid xs={12} md={6} sx={{ display: 'flex', justifyContent: 'center', position: 'relative' }}>
@@ -148,7 +145,7 @@ export default function CrearProducto() {
           {/* Botones debajo de los inputs */}
           <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, mt: 4 }}>
             <Button variant="contained" color="primary" onClick={handleButtonClick}>
-              Guardar Cambios
+              agregar producto
             </Button>
             <Button variant="contained" color="error" onClick={() => navigate(`/admin/`)}>
               Cancelar
