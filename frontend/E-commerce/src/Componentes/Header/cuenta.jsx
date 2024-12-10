@@ -4,10 +4,12 @@ import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import PersonIcon from '@mui/icons-material/Person';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import { Menu, MenuItem, Button, useTheme, useMediaQuery } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../Login/authContext';
-import { ModalCambiarContraseña } from './Modal/modalCambiarContraseña';  // Importar el modal
+import { ModalCambiarContraseña } from './Modal/modalCambiarContraseña';
+import { useFetchUser } from '../../Request/v2/fetchUser';
 
 export default function Cuenta() {
   const theme = useTheme();
@@ -17,6 +19,9 @@ export default function Cuenta() {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const { isAuthenticated, logout } = useAuth();
+
+  // Llamamos directamente a useFetchUser
+  const { nombre, apellido, admin, loading, error } = useFetchUser(isAuthenticated);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -62,16 +67,23 @@ export default function Cuenta() {
         }}
       >
         {isAuthenticated && (
-        <MenuItem onClick={handleClose} sx={{ display: 'flex', alignItems: 'center' }}>
-        <Link to="/compras" style={{ textDecoration: 'none', color: 'inherit' }}>
-          <ShoppingBasketIcon sx={{ marginRight: 1 }} /> Mis compras
-          </Link>
-        </MenuItem>
+          <MenuItem onClick={handleClose} sx={{ display: 'flex', alignItems: 'center' }}>
+            <Link to="/compras" style={{ textDecoration: 'none', color: 'inherit' }}>
+              <ShoppingBasketIcon sx={{ marginRight: 1 }} /> Mis compras
+            </Link>
+          </MenuItem>
         )}
         {isAuthenticated && (
-        <MenuItem onClick={handleOpenModal} sx={{ display: 'flex', alignItems: 'center' }}>
-          <LockOpenIcon sx={{ marginRight: 1 }} /> Cambiar Contraseña
-        </MenuItem>
+          <MenuItem onClick={handleOpenModal} sx={{ display: 'flex', alignItems: 'center' }}>
+            <LockOpenIcon sx={{ marginRight: 1 }} /> Cambiar Contraseña
+          </MenuItem>
+        )}
+        {!loading && admin && isAuthenticated && (
+          <MenuItem onClick={handleClose} sx={{ display: 'flex', alignItems: 'center' }}>
+            <Link to="/admin" style={{ textDecoration: 'none', color: 'inherit' }}>
+              <AdminPanelSettingsIcon sx={{ marginRight: 1 }} /> Panel Administrativo
+            </Link>
+          </MenuItem>
         )}
         {isAuthenticated ? (
           <MenuItem onClick={handleLogout} sx={{ display: 'flex', alignItems: 'center' }}>
