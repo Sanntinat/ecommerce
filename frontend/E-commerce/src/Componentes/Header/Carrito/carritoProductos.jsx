@@ -1,11 +1,12 @@
 import { Divider, Typography, Box, Button, Alert, Snackbar } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import CartaProductoCarrito from '../../Card/card';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useAuth } from '../../Login/authContext';
 import { useNavigate } from 'react-router-dom';
 import { useFinalizarCompras } from '../../../Request/v2/fetchFinalizarCompras';
 import ModalExito from './modalExito';
+import { CarritoContext } from './carritoContext'; // IMPORTAR el contexto correctamente
 
 export default function CarritoProductos({ productosSeleccionados, setProductosSeleccionados }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -16,6 +17,7 @@ export default function CarritoProductos({ productosSeleccionados, setProductosS
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const { finalizarCompras } = useFinalizarCompras();
+  const { vaciarCarrito } = useContext(CarritoContext); // Usar correctamente el contexto
 
   const actualizarCantidad = (productoId, cantidad) => {
     setCantidades((prevCantidades) => ({
@@ -30,14 +32,17 @@ export default function CarritoProductos({ productosSeleccionados, setProductosS
         producto: producto.id,
         cantidad: cantidades[producto.id] || 1,
       }));
-
+  
       try {
         const response = await finalizarCompras(detalles);
         console.log('Compra finalizada con éxito:', response);
-        setModalOpen(true);
+  
+        setModalOpen(true); // Abre el modal inmediatamente
+  
+        vaciarCarrito(); // Vacía el carrito inmediatamente
       } catch (error) {
         console.error('Error al finalizar la compra:', error);
-        setError(true); // Muestra el mensaje de error
+        setError(true);
       }
     } else {
       navigate('/login');

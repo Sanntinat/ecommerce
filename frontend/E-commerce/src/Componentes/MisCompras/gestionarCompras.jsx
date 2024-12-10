@@ -26,7 +26,7 @@ export default function GestionarCompras({ ventas, isLoading, error, ventasDetal
   }
 
   return (
-    <Box sx={{ width: '100vw', padding: '20px' }}>
+    <Box sx={{ width: '1500px' }}>
       <Typography
         variant="h4"
         align="center"
@@ -130,17 +130,17 @@ export default function GestionarCompras({ ventas, isLoading, error, ventasDetal
                       </StyledTableCell>
                     </StyledTableRow>
                   )}
-                  {venta?.detalles.map((ventaDetalleId, index) => {
-                    const detalle = ventasDetalle?.find((detalle) => detalle.venta === venta.id);
-                    return detalle ? (
-                      <TableRow key={`${detalle.id}-${index}`}>
-                        <StyledTableCell align='center'>
-                        <Box
-                          sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                          }}
+                  {venta?.detalles?.map((ventaDetalle) => {
+                            const detallesAsociados = ventasDetalle?.filter((detalle) => detalle.id === ventaDetalle.id);
+                          
+                            return detallesAsociados?.map((detalle, detalleIndex) => (
+                              <TableRow key={`${detalle.id}-${detalleIndex}`}>
+                                <StyledTableCell>
+                                  <Box
+                                    sx={{
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                    }}
                         >  
                           <img
                             src={detalle.producto.imagen_url}
@@ -153,7 +153,7 @@ export default function GestionarCompras({ ventas, isLoading, error, ventasDetal
                         <StyledTableCell align='center'>{detalle.cantidad}</StyledTableCell>
                         <StyledTableCell align='center'>{detalle.subtotal}</StyledTableCell>
                       </TableRow>
-                    ) : null;
+                    ));
                   })}
                 </TableBody>
               </Table>
@@ -176,7 +176,7 @@ export default function GestionarCompras({ ventas, isLoading, error, ventasDetal
         />
       )}
 
-      <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '20px', marginBottom: '20px' }}>
         <Button
           variant="contained"
           color="primary"
