@@ -5,7 +5,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { StyledTableCell, StyledTableRow } from './styledTable'
 import { useState, useEffect } from 'react';
-import EliminarProducto from './CrudProductos/eliminarProducto';
+import EliminarVenta from './CrudProductos/eliminarVenta';
 import Paginacion from '../Productos/paginacion';
 
 
@@ -27,7 +27,7 @@ export default function GestionarVentas({ventas, isLoading, error, ventasDetalle
 
   if (error) {
     return (
-      <Alert severity="error" sx={{ width: '100%' }}>Error al cargar los productos</Alert>
+      <Alert severity="error" sx={{ width: '100%' }}>Error al cargar las ventas</Alert>
     );
   }
 
@@ -35,7 +35,7 @@ export default function GestionarVentas({ventas, isLoading, error, ventasDetalle
     <Box sx={{ mr:1, ml:1}}>
       {estadoVenta === "Eliminado" && (
         <Alert sx={{ mb: 2 }} severity="error">
-          Producto eliminado correctamente
+          Venta eliminada correctamente
         </Alert>
       )}
     <TableContainer component={Paper}>
@@ -53,7 +53,7 @@ export default function GestionarVentas({ventas, isLoading, error, ventasDetalle
         {error && (
               <StyledTableRow>
                 <StyledTableCell colSpan={5} align="center">
-                  <Alert severity="error" sx={{ width: '100%' }}>Error al cargar los productos</Alert>
+                  <Alert severity="error" sx={{ width: '100%' }}>Error al cargar las ventas</Alert>
                 </StyledTableCell>
               </StyledTableRow>
             )}
@@ -162,7 +162,7 @@ export default function GestionarVentas({ventas, isLoading, error, ventasDetalle
       paginaSiguiente={ventas?.next ? ventas?.next : ""}
       />
       }
-    <EliminarProducto
+    <EliminarVenta
       open={modalShow}
       onClose={() => setModalShow(false)}
       seleccionado={ventaSeleccionado}
