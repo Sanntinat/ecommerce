@@ -23,8 +23,16 @@ export default function Principal() {
         style={{width:"100%",height:"110%", objectFit: 'cover' }} 
       /></Box>
 
-	  <Divider sx={{ width: '70%', m: 5 }} />
+      <Divider sx={{ width: '70%', m: 3 }} />
 
+    <CarruselDestacados />
+
+	  <Divider sx={{ width: '80%', my: 5 }} />
+
+          <Grid>
+            <DescubreNuestrosProductos />
+          </Grid>
+    <Divider sx={{ width: '70%', m: 5 }} />
 
       <Typography
         variant="h1"
@@ -37,15 +45,6 @@ export default function Principal() {
           <CartaCategoria suplementos={kinesiologia} titulo="Kinesiologia" />
           <CartaCategoria suplementos={gimnasio} titulo="Gimnasio" />
       </Grid>
-      <Divider sx={{ width: '70%', m: 3 }} />
-
-    <CarruselDestacados />
-
-	  <Divider sx={{ width: '80%', my: 5 }} />
-
-          <Grid>
-            <DescubreNuestrosProductos />
-          </Grid>
 	  <Divider sx={{ width: '70%', m: 3 }} />
     </Stack>
   );

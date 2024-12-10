@@ -102,7 +102,7 @@ export default function Productos() {
 
       {/* //! CONTENIDO  */}
       <Box sx={{ display: 'flex', width:'100%'}}>
-        <CustomDrawer open={open} >
+        <CustomDrawer open={open} setOpen={setOpen}>
           <Filtros 
             categoriaSeleccionada={categoria} 
             precios={precios} setPrecios={setPrecios}
