@@ -17,6 +17,7 @@ import ProtectedRoute from './Componentes/Login/ProtectedRoute';
 import ProtectedRouteAuthenticated from './Componentes/Login/ProtectedNoAdmin';
 import Footer from './Componentes/Principal/footer';
 import Box from '@mui/material/Box';
+import ProductoDetalle from './Componentes/Productos/productoDetalle';
 
 function App() {
 
@@ -35,12 +36,13 @@ function App() {
     <>
     {loginRoutes.includes(location.pathname) ? <HeaderLogin /> : <Header />}
 
-    <Box width='100%' sx={{mt:{md:8,sm:16}}}>
+    <Box width='100%' sx={{mt:{xs:16,sm:16,md:8}}}>
       <Routes>
         <Route path="/" element={<Principal />} />
         <Route path="/login" element={<Signin />} />
         <Route path="/registrar" element={<SignUp />} />
-        <Route path="/productos" element={<Productos />} />
+		<Route path="/productos" element={<Productos />} />
+		<Route path="/productos/:id/" element={<ProductoDetalle/>}/>
         <Route path="/compras" element={<ProtectedRouteAuthenticated> 
           <MisCompras />
           </ProtectedRouteAuthenticated >} />

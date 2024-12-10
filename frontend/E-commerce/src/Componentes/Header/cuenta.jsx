@@ -4,12 +4,14 @@ import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import PersonIcon from '@mui/icons-material/Person';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import { Menu, MenuItem, Button } from '@mui/material';
+import { Menu, MenuItem, Button, useTheme, useMediaQuery } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../Login/authContext';
 import { ModalCambiarContraseña } from './Modal/modalCambiarContraseña';  // Importar el modal
 
 export default function Cuenta() {
+  const theme = useTheme();
+  const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
   
   const [openModal, setOpenModal] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -48,7 +50,7 @@ export default function Cuenta() {
         sx={{ color: '#00a1ed' }}
       >
         <AccountCircle />
-        Mi cuenta
+        {isSmall ? '' : 'Mi cuenta'}
       </Button>
       <Menu
         id="basic-menu"

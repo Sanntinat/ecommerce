@@ -35,17 +35,9 @@ export function CartaCategoria({ suplementos, titulo }) {
 
 
 export function CartaProducto({ producto }) {
-  const { productosSeleccionados, agregarProducto } = useContext(CarritoContext); // Consumir el contexto
-
+  const navegar = useNavigate();
   const handleAgregarProducto = () => {
-    // Verificar si el producto ya está en el carrito
-    const productoYaSeleccionado = productosSeleccionados.some(
-      (p) => p.id === producto.id
-    );
-
-    if (!productoYaSeleccionado) {
-      agregarProducto(producto); // Si no está en el carrito, agregarlo
-    }
+	navegar(`/productos/${producto?.id}/`);
   };
 
   return (
@@ -139,7 +131,7 @@ export default function CartaProductoCarrito({ producto, setCantidadTotal, actua
   };
 
   return (
-    <Card sx={{ display: 'flex', alignItems: 'center', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)', width: '15vw', height: '80px', padding: '8px', marginBottom: '10px' }}>
+    <Card sx={{ display: 'flex', alignItems: 'center', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)', width: '80%', height: '80px', padding: '8px', marginBottom: '10px' }}>
       <CardMedia
         component="img"
         image={producto.imagen_url}
@@ -173,6 +165,3 @@ export default function CartaProductoCarrito({ producto, setCantidadTotal, actua
     </Card>
   );
 }
-
-
-

@@ -1,4 +1,4 @@
-import { Button, Drawer, Box, Typography, Divider, styled, Badge } from '@mui/material';
+import { Button, Drawer, Box, Typography, Divider, styled, Badge, useTheme, useMediaQuery } from '@mui/material';
 import { useContext } from 'react';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import CloseIcon from '@mui/icons-material/Close';
@@ -18,6 +18,8 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 }));
 
 export default function Carrito() {
+  const theme = useTheme();
+  const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
   const { productosSeleccionados, setProductosSeleccionados } = useContext(CarritoContext); // Consumir el contexto
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -31,27 +33,30 @@ export default function Carrito() {
         <StyledBadge badgeContent={productosSeleccionados.length > 0 ? productosSeleccionados.length : "0"} color="secondary">
           <ShoppingCartIcon />
         </StyledBadge>
-        <Box sx={{ pl: '18px' }}>Carrito</Box>
+        {isSmall? '' : <Box sx={{ pl: '18px' }}>Carrito</Box>}
       </Button>
       <Drawer
         anchor="right"
         open={drawerOpen}
         onClose={handleDrawerToggle}
+        width="100%"
       >
         <Box sx={{ 
-          width: '20vw',
           display: 'flex',
+          justifyContent: 'space-between',
         }} role="presentation">
           <Typography
             variant="h1"
-            sx={{ fontSize: '1.5rem', fontWeight: '600', color: '#333', m: 2 }}>
+            sx={{ fontSize: '1.5rem', fontWeight: '600', color: '#333', m: 2}}>
             Tu carrito
           </Typography>
           <Button onClick={handleDrawerToggle} sx={{ m: 1, ml: 'auto' }}>
             <CloseIcon />
           </Button>
         </Box>
-        <Divider />
+        <Divider sx={{
+          minWidth:{xs:'100vw',sm:'50vw',md:'35vw'},
+          }}/>
         {productosSeleccionados.length > 0 ? 
           <CarritoProductos productosSeleccionados={productosSeleccionados} setProductosSeleccionados={setProductosSeleccionados} />
           : 
