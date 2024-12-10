@@ -49,7 +49,7 @@ const Footer = () => {
     url.pathname !== '/admin' &&
     url.pathname !== '/crear-producto' &&
     !url.pathname.startsWith('/editar-producto/') && (
-      <Box sx={{ width: '100%', bgcolor:'primary.main', color: 'white', mb: 0,
+      <Box sx={{ width: '100vw', bgcolor:'primary.main', color: 'white', mb: 0,
         display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap'
        }}>
         <Grid container spacing={4} justifyContent={'center'} >
