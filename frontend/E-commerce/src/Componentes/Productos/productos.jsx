@@ -148,7 +148,7 @@ function ProductosHeader({
       display: 'flex', 
       justifyContent: 'space-between', 
       alignItems: 'center', 
-      mt: 10, 
+      mt: 3, 
       width: '100%', 
       minWidth:'90vw' 
     }}>

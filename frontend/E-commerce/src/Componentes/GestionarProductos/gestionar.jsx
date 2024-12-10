@@ -18,7 +18,7 @@ export default function Gestionar() {
   const { data: ventasDetalle, loading: isLoadingDetalle, errorDetalle } = useFetch(`/ventadetalles/`);
 
   return (
-    <Box sx={{ mt: 10}}>
+    <Box sx={{ mt: 2}}>
     <Grid 
       container 
       spacing={1} 

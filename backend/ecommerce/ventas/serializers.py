@@ -45,8 +45,16 @@ class VentaCreateSerializer(serializers.ModelSerializer):
         venta.save()
         return venta
     
+class VentaDetalleIdSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = VentaDetalle
+        fields = ['id']  # Solo devolver el ID
+
+
 class VentaSerializer(serializers.ModelSerializer):
     usuario_email = serializers.EmailField(source='usuario.email', read_only=True)
+    detalles = VentaDetalleIdSerializer(source='venta_detalles', many=True, read_only=True)
+
     class Meta:
         model = Venta
         fields = '__all__'
