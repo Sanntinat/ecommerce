@@ -35,17 +35,9 @@ export function CartaCategoria({ suplementos, titulo }) {
 
 
 export function CartaProducto({ producto }) {
-  const { productosSeleccionados, agregarProducto } = useContext(CarritoContext); // Consumir el contexto
-
+  const navegar = useNavigate();
   const handleAgregarProducto = () => {
-    // Verificar si el producto ya está en el carrito
-    const productoYaSeleccionado = productosSeleccionados.some(
-      (p) => p.id === producto.id
-    );
-
-    if (!productoYaSeleccionado) {
-      agregarProducto(producto); // Si no está en el carrito, agregarlo
-    }
+	navegar(`/productos/${producto?.id}/`);
   };
 
   return (
@@ -173,6 +165,3 @@ export default function CartaProductoCarrito({ producto, setCantidadTotal, actua
     </Card>
   );
 }
-
-
-
