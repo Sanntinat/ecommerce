@@ -61,7 +61,7 @@ export default function GestionarVentas({ventas, isLoading, error, ventasDetalle
             {/* Mensaje de carga */}
             {isLoading && !error && (
               <StyledTableRow>
-                <StyledTableCell colSpan={5} align="center">
+                <StyledTableCell colSpan={5} align="center" sx={{minWidth:'500px'}}>
                   <Alert severity="info" sx={{ width: '95%'}}>Cargando...</Alert>
                 </StyledTableCell>
               </StyledTableRow>
