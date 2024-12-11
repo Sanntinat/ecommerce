@@ -26,7 +26,7 @@ export default function GestionarCompras({ ventas, isLoading, error, ventasDetal
   }
 
   return (
-	  <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center', width: "90%", maxWidth: 800, p: 3, m: 10}}>
+	  <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center', width: "90%", maxWidth: 800, p: 3, m: 1}}>
       {/* Título Mis Compras */}
       <Typography
         variant="h4"
