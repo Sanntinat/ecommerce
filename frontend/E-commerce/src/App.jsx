@@ -18,6 +18,7 @@ import ProtectedRouteAuthenticated from './Componentes/Login/ProtectedNoAdmin';
 import Footer from './Componentes/Principal/footer';
 import Box from '@mui/material/Box';
 import ProductoDetalle from './Componentes/Productos/productoDetalle';
+import { Grid2 } from '@mui/material';
 
 function App() {
 
@@ -33,7 +34,7 @@ function App() {
     }
   }, [location, logout]);
   return (
-    <>
+    <Grid2 container width='100%' mx={0} px={0}>
     {loginRoutes.includes(location.pathname) ? <HeaderLogin /> : <Header />}
 
     <Box width='100%' sx={{mt:{xs:16,sm:16,md:8}}}>
@@ -63,7 +64,7 @@ function App() {
 	    </Routes>
 	</Box>
 		{!loginRoutes.includes(location.pathname) && <Footer />} 
-    </>
+    </Grid2>
   );
 }
 

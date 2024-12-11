@@ -50,7 +50,8 @@ const Footer = () => {
     url.pathname !== '/crear-producto' &&
     !url.pathname.startsWith('/editar-producto/') && (
       <Box sx={{ width: '100%', bgcolor:'primary.main', color: 'white', mb: 0,
-        display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap'
+        display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap',
+        minWidth: '95vw'
        }}>
         <Grid container spacing={4} justifyContent={'center'} >
           <Grid width={'100%'} minWidth={'300px'} margin={'auto'}>
