@@ -1,11 +1,10 @@
 import * as React from 'react';
-import { Box, Collapse, IconButton, Table, TableBody, TableContainer, TableHead, TableRow, Paper, Alert } from '@mui/material/';
+import { Box, Collapse, IconButton, Button, Table, TableBody, TableContainer, TableHead, TableRow, Paper, Alert } from '@mui/material/';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import DeleteIcon from '@mui/icons-material/Delete';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { StyledTableCell, StyledTableRow } from './styledTable'
 import { useState, useEffect } from 'react';
-import EliminarVenta from './CrudProductos/eliminarVenta';
+import CambiarEstadoVenta from './CrudProductos/cambiarEstadoVenta';
 import Paginacion from '../Productos/paginacion';
 
 
@@ -16,6 +15,7 @@ export default function GestionarVentas({ventas, isLoading, error, ventasDetalle
   const [ventaSeleccionado, setVentaSeleccionado] = useState(null);
   const [estadoModal, setEstadoModal] = useState(false);
   const [estadoVenta, setEstadoVenta] = useState(false);
+  const [nuevoEstado, setNuevoEstado] = useState("");
   const toggleRow = (rowName) => {
     setOpenRow(openRow === rowName ? null : rowName);
   };
@@ -46,6 +46,7 @@ export default function GestionarVentas({ventas, isLoading, error, ventasDetalle
             <StyledTableCell align='center'>Fecha</StyledTableCell>
             <StyledTableCell align='center'>Usuario</StyledTableCell>
             <StyledTableCell align='center'>Total</StyledTableCell>
+            <StyledTableCell align='center'>Estado</StyledTableCell>
             <StyledTableCell align='center'>Acciones</StyledTableCell>
           </StyledTableRow>
         </TableHead>
@@ -89,13 +90,35 @@ export default function GestionarVentas({ventas, isLoading, error, ventasDetalle
                     </StyledTableCell>
                 <StyledTableCell align='center'>{venta.usuario_email}</StyledTableCell>
                 <StyledTableCell align='center'>{venta.total}</StyledTableCell>
+                <StyledTableCell align='center'>{venta.estado}</StyledTableCell>
                 <StyledTableCell align='center'>
-                  <IconButton onClick={() => {
+            {venta.estado === "Pendiente" && (
+              <>
+                <Button
+                  variant="contained"
+                  color="success"
+                  onClick={() => {
                     setModalShow(true);
-                    setVentaSeleccionado(venta.id);}}>
-                    <DeleteIcon color="error" />
-                  </IconButton>
-                </StyledTableCell>
+                    setVentaSeleccionado(venta.id);
+                    setNuevoEstado("Finalizada");
+                  }}
+                >
+                  Finalizar
+                </Button>
+                <Button
+                  variant="contained"
+                  color="error"
+                  onClick={() => {
+                    setModalShow(true);
+                    setVentaSeleccionado(venta.id);
+                    setNuevoEstado("Cancelada");
+                  }}
+                >
+                  Cancelar
+                </Button>
+              </>
+            )}
+          </StyledTableCell>
               </TableRow>
               <TableRow>
                 <StyledTableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -106,7 +129,7 @@ export default function GestionarVentas({ventas, isLoading, error, ventasDetalle
                         <TableHead>
                           <TableRow>
                             <StyledTableCell align='center'>Producto</StyledTableCell>
-                            <StyledTableCell align='center'>Cantdad</StyledTableCell>
+                            <StyledTableCell align='center'>Cantidad</StyledTableCell>
                             <StyledTableCell align='center'>Subtotal</StyledTableCell>
                           </TableRow>
                         </TableHead>
@@ -168,13 +191,14 @@ export default function GestionarVentas({ventas, isLoading, error, ventasDetalle
       paginaSiguiente={ventas?.next ? ventas?.next : ""}
       />
       }
-    <EliminarVenta
+     <CambiarEstadoVenta
       open={modalShow}
       onClose={() => setModalShow(false)}
       seleccionado={ventaSeleccionado}
       setEstadoModal={setEstadoModal}
       setEstado={setEstadoVenta}
       url="/ventas/"
+      nuevoEstado={nuevoEstado}
     />
     </Box>
   );

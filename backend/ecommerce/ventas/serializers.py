@@ -67,10 +67,13 @@ class VentaDetalleIdSerializer(serializers.ModelSerializer):
 class VentaSerializer(serializers.ModelSerializer):
     usuario_email = serializers.EmailField(source='usuario.email', read_only=True)
     detalles = VentaDetalleIdSerializer(source='venta_detalles', many=True, read_only=True)
+    estado = serializers.ChoiceField(choices=Venta.ESTADO_CHOICES)  
 
     class Meta:
         model = Venta
         fields = '__all__'
         extra_kwargs = {
             'total': {'read_only': True},
+            'usuario': {'read_only': True}, 
         }
+
