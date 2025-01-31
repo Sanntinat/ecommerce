@@ -3,12 +3,20 @@ from django.db import models
 # Create your models here.
 
 class Venta(models.Model):
+    ESTADO_CHOICES = [
+        ('Finalizada', 'Finalizada'),
+        ('Pendiente', 'Pendiente'),
+        ('Cancelada', 'Cancelada'),
+    ]
+
     fecha = models.DateTimeField(auto_now_add=True)
     total = models.DecimalField(max_digits=10, decimal_places=2)
     detalles = models.ManyToManyField('productos.Productos', through='VentaDetalle', related_name='ventas')
     usuario = models.ForeignKey('custom_auth.User', on_delete=models.SET_NULL, null=True)
+    estado = models.CharField(max_length=10, choices=ESTADO_CHOICES, default='Pendiente')
 
-
+    def __str__(self):
+        return f"Venta {self.id} - {self.estado}"
 
 
 class VentaDetalle(models.Model):
