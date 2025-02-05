@@ -139,6 +139,9 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+CORS_ALLOW_CREDENTIALS = True  # Permitir el uso de cookies en el frontend
+
+
 AUTH_USER_MODEL = 'custom_auth.User'
 
 REST_FRAMEWORK = {

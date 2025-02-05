@@ -22,6 +22,8 @@ export default function ProductoDetalle() {
 	const { productosSeleccionados, agregarProducto } = useContext(CarritoContext);
   const isMobile = useMediaQuery('(max-width:600px)');
 
+	console.log(producto);
+
 	const handleAgregarProducto = () => {
 		const productoYaSeleccionado = productosSeleccionados.some(
 			(p) => p.id === producto.id

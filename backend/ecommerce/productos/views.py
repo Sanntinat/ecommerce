@@ -1,3 +1,6 @@
+import uuid
+from django.http import JsonResponse
+from rest_framework.response import Response
 from django.shortcuts import render
 from rest_framework import generics
 from .serializers import ProductosSerializer
@@ -11,8 +14,10 @@ from .serializers import CategoriasSerializer
 from .models import Categorias
 from .models import Tag
 from .serializers import TagsSerializer 
+from .models import ProductoVista
 from django import http
 from rest_framework.permissions import BasePermission
+
 
 class IsAdminOrReadOnly(BasePermission):
     def has_permission(self, request, view):
@@ -37,13 +42,37 @@ class ProductosDetailV2(generics.RetrieveAPIView):
     serializer_class = ProductosSerializerV2
     permission_classes = [IsAdminOrReadOnly]
 
-    def get_object(self):
-        # Incrementar la popularidad del producto
+    def get_object(self, user_id):
         obj = super().get_object()
-        print(obj.id, ' ',obj.popularidad)
-        obj.popularidad += 1
-        obj.save()
-        return super().get_object()
+
+        if not ProductoVista.objects.filter(user_id=user_id, producto=obj).exists():
+            obj.popularidad += 1
+            obj.save()
+            ProductoVista.objects.create(user_id=user_id, producto=obj)
+
+        return obj
+
+    def retrieve(self, request, *args, **kwargs):
+        user_id = request.COOKIES.get('user_id')
+
+        response = Response()
+
+        if not user_id:
+            user_id = str(uuid.uuid4())
+            response.set_cookie(
+                'user_id', 
+                user_id, 
+                max_age=31536000,  
+                httponly=True,
+                samesite='None', 
+                secure=True 
+            )
+
+        
+        instance = self.get_object(user_id=user_id)
+        serializer = self.get_serializer(instance)
+        response.data = serializer.data
+        return response
 
 
 class ProductosList(generics.ListCreateAPIView):

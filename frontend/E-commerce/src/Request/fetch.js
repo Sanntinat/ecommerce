@@ -10,7 +10,7 @@ const _fetchWithHeaders = async (url) => {
     ? { Authorization: "Token " + token }
     : {};
 
-  const response = await fetch(apiUrl + url, { headers });
+  const response = await fetch(apiUrl + url, { headers,  credentials: 'include' });
 
   if (response.status === 401) {
     localStorage.removeItem("token"); 

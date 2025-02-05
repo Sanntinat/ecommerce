@@ -15,6 +15,14 @@ class Productos(models.Model):
         return self.nombre
     
 
+class ProductoVista(models.Model):
+    user_id = models.CharField(max_length=50)  
+    producto = models.ForeignKey('Productos', on_delete=models.CASCADE)
+    visto_en = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user_id', 'producto')  
+
 class Categorias(models.Model):
     nombre = models.CharField(max_length=100)
 
