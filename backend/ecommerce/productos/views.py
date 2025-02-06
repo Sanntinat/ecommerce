@@ -17,7 +17,7 @@ from .serializers import TagsSerializer
 from .models import ProductoVista
 from django import http
 from rest_framework.permissions import BasePermission
-
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 class IsAdminOrReadOnly(BasePermission):
     def has_permission(self, request, view):
@@ -42,7 +42,19 @@ class ProductosDetailV2(generics.RetrieveAPIView):
     serializer_class = ProductosSerializerV2
     permission_classes = [IsAdminOrReadOnly]
 
+    def get_user_identifier(self, request):
+       
+        if request.user.is_authenticated:
+            return f"auth_{request.user.id}"
+
+        return request.COOKIES.get('user_id') or str(uuid.uuid4())
+
+    def associate_views(self, old_user_id, new_user_id):
+        
+        ProductoVista.objects.filter(user_id=old_user_id).update(user_id=new_user_id)
+
     def get_object(self, user_id):
+    
         obj = super().get_object()
 
         if not ProductoVista.objects.filter(user_id=user_id, producto=obj).exists():
@@ -53,25 +65,31 @@ class ProductosDetailV2(generics.RetrieveAPIView):
         return obj
 
     def retrieve(self, request, *args, **kwargs):
-        user_id = request.COOKIES.get('user_id')
+        
+        previous_user_id = request.COOKIES.get('user_id')
+        current_user_id = self.get_user_identifier(request)
 
         response = Response()
 
-        if not user_id:
-            user_id = str(uuid.uuid4())
+        
+        if previous_user_id and previous_user_id.startswith("auth_") and not request.user.is_authenticated:
+            self.associate_views(previous_user_id, current_user_id)
+
+       
+        if not request.user.is_authenticated and not request.COOKIES.get('user_id'):
             response.set_cookie(
                 'user_id', 
-                user_id, 
+                current_user_id, 
                 max_age=31536000,  
                 httponly=True,
                 samesite='None', 
-                secure=True 
+                secure=True  
             )
 
-        
-        instance = self.get_object(user_id=user_id)
+        instance = self.get_object(user_id=current_user_id)
         serializer = self.get_serializer(instance)
         response.data = serializer.data
+
         return response
 
 
