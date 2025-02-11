@@ -86,33 +86,38 @@ export function CartaProducto({ producto }) {
 }
 
 export default function CartaProductoCarrito({ producto, setCantidadTotal, actualizarCantidad }) {
-  const [cantidad, setCantidad] = useState(1);
-  const { eliminarProducto } = useContext(CarritoContext);
+	const {productosSeleccionados, actualizarProductoEnCarrito } = useContext(CarritoContext)
+	const productoEnCarrito = productosSeleccionados.find((p) => p.id === producto.id)
+	console.log(productoEnCarrito);
+	const { eliminarProducto } = useContext(CarritoContext);
+	const [cantidad, setCantidad ] = useState(productoEnCarrito.cantidad || 1);
 
-  useEffect(() => {
-    const nuevoTotal = producto.precio * cantidad;
-    setCantidadTotal((prev) => prev + nuevoTotal);
+  	useEffect(() => {
+    	const nuevoTotal = productoEnCarrito.precio * cantidad;
+    	setCantidadTotal((prev) => prev + nuevoTotal);
 
-    // Cuando se desmonte o cambie la cantidad, restamos el valor anterior
-    return () => {
-      setCantidadTotal((prev) => prev - nuevoTotal);
-    };
-  }, [cantidad, producto.precio, setCantidadTotal]);
+    	// Cuando se desmonte o cambie la cantidad, restamos el valor anterior
+    	return () => {
+      		setCantidadTotal((prev) => prev - nuevoTotal);
+    	};
+  	}, [cantidad, productoEnCarrito.precio, setCantidadTotal]);
 
   const aumentarCantidad = () => {
-    setCantidad((prev) => prev + 1);
-    actualizarCantidad(producto.id, cantidad + 1); // Actualizamos la cantidad
+	  const nuevaCantidad = cantidad + 1;
+	  setCantidad(nuevaCantidad);
+	  actualizarCantidad(productoEnCarrito.id,nuevaCantidad); // Actualizamos la cantidad
   };
 
   const disminuirCantidad = () => {
-    if (cantidad > 1) {
-      setCantidad((prev) => prev - 1);
-      actualizarCantidad(producto.id, cantidad - 1); // Actualizamos la cantidad
-    }
+	  if (cantidad > 1) {
+		  const nuevaCantidad = cantidad - 1;
+		  setCantidad(nuevaCantidad);
+		  actualizarCantidad(productoEnCarrito.id, nuevaCantidad); // Actualizamos la cantidad
+	  }
   };
 
   const handleEliminar = () => {
-    eliminarProducto(producto.id);
+    eliminarProducto(productoEnCarrito.id);
   };
 
   return (

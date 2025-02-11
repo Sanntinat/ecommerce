@@ -10,8 +10,17 @@ export const CarritoProvider = ({ children }) => {
   );
 
   // Función para agregar un producto al carrito
-  const agregarProducto = (producto) => {
-    setProductosSeleccionados((prev) => [...prev, producto]);
+	const agregarProducto = (producto) => {
+		setProductosSeleccionados((prev) => {
+			const existe = prev.find((p) => p.id === producto.id);
+			if(existe) {
+				return prev.map((p) =>
+					p.id === producto.id ? {...p, cantidad: p.cantidad + producto.cantidad } : p 
+				);
+			} else {
+				return [...prev, producto];
+			}
+		});
   };
 
   // Función para eliminar un producto del carrito
@@ -29,8 +38,19 @@ export const CarritoProvider = ({ children }) => {
     localStorage.setItem('productosSeleccionados', JSON.stringify(productosSeleccionados));
   }, [productosSeleccionados]);
 
+	//actualizar cantidad desde productoDetalle
+ const actualizarProductoEnCarrito = (productoId, nuevaCantidad ) => {
+	 setProductosSeleccionados((prevProductos) => {
+		 const nuevosProductos = prevProductos.map((p) => 
+			p.id === productoId ? {...p, cantidad: nuevaCantidad } : p 
+		 );
+		 console.log("productos actualizados:", nuevosProductos);
+		 return nuevosProductos;
+	 })
+ }
+
   return (
-    <CarritoContext.Provider value={{ productosSeleccionados, agregarProducto, eliminarProducto, vaciarCarrito }}>
+    <CarritoContext.Provider value={{ productosSeleccionados, agregarProducto, eliminarProducto, vaciarCarrito, actualizarProductoEnCarrito }}>
       {children}
     </CarritoContext.Provider>
   );

@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
-import { Box, Typography, Button, CircularProgress, Alert, Chip, Stack } from '@mui/material';
+import { Box, Typography, Button, CircularProgress, Alert, Chip, Stack, TextField } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useFetch } from '../../Request/fetch';
 import Grid from '@mui/material/Grid2';
@@ -16,21 +16,21 @@ export default function ProductoDetalle() {
 	const navigate = useNavigate(); 
 	const [ productoActual, cambiarProducto ] = useState(null);
 	const [ categoriass, cambiarCat ] = useState(null);
-	const [cant, cambiarCant ] = useState(1);
-	const suma = () => cambiarCant(cant + 1);
-	const resta = () => cambiarCant(Math.max(cant -1, 1));
-	const { productosSeleccionados, agregarProducto } = useContext(CarritoContext);
-  const isMobile = useMediaQuery('(max-width:600px)');
-
-	console.log(producto);
+	const { productosSeleccionados, agregarProducto, actualizarProductoEnCarrito } = useContext(CarritoContext);
+    const isMobile = useMediaQuery('(max-width:600px)');
+	const [ cantidad, cambiarCant ] = useState(1);
 
 	const handleAgregarProducto = () => {
-		const productoYaSeleccionado = productosSeleccionados.some(
-			(p) => p.id === producto.id
-		);
-		if (!productoYaSeleccionado) {
-			agregarProducto(producto);
-		}
+    	const productoYaSeleccionado = productosSeleccionados.find((p) => p.id === producto.id);
+
+    	if (productoYaSeleccionado) {
+			// Si el producto ya está en el carrito, actualizamos la cantidad
+			console.log("producto ya en carito, actualizando...")
+        	actualizarProductoEnCarrito(producto.id, productoYaSeleccionado.cantidad + cantidad);
+    	} else {
+        	// Si es un nuevo producto, lo agregamos con la cantidad seleccionada
+        	agregarProducto({ ...producto, cantidad });
+    	}
 	};
 
 	useEffect(() => {
@@ -46,7 +46,25 @@ export default function ProductoDetalle() {
 			cambiarCat(categorias);
 		}
 	}, [categorias,productoActual]);
+	
+	const controladorCant = (event) => {
+		let value = parseInt(event.target.value, 10);
+		
+		if (isNaN(value) || (value < 1)) {
+			value = 1;
+		} else if (value > productoActual.stock) {
+			value = productoActual.stock;
+		}
 
+		cambiarCant(value);
+	};
+
+	const enviar = (event) => {
+		const nuevaCantidad = Math.max(1, parseInt(event.target.value, 10) || 1);
+		cambiarCant(nuevaCantidad);
+		actualizarCantidadProducto(producto.id, nuevaCantidad);
+	};
+			
 	if(loading){
 		return (
 			<Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
@@ -102,10 +120,21 @@ export default function ProductoDetalle() {
 						<Typography sx={{textAlign: 'left', mb: 3, maxHeight:'80%'}}>
 							{productoActual.stock > 0 ? 'stock : disponible' : 'stock : agotado'}
 						</Typography>
-						<Button variant="contained" color="primary" sx={{width: '75%', mt: 10}} onClick={handleAgregarProducto}>
-							Agregar al carrito
-						</Button>						
-
+						<Box component= "form" onSubmit={enviar} sx={{display: "flex",flexDirection:"column", alignItems: "center", p:2 }}>
+							<TextField 
+								fullWidth
+								label="Cantidad"
+								type="number"
+								name="Cantidad"
+								value={cantidad}
+								onChange={controladorCant}
+								inputProps={{ min: 1, max: productoActual.stock }}
+								sx={{ alignSelf: "flex-start", width: '40%' }}
+								/>
+							<Button type="submit" variant="contained" color="primary" sx={{width: '75%', mt: 10}} onClick={handleAgregarProducto}>
+								Agregar al carrito
+							</Button>
+						</Box>
 					</Grid>
 				</Grid>
 			</>
