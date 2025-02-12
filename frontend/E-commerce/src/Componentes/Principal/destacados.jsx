@@ -5,10 +5,17 @@ import { Box, Typography, Button, Link, useTheme, useMediaQuery, Card } from '@m
 import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material';
 import { useFetch } from '../../Request/fetch.js'
 import { useNavigate } from 'react-router-dom';
-
+import { useFetchUser } from '../../Request/v2/fetchUser.js';
+import useGymAPI  from '../../Request/v2/fetchGym.js';
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 const CarruselDestacados = () => {
+	const token = localStorage.getItem("token");
+	const isAuthenticated = token ? true : false;
+	const {email, loading: loadingV, error: errorV } = useFetchUser(isAuthenticated);
+	const correoPRUEBA = "tomasito@gmail.com"
+	const {productos: productosAPI, loading: loadingAPI, error: errorAPI , usuario: usuarioAPI } = useGymAPI(correoPRUEBA);
+	console.log(productosAPI);
 	const { data, loading, error } = useFetch('/productos/destacados/');
 	const [indiceActivo, setIndiceActivo] = useState(0);
 	const [productos, cambiarProductos] = useState([]);
@@ -26,9 +33,13 @@ const CarruselDestacados = () => {
 
 	useEffect(() => {
 		if(data){
-			cambiarProductos(data);
+			if(usuarioAPI){
+				cambiarProductos(productosAPI);
+			} else {
+				cambiarProductos(data);
+			}
 		}
-	}, [data]);
+	}, [data,email]);
 
 	const theme = useTheme();
 	const tamaños = {

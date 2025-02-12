@@ -24,6 +24,7 @@ urlpatterns = [
     path('', include('productos.urls')),
     path('', include('custom_auth.urls')),
     path('', include('ventas.urls')),
+    path('', include('integracionGym.urls')),
 ]
 
 if settings.DEBUG:
