@@ -20,40 +20,55 @@ class VentaDetalleSerializer(serializers.ModelSerializer):
 
 class VentaCreateSerializer(serializers.ModelSerializer):
     detalles = serializers.ListField(child=serializers.DictField(), write_only=True)
+
     class Meta:
         model = Venta
         fields = '__all__'
         extra_kwargs = {
             'total': {'read_only': True},
         }
+
     def create(self, validated_data):
         detalles_data = validated_data.pop('detalles')
-        venta = Venta.objects.create(**validated_data, total=0)
-        # print('venta', venta)
+        tiene_beneficio = validated_data.pop('tiene_beneficio', False)  # Recibir del frontend
+        venta = Venta.objects.create(**validated_data, total=0, tiene_beneficio=tiene_beneficio)
+
         total = 0
         productos_sin_stock = []
+
         for detalle_data in detalles_data:
             producto_id = detalle_data['producto']
             producto = Productos.objects.get(id=producto_id)
             if producto.stock < detalle_data['cantidad']:
                 productos_sin_stock.append(producto.nombre)
-        
+
         if productos_sin_stock:
             venta.delete()
             raise serializers.ValidationError({'productos_sin_stock': productos_sin_stock})
 
         for detalle_data in detalles_data:
             producto_id = detalle_data.pop('producto')
+            cantidad = detalle_data['cantidad']
+            producto = Productos.objects.get(id=producto_id)
+
+            # Calcular el subtotal con o sin descuento
+            precio_unitario = producto.precio
+            if tiene_beneficio and producto.tags.filter(id__in=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 25, 26, 29, 30, 31, 32, 33, 34, 35]).exists():
+                precio_unitario *= 0.8  # Aplicar 20% de descuento
+
+            subtotal = precio_unitario * cantidad
+
             venta_detalle = VentaDetalle.objects.create(
                 venta=venta,
-                producto=Productos.objects.get(id=producto_id),
-                **detalle_data
+                producto=producto,
+                cantidad=cantidad,
+                subtotal=subtotal
             )
-            venta_detalle.producto.stock -= venta_detalle.cantidad
-            venta_detalle.producto.save()
-            total += venta_detalle.subtotal
-            # print('detalle_data', detalle_data)
-        # print('total', total)
+
+            producto.stock -= cantidad
+            producto.save()
+            total += subtotal
+
         venta.total = total
         venta.save()
         return venta

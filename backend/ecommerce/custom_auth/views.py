@@ -53,20 +53,10 @@ class ChangePassword(generics.UpdateAPIView):
     
 selected_users = None
 
-def get_selected_users():
-    global selected_users
-    if selected_users is None:
-        users = list(User.objects.all())
-        selected_users = random.sample(users, min(4, len(users)))
-    return selected_users
-
 class SimulateKinesiologyAPI(APIView):
     def get(self, request, *args, **kwargs):
-        selected_users = get_selected_users()
         data = [
-            {
-                "correo": user.email,
-            }
-            for user in selected_users
+            {"correo": "john@doe.com"},
+            {"correo": "tomasito@gmail.com"}
         ]
         return Response(data)

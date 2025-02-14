@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { useFinalizarCompras } from '../../../Request/v2/fetchFinalizarCompras';
 import ModalExito from './modalExito';
 import ModalErrorStock from './modalError'
+import { useFetchUser } from '../../../Request/v2/fetchUser';
 
 export default function CarritoProductos({ productosSeleccionados, setProductosSeleccionados }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -19,7 +20,8 @@ export default function CarritoProductos({ productosSeleccionados, setProductosS
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const { finalizarCompras } = useFinalizarCompras();
-  const correoPRUEBA = "john@doe.com"
+  const { email } = useFetchUser(isAuthenticated)
+  
 
   const actualizarCantidad = (productoId, cantidad) => {
     setCantidades((prevCantidades) => ({
@@ -36,7 +38,8 @@ export default function CarritoProductos({ productosSeleccionados, setProductosS
       }));
   
       try {
-        const response = await finalizarCompras(detalles, correoPRUEBA);
+        const response = await finalizarCompras(detalles, email);
+        console.log(detalles)
         console.log('Compra finalizada con éxito:', response);
         setModalOpen(true);
       } catch (error) {

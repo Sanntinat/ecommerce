@@ -14,6 +14,7 @@ class Venta(models.Model):
     detalles = models.ManyToManyField('productos.Productos', through='VentaDetalle', related_name='ventas')
     usuario = models.ForeignKey('custom_auth.User', on_delete=models.SET_NULL, null=True)
     estado = models.CharField(max_length=10, choices=ESTADO_CHOICES, default='Pendiente')
+    tiene_beneficio = models.BooleanField(default=False)
 
     def __str__(self):
         return f"Venta {self.id} - {self.estado}"
