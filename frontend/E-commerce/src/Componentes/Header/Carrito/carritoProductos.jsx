@@ -19,6 +19,7 @@ export default function CarritoProductos({ productosSeleccionados, setProductosS
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const { finalizarCompras } = useFinalizarCompras();
+  const correoPRUEBA = "john@doe.com"
 
   const actualizarCantidad = (productoId, cantidad) => {
     setCantidades((prevCantidades) => ({
@@ -35,7 +36,7 @@ export default function CarritoProductos({ productosSeleccionados, setProductosS
       }));
   
       try {
-        const response = await finalizarCompras(detalles);
+        const response = await finalizarCompras(detalles, correoPRUEBA);
         console.log('Compra finalizada con éxito:', response);
         setModalOpen(true);
       } catch (error) {

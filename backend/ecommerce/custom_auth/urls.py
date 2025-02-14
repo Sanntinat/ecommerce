@@ -8,4 +8,5 @@ urlpatterns = [
     path('getToken/', obtain_auth_token),
     path('change-password/', views.ChangePassword.as_view()),
     path('user/me/', views.UserData.as_view()),
+    path('integracion1', views.SimulateKinesiologyAPI.as_view()),
 ]

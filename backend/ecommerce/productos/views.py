@@ -43,39 +43,37 @@ class ProductosDetailV2(generics.RetrieveAPIView):
     permission_classes = [IsAdminOrReadOnly]
 
     def get_user_identifier(self, request):
-       
         if request.user.is_authenticated:
             return f"auth_{request.user.id}"
-
         return request.COOKIES.get('user_id') or str(uuid.uuid4())
 
     def associate_views(self, old_user_id, new_user_id):
-        
-        ProductoVista.objects.filter(user_id=old_user_id).update(user_id=new_user_id)
+        vistas_a_migrar = ProductoVista.objects.filter(user_id=old_user_id).exclude(
+            producto__in=ProductoVista.objects.filter(user_id=new_user_id).values_list('producto', flat=True)
+        )
+        for vista in vistas_a_migrar:
+            if not ProductoVista.objects.filter(user_id=new_user_id, producto=vista.producto).exists():
+                ProductoVista.objects.create(user_id=new_user_id, producto=vista.producto)
 
     def get_object(self, user_id):
-    
         obj = super().get_object()
-
         if not ProductoVista.objects.filter(user_id=user_id, producto=obj).exists():
             obj.popularidad += 1
             obj.save()
             ProductoVista.objects.create(user_id=user_id, producto=obj)
-
         return obj
 
     def retrieve(self, request, *args, **kwargs):
-        
         previous_user_id = request.COOKIES.get('user_id')
         current_user_id = self.get_user_identifier(request)
-
         response = Response()
 
-        
-        if previous_user_id and previous_user_id.startswith("auth_") and not request.user.is_authenticated:
-            self.associate_views(previous_user_id, current_user_id)
+        if previous_user_id and previous_user_id != current_user_id:
+            if not previous_user_id.startswith("auth_") and request.user.is_authenticated:
+                self.associate_views(previous_user_id, current_user_id)
+            elif previous_user_id.startswith("auth_") and not request.user.is_authenticated:
+                self.associate_views(previous_user_id, current_user_id)
 
-       
         if not request.user.is_authenticated and not request.COOKIES.get('user_id'):
             response.set_cookie(
                 'user_id', 
@@ -89,8 +87,11 @@ class ProductosDetailV2(generics.RetrieveAPIView):
         instance = self.get_object(user_id=current_user_id)
         serializer = self.get_serializer(instance)
         response.data = serializer.data
-
         return response
+
+
+
+
 
 
 class ProductosList(generics.ListCreateAPIView):

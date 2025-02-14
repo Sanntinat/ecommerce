@@ -3,6 +3,8 @@ from .models import User
 from .serializers import UserSerializer, UserDetailSerializer, UserIdSerializer, ChangePasswordSerializer
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
+import random
 
 #quiero ponerle a las clases permisos para consumir su endpoint
 #para eso debo importar la clase IsAuthenticated de rest_framework.permissions
@@ -11,7 +13,7 @@ from rest_framework.permissions import IsAuthenticated
 class UserList(generics.ListCreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [IsAuthenticated]
+    #permission_classes = [IsAuthenticated] 
 
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
@@ -48,3 +50,23 @@ class ChangePassword(generics.UpdateAPIView):
             user.save()
             return Response({'status': 'Password updated.'})
         return Response(serializer.errors, status=400)
+    
+selected_users = None
+
+def get_selected_users():
+    global selected_users
+    if selected_users is None:
+        users = list(User.objects.all())
+        selected_users = random.sample(users, min(4, len(users)))
+    return selected_users
+
+class SimulateKinesiologyAPI(APIView):
+    def get(self, request, *args, **kwargs):
+        selected_users = get_selected_users()
+        data = [
+            {
+                "correo": user.email,
+            }
+            for user in selected_users
+        ]
+        return Response(data)
