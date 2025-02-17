@@ -6,6 +6,8 @@ import { useState, useEffect } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useContext } from 'react';
 import { CarritoContext } from '../Header/Carrito/carritoContext';
+import { useFetchUser } from '../../Request/v2/fetchUser'
+import { verificarBeneficio } from '../../Request/v2/fetchBeneficio';
 
 export function CartaCategoria({ suplementos, titulo }) {
   const navigate = useNavigate();
@@ -86,71 +88,82 @@ export function CartaProducto({ producto }) {
 }
 
 export default function CartaProductoCarrito({ producto, setCantidadTotal, actualizarCantidad }) {
-	const {productosSeleccionados, actualizarProductoEnCarrito } = useContext(CarritoContext)
-	const productoEnCarrito = productosSeleccionados.find((p) => p.id === producto.id)
-	console.log(productoEnCarrito);
-	const { eliminarProducto } = useContext(CarritoContext);
-	const [cantidad, setCantidad ] = useState(productoEnCarrito.cantidad || 1);
+  const { productosSeleccionados, actualizarProductoEnCarrito, eliminarProducto } = useContext(CarritoContext);
+  const productoEnCarrito = productosSeleccionados.find((p) => p.id === producto.id);
+  const [cantidad, setCantidad] = useState(productoEnCarrito.cantidad || 1);
+  const { email } = useFetchUser(true);
+  const [tieneDescuento, setTieneDescuento] = useState(false);
 
-  	useEffect(() => {
-    	const nuevoTotal = productoEnCarrito.precio * cantidad;
-    	setCantidadTotal((prev) => prev + nuevoTotal);
+  useEffect(() => {
+    const verificarDescuento = async () => {
+      if (email) {
+        const beneficio = await verificarBeneficio(email);
+        console.log(beneficio)
+        if (beneficio) {
+          const tagsValidas = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 25, 26, 29, 30, 31, 32, 33, 34, 35];
+          const validar = producto.tags.some(tag => tagsValidas.includes(tag.id));
+          console.log(producto.tags);
+          console.log(validar);
+        if (validar) {
+          setTieneDescuento(true);
+          }
+        }
+      }
+    };
+    verificarDescuento();
+  }, [email, producto.tags]);
 
-    	// Cuando se desmonte o cambie la cantidad, restamos el valor anterior
-    	return () => {
-      		setCantidadTotal((prev) => prev - nuevoTotal);
-    	};
-  	}, [cantidad, productoEnCarrito.precio, setCantidadTotal]);
+  console.log(tieneDescuento)
+
+  useEffect(() => {
+    const nuevoTotal = (tieneDescuento ? productoEnCarrito.precio * 0.8 : productoEnCarrito.precio) * cantidad;
+    setCantidadTotal((prev) => prev + nuevoTotal);
+    return () => {
+      setCantidadTotal((prev) => prev - nuevoTotal);
+    };
+  }, [cantidad, productoEnCarrito.precio, setCantidadTotal, tieneDescuento]);
 
   const aumentarCantidad = () => {
-	  const nuevaCantidad = cantidad + 1;
-	  setCantidad(nuevaCantidad);
-	  actualizarCantidad(productoEnCarrito.id,nuevaCantidad); // Actualizamos la cantidad
+    setCantidad(cantidad + 1);
+    actualizarCantidad(productoEnCarrito.id, cantidad + 1);
   };
 
   const disminuirCantidad = () => {
-	  if (cantidad > 1) {
-		  const nuevaCantidad = cantidad - 1;
-		  setCantidad(nuevaCantidad);
-		  actualizarCantidad(productoEnCarrito.id, nuevaCantidad); // Actualizamos la cantidad
-	  }
-  };
-
-  const handleEliminar = () => {
-    eliminarProducto(productoEnCarrito.id);
+    if (cantidad > 1) {
+      setCantidad(cantidad - 1);
+      actualizarCantidad(productoEnCarrito.id, cantidad - 1);
+    }
   };
 
   return (
     <Card sx={{ display: 'flex', alignItems: 'center', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)', width: '80%', height: '80px', padding: '8px', marginBottom: '10px' }}>
-      <CardMedia
-        component="img"
-        image={producto.imagen_url}
-        alt={producto.nombre}
-        sx={{ width: '60px', height: '60px', objectFit: 'cover', borderRadius: '4px' }}
-      />
+      <CardMedia component="img" image={producto.imagen_url} alt={producto.nombre} sx={{ width: '60px', height: '60px', objectFit: 'cover', borderRadius: '4px' }} />
       <CardContent sx={{ flex: '1', display: 'flex', flexDirection: 'column', paddingLeft: '8px' }}>
-        <Typography variant="h6" component="div" sx={{ color: '#333', marginBottom: '4px', fontSize: '0.7rem' }}>
-          {producto.nombre}
-        </Typography>
+        <Typography variant="h6" component="div" sx={{ color: '#333', marginBottom: '4px', fontSize: '0.7rem' }}>{producto.nombre}</Typography>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '4px' }}>
-          <IconButton onClick={disminuirCantidad} size="small">
-            <RemoveIcon fontSize="small" />
-          </IconButton>
-          <Typography variant="body2" sx={{ margin: '0 4px', fontSize: '0.9rem' }}>
-            {cantidad}
-          </Typography>
-          <IconButton onClick={aumentarCantidad} size="small">
-            <AddIcon fontSize="small" />
-          </IconButton>
+          <IconButton onClick={disminuirCantidad} size="small"><RemoveIcon fontSize="small" /></IconButton>
+          <Typography variant="body2" sx={{ margin: '0 4px', fontSize: '0.9rem' }}>{cantidad}</Typography>
+          <IconButton onClick={aumentarCantidad} size="small"><AddIcon fontSize="small" /></IconButton>
         </Box>
       </CardContent>
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <IconButton size="small" onClick={handleEliminar}>
+        <IconButton size="small" onClick={() => eliminarProducto(productoEnCarrito.id)}>
           <DeleteIcon fontSize="small" color='error' />
         </IconButton>
-        <Typography variant="body2" component="div" sx={{ fontWeight: '600', color: '#2e7d32', fontSize: '0.9rem', mt: '8px' }}>
-          ${(producto.precio * cantidad).toFixed(2)}
-        </Typography>
+        {tieneDescuento ? (
+          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <Typography variant="body2" sx={{ textDecoration: 'line-through', color: '#d32f2f', fontSize: '0.9rem' }}>
+              ${producto.precio.toFixed(2)}
+            </Typography>
+            <Typography variant="body2" sx={{ fontWeight: '600', color: '#2e7d32', fontSize: '0.9rem', mt: '4px' }}>
+              ${(producto.precio * 0.8).toFixed(2)}
+            </Typography>
+          </Box>
+        ) : (
+          <Typography variant="body2" sx={{ fontWeight: '600', color: '#2e7d32', fontSize: '0.9rem', mt: '8px' }}>
+            ${(producto.precio * cantidad).toFixed(2)}
+          </Typography>
+        )}
       </Box>
     </Card>
   );
