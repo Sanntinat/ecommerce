@@ -62,6 +62,5 @@ class ListarVentaDetalles(generics.ListCreateAPIView):
 class MisCompras(generics.ListAPIView):
     serializer_class = VentaSerializer
     pagination_class = VentasPagination
-    permission_classes = [IsAdminOrReadOnly]
     def get_queryset(self):
         return Venta.objects.filter(usuario=self.request.user).order_by('-fecha')

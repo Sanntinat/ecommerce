@@ -8,6 +8,7 @@ import { useContext } from 'react';
 import { CarritoContext } from '../Header/Carrito/carritoContext';
 import { useFetchUser } from '../../Request/v2/fetchUser'
 import { verificarBeneficio } from '../../Request/v2/fetchBeneficio';
+import { useAuth } from '../Login/authContext';
 
 export function CartaCategoria({ suplementos, titulo }) {
   const navigate = useNavigate();
@@ -91,7 +92,7 @@ export default function CartaProductoCarrito({ producto, setCantidadTotal, actua
   const { productosSeleccionados, actualizarProductoEnCarrito, eliminarProducto } = useContext(CarritoContext);
   const productoEnCarrito = productosSeleccionados.find((p) => p.id === producto.id);
   const [cantidad, setCantidad] = useState(productoEnCarrito.cantidad || 1);
-  const { email } = useFetchUser(true);
+  const { email } = useFetchUser(useAuth().isAuthenticated);
   const [tieneDescuento, setTieneDescuento] = useState(false);
 
   useEffect(() => {

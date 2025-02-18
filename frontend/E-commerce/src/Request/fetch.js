@@ -61,7 +61,15 @@ export const useFetchDataOnDemand = (url) => {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const response = await _fetchWithHeaders(url);
+      const token = localStorage.getItem("token"); // Obtener el token de localStorage
+      const headers = {
+        Authorization: token ? `Bearer ${token}` : "", // Incluir el token si existe
+        "Content-Type": "application/json",
+      };
+
+      const response = await _fetchWithHeaders(url, { headers }); // Pasar los headers
+      if (!response.ok) throw new Error(`Error ${response.status}: ${response.statusText}`);
+
       const jsonData = await response.json();
       setData(jsonData);
     } catch (err) {
@@ -73,6 +81,7 @@ export const useFetchDataOnDemand = (url) => {
 
   return { data, loading, error, fetchData };
 };
+
 
 
 
