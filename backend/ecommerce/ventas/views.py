@@ -3,6 +3,7 @@ from rest_framework import generics
 from .serializers import VentaSerializer, VentaCreateSerializer, VentaDetalleSerializer
 from .models import Venta, VentaDetalle
 from rest_framework.response import Response
+from rest_framework.decorators import api_view
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
@@ -64,3 +65,15 @@ class MisCompras(generics.ListAPIView):
     pagination_class = VentasPagination
     def get_queryset(self):
         return Venta.objects.filter(usuario=self.request.user).order_by('-fecha')
+    
+@api_view(['PUT'])
+def restaurar_stock(request, venta_id):
+    try:
+        detalles = VentaDetalle.objects.filter(venta_id=venta_id)
+        for detalle in detalles:
+            producto = detalle.producto
+            producto.stock += detalle.cantidad
+            producto.save()
+        return Response({"mensaje": "Stock restaurado correctamente"}, status=200)
+    except Exception as e:
+        return Response({"error": str(e)}, status=400)

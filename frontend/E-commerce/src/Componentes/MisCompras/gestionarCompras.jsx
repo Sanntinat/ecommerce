@@ -79,13 +79,14 @@ export default function GestionarVentas({
           Venta eliminada correctamente
         </Alert>
       )}
-      <TableContainer component={Paper} sx={{ maxWidth: 1200, margin: 'auto' }}>  {/* Ancho fijo máximo */}
-  <Table aria-label="collapsible table" sx={{ minWidth: 700 }}>  {/* Ancho fijo mínimo */}
+      <TableContainer component={Paper} sx={{ maxWidth: 900, margin: 'auto' }}>  {/* Ancho fijo máximo */}
+  <Table aria-label="collapsible table" sx={{ minWidth: 900 }}>  {/* Ancho fijo mínimo */}
     <TableHead>
       <StyledTableRow>
         <StyledTableCell />
-        <StyledTableCell align='center' sx={{ width: '40%' }}>Fecha</StyledTableCell> {/* Ajustando el ancho de las celdas */}
-        <StyledTableCell align='center' sx={{ width: '40%' }}>Total</StyledTableCell> {/* Ajustando el ancho de las celdas */}
+        <StyledTableCell align='center' sx={{ width: '26%' }}>Fecha</StyledTableCell> {/* Ajustando el ancho de las celdas */}
+        <StyledTableCell align='center' sx={{ width: '26%' }}>Total</StyledTableCell>
+        <StyledTableCell align='center' sx={{ width: '26%' }}>Estado</StyledTableCell> {/* Ajustando el ancho de las celdas */}
       </StyledTableRow>
     </TableHead>
     <TableBody>
@@ -112,6 +113,9 @@ export default function GestionarVentas({
               </StyledTableCell>
               <StyledTableCell align='center' sx={{ width: '20%' }}>
                 {venta.total}
+              </StyledTableCell>
+              <StyledTableCell align='center' sx={{ width: '20%' }}>
+                {venta.estado}
               </StyledTableCell>
             </TableRow>
             <TableRow>

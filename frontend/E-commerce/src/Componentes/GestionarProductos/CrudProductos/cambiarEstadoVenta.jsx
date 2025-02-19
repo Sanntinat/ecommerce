@@ -10,6 +10,12 @@ export default function CambiarEstadoVenta({ open, onClose, seleccionado, setEst
       await putData(`${url}${id}/`, { estado: nuevoEstado });
       setEstadoModal(nuevoEstado);
       setEstado(nuevoEstado);
+  
+      // Si la venta se cancela, restaurar stock
+      if (nuevoEstado === "Cancelada") {
+        await putData(`${url}${id}/restaurar-stock/`, {}); // Asegúrate de que este endpoint exista en el backend
+      }
+  
       onClose();
     } catch (error) {
       console.error("Error al cambiar el estado:", error);

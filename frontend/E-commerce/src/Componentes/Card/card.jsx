@@ -114,7 +114,6 @@ export default function CartaProductoCarrito({ producto, setCantidadTotal, actua
     verificarDescuento();
   }, [email, producto.tags]);
 
-  console.log(tieneDescuento)
 
   useEffect(() => {
     const nuevoTotal = (tieneDescuento ? productoEnCarrito.precio * 0.8 : productoEnCarrito.precio) * cantidad;

@@ -11,7 +11,6 @@ import { useMediaQuery } from '@mui/material';
 export default function ProductoDetalle() {
 	const {data : categorias ,loading: laodingCat } = useFetch('/categorias/');
 	const { id } = useParams();
-	console.log(id);
 	const { data: producto, loading, error } = useFetch(`/productos/${id}/v2/`);
 	const navigate = useNavigate(); 
 	const [ productoActual, cambiarProducto ] = useState(null);
@@ -42,7 +41,6 @@ export default function ProductoDetalle() {
 
 	useEffect(() => {
 		if (categorias) {
-			console.log(categorias);
 			cambiarCat(categorias);
 		}
 	}, [categorias,productoActual]);
