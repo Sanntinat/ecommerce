@@ -33,7 +33,7 @@ const useGymAPI = (correo) => {
             const productosResponse =  await fetch(`http://127.0.0.1:8000/ProductosPorTag?tag_ids=${tags.join(",")}`);
             const productoData = await productosResponse.json();
             console.log("supuestos datos?", productoData);
-            cambiarProductos(productoData);
+            cambiarProductos(productoData.productos);
           }
         } else {
           console.log("usuario no vinculado al gimnasio");

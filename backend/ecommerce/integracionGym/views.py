@@ -8,24 +8,24 @@ from productos.serializers import ProductosSerializer
 class ProductosPorTags(APIView):
     def get(self, request, *args, **kwargs):
         try:
-            tag_ids = request.query_params.get('tag_ids', '')  # Obtener el parámetro tag_ids
+            tag_ids = request.query_params.get('tag_ids', '')  
             if tag_ids:
-                tag_ids = tag_ids.split(',')  # Dividir la cadena
-                tag_ids = [int(tag_id) for tag_id in tag_ids]  # Convertir cada elemento a entero
+                tag_ids = tag_ids.split(',')  
+                tag_ids = [int(tag_id) for tag_id in tag_ids]  
             else:
                 return Response({'message': 'Faltan idTags'}, status=400)
 
-            print("Tag IDs:", tag_ids)  # Verificar los tag_ids
+            productos = Productos.objects.filter(tags__in=tag_ids).distinct()[:10]
+            if len(productos) < 10:
+                extra_productos = list(Productos.objects.exclude(id__in=[p.id for p in productos])[:10 - len(productos)])
+                productos.extend(extra_productos)  # Agregar hasta completar 10
 
-            productos = Productos.objects.filter(tags__in=tag_ids)[:10]
             productos_data = ProductosSerializer(productos, many=True).data
-
-            print("Productos Data:", productos_data)  # Ver los datos de los productos
 
             return Response({'productos': productos_data})
 
         except Exception as e:
-            print("Error:", str(e))  # Capturar cualquier excepción y loguearla
+            print("Error:", str(e))  
             return Response({'error': str(e)}, status=500)
 
 class SimulateAPI(APIView):

@@ -14,13 +14,10 @@ const CarruselDestacados = () => {
 	const isAuthenticated = token ? true : false;
 	const {email, loading: loadingV, error: errorV } = useFetchUser(isAuthenticated);
 	const correoPRUEBA = "tomasito@gmail.com"
-	const {productos: productosAPI, loading: loadingAPI, error: errorAPI , usuario: usuarioAPI } = useGymAPI(correoPRUEBA);
-
-	console.log(productosAPI);
-	console.log("correo del user:",email);
-	console.log("correos de la API :", usuarioAPI);
+	const {productos: productosAPI, loading: loadingAPI, error: errorAPI , usuario: usuarioAPI } = useGymAPI(email);
 
 	const { data, loading, error } = useFetch('/productos/destacados/');
+
 	const [indiceActivo, setIndiceActivo] = useState(0);
 	const [productos, cambiarProductos] = useState([]);
 	const navigate = useNavigate();
@@ -43,7 +40,7 @@ const CarruselDestacados = () => {
 				cambiarProductos(data);
 			}
 		}
-	}, [data,email]);
+	}, [data,email,productosAPI]);
 
 	const theme = useTheme();
 	const tamaños = {
