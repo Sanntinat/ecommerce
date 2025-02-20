@@ -15,6 +15,11 @@ const CarruselDestacados = () => {
 	const {email, loading: loadingV, error: errorV } = useFetchUser(isAuthenticated);
 	const correoPRUEBA = "tomasito@gmail.com"
 	const {productos: productosAPI, loading: loadingAPI, error: errorAPI , usuario: usuarioAPI } = useGymAPI(correoPRUEBA);
+
+	console.log(productosAPI);
+	console.log("correo del user:",email);
+	console.log("correos de la API :", usuarioAPI);
+
 	const { data, loading, error } = useFetch('/productos/destacados/');
 	const [indiceActivo, setIndiceActivo] = useState(0);
 	const [productos, cambiarProductos] = useState([]);
