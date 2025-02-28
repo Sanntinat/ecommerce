@@ -5,12 +5,11 @@ export default defineConfig({
   plugins: [react()],
   server: {
     host: '0.0.0.0', // Escucha en todas las interfaces
-    port: 5173, // Puerto para evitar conflictos
+    port: 3000, // Cambié el puerto para evitar posibles conflictos
     hmr: {
-      // Configura el HMR para que use el mismo dominio que el cliente
-      host: 'ecommerce-production-0212.up.railway.app',
-      port: 443, // Usa el puerto 443 para HTTPS
-      protocol: 'wss', // Usa WebSocket seguro (WSS) en producción
+      host: 'ecommerce-production-0212.up.railway.app', // Dominio de tu aplicación en Railway
+      port: 443, // Mantén el puerto 443 para WebSocket seguro (WSS)
+      protocol: 'wss', // Usa WebSocket seguro
     },
   },
   optimizeDeps: {
