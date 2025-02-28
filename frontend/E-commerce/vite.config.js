@@ -8,7 +8,15 @@ export default defineConfig({
     port: 5173, // Puerto para evitar conflictos
   },
   optimizeDeps: {
-    exclude: ['react', 'react-dom'], // Excluir para evitar conflictos
+    exclude: [
+    'react',
+    'react-dom',
+    '@mui/material',
+    '@mui/icons-material',
+    'react-router-dom',
+    'prop-types',
+    'react-swipeable-views-utils',
+  ]
   },
 })
 
