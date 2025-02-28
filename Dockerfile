@@ -1,8 +1,16 @@
+# Dockerfile optimizado para Django + React con Vite
+
 # Imagen base con Python y Node.js
 FROM python:3.10
 
-# Instalar Node.js y npm
-RUN apt-get update && apt-get install -y nodejs npm
+# Instalar Node.js
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
+    apt-get install -y nodejs
+
+# Aumentar límite de archivos abiertos
+RUN apt-get install -y procps && \
+    echo "fs.inotify.max_user_watches=524288" >> /etc/sysctl.conf && \
+    sysctl -p
 
 # Crear directorio de trabajo
 WORKDIR /app
@@ -16,10 +24,12 @@ RUN pip install -r requirements.txt
 # Copiar y configurar el frontend
 WORKDIR /app/frontend
 COPY frontend/E-commerce /app/frontend
-RUN npm install --force
+
+# Limpiar y forzar instalación de dependencias
+RUN rm -rf node_modules && npm cache clean --force && npm install --force
 
 # Exponer puertos (Django en 8000, React en 5173)
 EXPOSE 8000 5173
 
 # Iniciar ambos servidores
-CMD ["sh", "-c", "cd /app/backend && python manage.py migrate && python manage.py runserver 0.0.0.0:8000 & cd /app/frontend && npm run dev -- --host"]
+CMD ["sh", "-c", "cd /app/backend && python manage.py migrate && python manage.py runserver 0.0.0.0:8000 & cd /app/frontend && npm run dev -- --host --force"]
