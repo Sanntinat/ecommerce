@@ -7,11 +7,6 @@ FROM python:3.10
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
     apt-get install -y nodejs
 
-# Aumentar límite de archivos abiertos
-RUN apt-get install -y procps && \
-    echo "fs.inotify.max_user_watches=524288" >> /etc/sysctl.conf && \
-    sysctl -p
-
 # Crear directorio de trabajo
 WORKDIR /app
 
