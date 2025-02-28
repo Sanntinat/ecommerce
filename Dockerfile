@@ -16,7 +16,7 @@ RUN pip install -r requirements.txt
 # Copiar y configurar el frontend
 WORKDIR /app/frontend
 COPY frontend/E-commerce /app/frontend
-RUN npm install --force
+RUN npm ci
 
 # Exponer puertos (Django en 8000, React en 5173)
 EXPOSE 8000 5173
