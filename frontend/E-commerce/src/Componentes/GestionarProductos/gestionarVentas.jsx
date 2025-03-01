@@ -7,6 +7,8 @@ import { useState, useEffect } from 'react';
 import CambiarEstadoVenta from './CrudProductos/cambiarEstadoVenta';
 import Paginacion from '../Productos/paginacion';
 
+const apiUrl = import.meta.env.VITE_BASE_URL;
+
 export default function GestionarVentas({
   ventas,
   isLoading,
@@ -46,7 +48,7 @@ export default function GestionarVentas({
   const fetchDetallesVenta = async (ventaId) => {
     try {
       // Realizar la solicitud para obtener los detalles de una venta en particular
-      const response = await fetch(`http://localhost:8000/ventas/${ventaId}/detalles/`);
+      const response = await fetch(`${apiUrl}/ventas/${ventaId}/detalles/`);
       const data = await response.json();
       // Guardar los detalles en el estado
       setDetallesVentaCargados((prevState) => ({

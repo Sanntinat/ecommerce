@@ -1,6 +1,8 @@
+const apiUrl = import.meta.env.VITE_BASE_URL;
+
 export const fetchRegistro = async (email, password, nombre, apellido, dni, navigate) => {
   try {
-    const response = await fetch('http://127.0.0.1:8000/user/', {
+    const response = await fetch(apiUrl+'/user/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

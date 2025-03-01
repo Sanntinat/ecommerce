@@ -1,6 +1,8 @@
+const apiUrl = import.meta.env.VITE_BASE_URL;
+
 export const verificarBeneficio = async (email) => {
     try {
-      const response = await fetch("http://127.0.0.1:8000/integracion1");
+      const response = await fetch(apiUrl+"/integracion1");
       if (!response.ok) throw new Error("Error al consultar integración");
       const data = await response.json();
   

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+const apiUrl = import.meta.env.VITE_BASE_URL;
 
 const useGymAPI = (correo) => {
   const [data, setData] = useState([]);
@@ -10,7 +11,7 @@ const useGymAPI = (correo) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:8000/gym/");
+        const response = await fetch(apiUrl+"/gym/");
         console.log("contenido", response.headers.get("Content-Type"));
 
         if (!response.ok) {
@@ -30,7 +31,7 @@ const useGymAPI = (correo) => {
           const tags = usuarioEncontrado.rutina;
           console.log("vegeta que carajo:", tags);
           if (tags.length > 0) {
-            const productosResponse =  await fetch(`http://127.0.0.1:8000/ProductosPorTag?tag_ids=${tags.join(",")}`);
+            const productosResponse =  await fetch(`${apiUrl}/ProductosPorTag?tag_ids=${tags.join(",")}`);
             const productoData = await productosResponse.json();
             console.log("supuestos datos?", productoData);
             cambiarProductos(productoData.productos);

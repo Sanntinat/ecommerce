@@ -1,6 +1,8 @@
+const apiUrl = import.meta.env.VITE_BASE_URL;
+
 export const fetchLogin = async (username, password, login, navigate) => {
   try {
-    const response = await fetch('http://127.0.0.1:8000/getToken/', {
+    const response = await fetch(apiUrl+'/getToken/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
